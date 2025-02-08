@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-electric-blue: #00FFFF;
+  --color-hot-pink: #FF1493;
+  --color-acid-green: #7FFF00;
+  --color-deep-purple: #2A0A4C;
+  --color-neon-green: #00FF41;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: 'Inter', sans-serif;
+}
+
+/* Hide default cursor except for specific elements */
+* {
+  cursor: none;
+}
+
+/* Allow default cursor for interactive elements */
+a, button, input, textarea, [role="button"], select {
+  cursor: pointer !important;
+}
+
+body {
+  @apply bg-black text-white;
+  font-family: var(--font-sans);
+}
+
+h1, h2, h3, h4, h5, h6, .font-mono {
+  font-family: var(--font-mono);
+}
+
+.gradient-text {
+  @apply font-mono;
+  background: linear-gradient(to right, #00FF41, #00FFFF, #FF1493);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+}
+
+.section-heading {
+  @apply text-4xl md:text-6xl font-bold mb-12 text-center font-mono;
+  background: linear-gradient(to right, #00FF41, #00FFFF, #FF1493);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+}
+
+/* Add scrollbar styling */
+.scrollable-content {
+  max-height: 400px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #00FF41 transparent;
+}
+
+.scrollable-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollable-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollable-content::-webkit-scrollbar-thumb {
+  background-color: #00FF41;
+  border-radius: 3px;
+}
