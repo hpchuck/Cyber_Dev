@@ -1,0 +1,372 @@
+/* Add these styles to your globals.css */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-electric-blue: #00FFFF;
+  --color-hot-pink: #FF1493;
+  --color-acid-green: #7FFF00;
+  --color-deep-purple: #2A0A4C;
+  --color-neon-green: #00FF41;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: 'Inter', sans-serif;
+}
+
+/* Hide default cursor except for specific elements */
+* {
+  cursor: none;
+}
+
+/* Allow default cursor for interactive elements */
+a, button, input, textarea, [role="button"], select {
+  cursor: pointer !important;
+}
+
+body {
+  @apply bg-black text-white;
+  font-family: var(--font-sans);
+}
+
+h1, h2, h3, h4, h5, h6, .font-mono {
+  font-family: var(--font-mono);
+}
+
+.gradient-text {
+  @apply font-mono;
+  background: linear-gradient(to right, #00FF41, #00FFFF, #FF1493);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+}
+
+.section-heading {
+  @apply text-4xl md:text-6xl font-bold mb-12 text-center font-mono;
+  background: linear-gradient(to right, #00FF41, #00FFFF, #FF1493);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+}
+
+.glass-card {
+  @apply relative p-6 rounded-lg;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 255, 65, 0.1);
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  border-color: rgba(0, 255, 65, 0.3);
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+}
+
+.interactive-bg {
+  background: 
+    radial-gradient(circle at var(--x) var(--y),
+      rgba(0, 255, 65, 0.15) 0%,
+      transparent 35%),
+    linear-gradient(rgba(0, 255, 65, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
+  background-size: 100% 100%, 30px 30px, 30px 30px;
+  animation: gridPulse 4s ease infinite;
+}
+
+@keyframes gridPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.terminal-window {
+  @apply bg-black/90 rounded-lg border border-[#00FF41]/30 overflow-hidden;
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+}
+
+.terminal-header {
+  @apply bg-[#1a1a1a] px-4 py-2 flex items-center gap-2;
+}
+
+.terminal-circle {
+  @apply w-3 h-3 rounded-full;
+}
+
+.terminal-text {
+  @apply text-[#00FF41] font-mono;
+}
+
+.btn {
+  position: relative;
+  @apply px-6 py-2 rounded-lg bg-[#00FF41]/10 text-[#00FF41] border border-[#00FF41]/30
+         hover:bg-[#00FF41]/20 transition-all duration-200 font-medium overflow-hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(0, 255, 65, 0.1) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(0, 255, 65, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.btn:hover::before {
+  opacity: 0.2;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 100%;
+  background-color: rgba(0, 255, 65, 0.4);
+  transform: translateX(-200%) skewX(-20deg);
+  animation: buttonGlow 2s ease-in-out infinite;
+}
+
+.btn-glitch {
+  @apply px-6 py-2 rounded-lg bg-[#00FF41]/10 text-[#00FF41] border border-[#00FF41]/30
+         hover:bg-[#00FF41]/20 transition-all duration-200 font-medium;
+}
+
+.btn-glitch:hover {
+  animation: glitchText 0.3s ease;
+}
+
+@keyframes glitchText {
+  0% {
+    text-shadow: none;
+    transform: translate(0);
+  }
+  20% {
+    text-shadow: 
+      -2px -2px 0 #FF1493,
+      2px 2px 0 #00FFFF;
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    text-shadow: 
+      2px -2px 0 #FF1493,
+      -2px 2px 0 #00FFFF;
+    transform: translate(2px, -2px);
+  }
+  60% {
+    text-shadow: 
+      -2px 2px 0 #FF1493,
+      2px -2px 0 #00FFFF;
+    transform: translate(-2px, -2px);
+  }
+  80% {
+    text-shadow: 
+      2px 2px 0 #FF1493,
+      -2px -2px 0 #00FFFF;
+    transform: translate(2px, 2px);
+  }
+  100% {
+    text-shadow: none;
+    transform: translate(0);
+  }
+}
+
+@keyframes buttonGlow {
+  0% { transform: translateX(-200%) skewX(-20deg); }
+  100% { transform: translateX(1000%) skewX(-20deg); }
+}
+
+.btn-primary {
+  @apply bg-[#00FF41] text-black hover:bg-[#00FF41]/90;
+}
+
+.scrollable-content {
+  max-height: 400px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #00FF41 transparent;
+}
+
+.scrollable-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollable-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollable-content::-webkit-scrollbar-thumb {
+  background-color: #00FF41;
+  border-radius: 3px;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+@keyframes scan {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(100%); }
+}
+
+@keyframes glitch {
+  0% {
+    clip-path: inset(40% 0 61% 0);
+    transform: translate(-20px, -10px);
+  }
+  20% {
+    clip-path: inset(92% 0 1% 0);
+    transform: translate(20px, 10px);
+  }
+  40% {
+    clip-path: inset(43% 0 1% 0);
+    transform: translate(-20px, 10px);
+  }
+  60% {
+    clip-path: inset(25% 0 58% 0);
+    transform: translate(20px, -10px);
+  }
+  80% {
+    clip-path: inset(54% 0 7% 0);
+    transform: translate(-20px, 10px);
+  }
+  100% {
+    clip-path: inset(58% 0 43% 0);
+    transform: translate(20px, -10px);
+  }
+}
+
+.glitch {
+  position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch::before {
+  animation: glitch 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+  color: #00FF41;
+  z-index: -1;
+}
+
+.glitch::after {
+  animation: glitch 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) reverse both infinite;
+  color: #FF1493;
+  z-index: -2;
+}
+
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(rgba(0, 255, 65, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 65, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.page-transition-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.page-transition-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+[transform-style=preserve-3d] {
+  transform-style: preserve-3d;
+}
+
+[backface-visibility=hidden] {
+  backface-visibility: hidden;
+}
+.cursor-pointer, 
+button, 
+a, 
+input[type="range"],
+[role="button"],
+.btn,
+.btn-glitch {
+  cursor: none !important;
+}
+
+.cursor-pointer:hover ~ .custom-cursor,
+button:hover ~ .custom-cursor,
+a:hover ~ .custom-cursor,
+input[type="range"]:hover ~ .custom-cursor,
+[role="button"]:hover ~ .custom-cursor,
+.btn:hover ~ .custom-cursor,
+.btn-glitch:hover ~ .custom-cursor {
+  transform: scale(1.5) !important;
+}
+
+input[type="text"],
+input[type="email"],
+textarea {
+  cursor: text !important;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  height: 4px;
+  background: #1a1a1a;
+  border-radius: 2px;
+  background-image: linear-gradient(#00FF41, #00FF41);
+  background-repeat: no-repeat;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  background: #00FF41;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+  transition: all 0.3s ease-in-out;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.7);
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  box-shadow: none;
+  border: none;
+  background: transparent;
+}

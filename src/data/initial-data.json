@@ -1,0 +1,333 @@
+{
+  "projects": [
+    {
+      "id": "1",
+      "title": "AI-Powered Analytics Dashboard",
+      "description": "Real-time analytics platform using machine learning for predictive insights and data visualization. Features include anomaly detection and automated reporting.",
+      "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80",
+      "tags": ["React", "TensorFlow.js", "Node.js", "GraphQL"],
+      "github": "https://github.com",
+      "live": "https://demo.com",
+      "category": "ai",
+      "techStack": ["React", "TypeScript", "TensorFlow.js", "Node.js", "GraphQL", "PostgreSQL"]
+    },
+    {
+      "id": "2",
+      "title": "E-Commerce Platform",
+      "description": "Modern e-commerce solution with real-time inventory management, AI-powered product recommendations, and seamless payment integration.",
+      "image": "https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&w=1200&q=80",
+      "tags": ["Next.js", "Stripe", "Prisma", "PostgreSQL"],
+      "github": "https://github.com",
+      "live": "https://demo.com",
+      "category": "web",
+      "techStack": ["Next.js", "TypeScript", "Stripe", "Prisma", "PostgreSQL", "Redis"]
+    },
+    {
+      "id": "3",
+      "title": "Mobile Fitness App",
+      "description": "Cross-platform fitness tracking application with ML-powered workout recommendations and real-time performance analytics.",
+      "image": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1200&q=80",
+      "tags": ["React Native", "TensorFlow", "Firebase"],
+      "github": "https://github.com",
+      "live": "https://demo.com",
+      "category": "mobile",
+      "techStack": ["React Native", "TypeScript", "TensorFlow", "Firebase", "Redux"]
+    },
+    {
+      "id": "4",
+      "title": "Blockchain Trading Platform",
+      "description": "Decentralized cryptocurrency trading platform with real-time market data, automated trading strategies, and secure wallet integration.",
+      "image": "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=1200&q=80",
+      "tags": ["Web3.js", "React", "Node.js"],
+      "github": "https://github.com",
+      "live": "https://demo.com",
+      "category": "web",
+      "techStack": ["React", "Web3.js", "Node.js", "Express", "MongoDB", "Redis"]
+    },
+    {
+      "id": "5",
+      "title": "AR Navigation App",
+      "description": "Augmented reality navigation system for indoor and outdoor use, featuring real-time object detection and path optimization.",
+      "image": "https://images.unsplash.com/photo-1527168027773-0cc890c4f42e?auto=format&fit=crop&w=1200&q=80",
+      "tags": ["Unity", "ARKit", "CoreML"],
+      "github": "https://github.com",
+      "live": "https://demo.com",
+      "category": "mobile",
+      "techStack": ["Unity", "ARKit", "CoreML", "Swift", "Python", "TensorFlow"]
+    },
+    {
+      "id": "6",
+      "title": "AI Content Generator",
+      "description": "Advanced content generation platform using GPT-3 for creating marketing copy, blog posts, and social media content with SEO optimization.",
+      "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=80",
+      "tags": ["OpenAI", "React", "Python"],
+      "github": "https://github.com",
+      "live": "https://demo.com",
+      "category": "ai",
+      "techStack": ["React", "Python", "OpenAI", "FastAPI", "PostgreSQL", "Redis"]
+    }
+  ],
+  "skills": [
+    {
+      "id": "1",
+      "category": "Frontend",
+      "name": "React",
+      "icon": "react"
+    },
+    {
+      "id": "2",
+      "category": "Frontend",
+      "name": "Next.js",
+      "icon": "code"
+    },
+    {
+      "id": "3",
+      "category": "Frontend",
+      "name": "TypeScript",
+      "icon": "code"
+    },
+    {
+      "id": "4",
+      "category": "Frontend",
+      "name": "Tailwind CSS",
+      "icon": "layers"
+    },
+    {
+      "id": "5",
+      "category": "Backend",
+      "name": "Node.js",
+      "icon": "nodejs"
+    },
+    {
+      "id": "6",
+      "category": "Backend",
+      "name": "Python",
+      "icon": "code"
+    },
+    {
+      "id": "7",
+      "category": "Backend",
+      "name": "FastAPI",
+      "icon": "zap"
+    },
+    {
+      "id": "8",
+      "category": "Backend",
+      "name": "GraphQL",
+      "icon": "webhook"
+    },
+    {
+      "id": "9",
+      "category": "AI/ML",
+      "name": "TensorFlow",
+      "icon": "brain"
+    },
+    {
+      "id": "10",
+      "category": "AI/ML",
+      "name": "PyTorch",
+      "icon": "brain"
+    },
+    {
+      "id": "11",
+      "category": "AI/ML",
+      "name": "Computer Vision",
+      "icon": "brain"
+    },
+    {
+      "id": "12",
+      "category": "AI/ML",
+      "name": "NLP",
+      "icon": "brain"
+    },
+    {
+      "id": "13",
+      "category": "DevOps",
+      "name": "Docker",
+      "icon": "container"
+    },
+    {
+      "id": "14",
+      "category": "DevOps",
+      "name": "Kubernetes",
+      "icon": "container"
+    },
+    {
+      "id": "15",
+      "category": "DevOps",
+      "name": "CI/CD",
+      "icon": "git"
+    },
+    {
+      "id": "16",
+      "category": "DevOps",
+      "name": "AWS",
+      "icon": "cloud"
+    },
+    {
+      "id": "17",
+      "category": "Database",
+      "name": "PostgreSQL",
+      "icon": "database"
+    },
+    {
+      "id": "18",
+      "category": "Database",
+      "name": "MongoDB",
+      "icon": "database"
+    },
+    {
+      "id": "19",
+      "category": "Database",
+      "name": "Redis",
+      "icon": "database"
+    },
+    {
+      "id": "20",
+      "category": "Database",
+      "name": "Elasticsearch",
+      "icon": "database"
+    }
+  ],
+  "experiences": [
+    {
+      "id": "1",
+      "company": "TechCorp Inc.",
+      "role": "Senior Full Stack Developer",
+      "period": "2022 - Present",
+      "description": "Leading development of enterprise-scale applications",
+      "achievements": [
+        "Reduced system latency by 40%",
+        "Implemented ML-powered recommendation engine",
+        "Led team of 5 developers"
+      ],
+      "logo": "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=100&q=80"
+    },
+    {
+      "id": "2",
+      "company": "AI Solutions Ltd",
+      "role": "Machine Learning Engineer",
+      "period": "2020 - 2022",
+      "description": "Developed and deployed ML models for various business solutions",
+      "achievements": [
+        "Built computer vision system for quality control",
+        "Optimized ML pipeline reducing inference time by 60%",
+        "Published 2 research papers"
+      ],
+      "logo": "https://images.unsplash.com/photo-1535378917042-10a22c95931a?auto=format&fit=crop&w=100&q=80"
+    },
+    {
+      "id": "3",
+      "company": "WebTech Startup",
+      "role": "Frontend Developer",
+      "period": "2018 - 2020",
+      "description": "Built modern web applications using React and related technologies",
+      "achievements": [
+        "Improved application performance by 70%",
+        "Implemented CI/CD pipeline",
+        "Mentored junior developers"
+      ],
+      "logo": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=100&q=80"
+    }
+  ],
+  "pricingPlans": [
+    {
+      "id": "1",
+      "name": "Basic",
+      "price": "₹1,49,999",
+      "category": "Web Development",
+      "features": [
+        "Single Page Website",
+        "Responsive Design",
+        "Basic SEO",
+        "Contact Form",
+        "5 Content Sections"
+      ],
+      "recommended": false
+    },
+    {
+      "id": "2",
+      "name": "Professional",
+      "price": "₹3,99,999",
+      "category": "Web Development",
+      "features": [
+        "Multi-page Website",
+        "Advanced SEO",
+        "CMS Integration",
+        "E-commerce Features",
+        "Custom Animations",
+        "Performance Optimization"
+      ],
+      "recommended": true
+    },
+    {
+      "id": "3",
+      "name": "Enterprise",
+      "price": "₹7,99,999",
+      "category": "Web Development",
+      "features": [
+        "Custom Web Application",
+        "AI Integration",
+        "Load Balancing",
+        "24/7 Support",
+        "Advanced Analytics",
+        "Custom API Development",
+        "Security Auditing"
+      ],
+      "recommended": false
+    },
+    {
+      "id": "4",
+      "name": "Starter",
+      "price": "₹2,99,999",
+      "category": "Mobile Development",
+      "features": [
+        "Native Mobile App",
+        "Basic Features",
+        "Push Notifications",
+        "User Authentication",
+        "Analytics Integration"
+      ],
+      "recommended": false
+    },
+    {
+      "id": "5",
+      "name": "Advanced",
+      "price": "₹5,99,999",
+      "category": "Mobile Development",
+      "features": [
+        "Cross-platform App",
+        "Advanced Features",
+        "Offline Support",
+        "Custom API Integration",
+        "Advanced Analytics",
+        "Social Media Integration"
+      ],
+      "recommended": true
+    }
+  ],
+  "testimonials": [
+    {
+      "id": "1",
+      "name": "John Smith",
+      "role": "CTO",
+      "company": "Tech Innovators",
+      "content": "Working with this team was an absolute pleasure. Their technical expertise and attention to detail transformed our vision into reality. The AI integration exceeded our expectations!",
+      "rating": 5,
+      "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&q=80",
+      "approved": true,
+      "createdAt": "2024-01-15T10:30:00Z"
+    },
+    {
+      "id": "2",
+      "name": "Sarah Johnson",
+      "role": "Product Manager",
+      "company": "Digital Solutions Inc",
+      "content": "The team delivered our e-commerce platform ahead of schedule. The attention to user experience and performance optimization resulted in a 40% increase in conversions.",
+      "rating": 5,
+      "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80",
+      "approved": true,
+      "createdAt": "2024-01-20T14:15:00Z"
+    }
+  ]
+}
