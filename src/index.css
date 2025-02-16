@@ -51,7 +51,242 @@ h1, h2, h3, h4, h5, h6, .font-mono {
   text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
 }
 
-/* Add scrollbar styling */
+/* Enhanced Glitch effect */
+CYBER_DEV.glitch-text {
+  position: relative;
+  animation: glitch-skew 1s infinite linear alternate-reverse;
+  text-shadow: 
+    0 0 10px rgba(0, 255, 65, 0.8),
+    0 0 20px rgba(0, 255, 65, 0.5),
+    0 0 30px rgba(0, 255, 65, 0.3);
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+  animation: glitch-layers 4s infinite linear alternate;
+}
+
+.glitch-text::before {
+  left: 2px;
+  text-shadow: -2px 0 #00FFFF;
+  animation: glitch-anim-1 2s infinite linear alternate-reverse;
+  background: linear-gradient(45deg, transparent 45%, rgba(0, 255, 65, 0.8) 48%, rgba(0, 255, 65, 0.8) 52%, transparent 55%);
+  background-size: 300% 300%;
+  background-position: 100% 100%;
+  clip-path: polygon(0 15%, 100% 15%, 100% 30%, 0 30%);
+}
+
+.glitch-text::after {
+  left: -2px;
+  text-shadow: 2px 0 #FF1493;
+  animation: glitch-anim-2 3s infinite linear alternate-reverse;
+  background: linear-gradient(45deg, transparent 45%, rgba(255, 20, 147, 0.8) 48%, rgba(255, 20, 147, 0.8) 52%, transparent 55%);
+  background-size: 300% 300%;
+  background-position: 100% 100%;
+  clip-path: polygon(0 75%, 100% 75%, 100% 90%, 0 90%);
+}
+
+@keyframes glitch-layers {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+@keyframes glitch-skew {
+  0% { transform: skew(-2deg); }
+  20% { transform: skew(2deg); }
+  40% { transform: skew(-1deg); }
+  60% { transform: skew(1deg); }
+  80% { transform: skew(-1deg); }
+  100% { transform: skew(0deg); }
+}
+
+/* Cyber Rain Effect */
+.cyber-rain {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.rain-drop {
+  position: absolute;
+  width: 1px;
+  height: 20px;
+  background: linear-gradient(to bottom, transparent, #00FF41);
+  animation: rain-fall linear infinite;
+}
+
+@keyframes rain-fall {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+/* Enhanced button hover effects */
+.btn-glitch {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-glitch::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 255, 65, 0.2),
+    transparent
+  );
+  animation: btn-glitch-slide 3s infinite;
+}
+
+.btn-glitch:hover::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 255, 65, 0.1);
+  animation: btn-glitch-noise 0.5s infinite;
+}
+
+@keyframes glitch-anim-1 {
+  0% { 
+    clip-path: inset(20% 0 80% 0);
+    transform: translate(-2px, 2px);
+  }
+  20% { 
+    clip-path: inset(60% 0 40% 0);
+    transform: translate(2px, -2px);
+  }
+  40% { 
+    clip-path: inset(40% 0 60% 0);
+    transform: translate(2px, 2px);
+  }
+  60% { 
+    clip-path: inset(80% 0 20% 0);
+    transform: translate(-2px, -2px);
+  }
+  80% { 
+    clip-path: inset(30% 0 70% 0);
+    transform: translate(2px, 2px);
+  }
+  100% { 
+    clip-path: inset(10% 0 90% 0);
+    transform: translate(-2px, -2px);
+  }
+}
+
+@keyframes glitch-anim-2 {
+  0% { 
+    clip-path: inset(80% 0 20% 0);
+    transform: translate(2px, -2px);
+  }
+  20% { 
+    clip-path: inset(20% 0 80% 0);
+    transform: translate(-2px, 2px);
+  }
+  40% { 
+    clip-path: inset(60% 0 40% 0);
+    transform: translate(-2px, -2px);
+  }
+  60% { 
+    clip-path: inset(40% 0 60% 0);
+    transform: translate(2px, 2px);
+  }
+  80% { 
+    clip-path: inset(70% 0 30% 0);
+    transform: translate(-2px, 2px);
+  }
+  100% { 
+    clip-path: inset(90% 0 10% 0);
+    transform: translate(2px, -2px);
+  }
+}
+
+@keyframes glitch-skew {
+  0% { transform: skew(0deg); }
+  20% { transform: skew(2deg); }
+  40% { transform: skew(-2deg); }
+  60% { transform: skew(1deg); }
+  80% { transform: skew(-1deg); }
+  100% { transform: skew(0deg); }
+}
+
+@keyframes btn-glitch-slide {
+  0% { left: -100%; }
+  50% { left: 100%; }
+  100% { left: 100%; }
+}
+
+@keyframes btn-glitch-noise {
+  0% { background-position: 0 0; }
+  25% { background-position: 100% 0; }
+  50% { background-position: 100% 100%; }
+  75% { background-position: 0 100%; }
+  100% { background-position: 0 0; }
+}
+
+.typewriter {
+  overflow: hidden;
+  display: inline-block;
+  position: relative;
+}
+
+.typewriter::after {
+  content: '|';
+  position: absolute;
+  right: -4px;
+  animation: blink 1s infinite;
+  color: #00FF41;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 .scrollable-content {
   max-height: 400px;
   overflow-y: auto;
@@ -70,4 +305,34 @@ h1, h2, h3, h4, h5, h6, .font-mono {
 .scrollable-content::-webkit-scrollbar-thumb {
   background-color: #00FF41;
   border-radius: 3px;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.gradient-animate {
+  background: linear-gradient(
+    270deg,
+    #00FF41,
+    #00FFFF,
+    #FF1493,
+    #00FF41
+  );
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }

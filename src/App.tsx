@@ -7,8 +7,6 @@ import { InteractiveBackground } from './components/InteractiveBackground';
 import { LoadingScreen } from './components/LoadingScreen';
 import { TransitionEffect } from './components/TransitionEffect';
 import { useStore } from './store/useStore';
-import { AdminPanel } from './components/AdminPanel';
-import { TestimonialForm } from './components/TestimonialForm';
 
 // Lazy load components
 const HeroSection = React.lazy(() => import('./components/HeroSection').then(module => ({ default: module.HeroSection })));
@@ -18,12 +16,26 @@ const ExperienceSection = React.lazy(() => import('./components/ExperienceSectio
 const TestimonialsSection = React.lazy(() => import('./components/TestimonialsSection').then(module => ({ default: module.TestimonialsSection })));
 const ContactSection = React.lazy(() => import('./components/ContactSection').then(module => ({ default: module.ContactSection })));
 const PricingSection = React.lazy(() => import('./components/PricingSection').then(module => ({ default: module.PricingSection })));
+const AdminPanel = React.lazy(() => import('./components/AdminPanel').then(module => ({ default: module.AdminPanel })));
+const TestimonialForm = React.lazy(() => import('./components/TestimonialForm').then(module => ({ default: module.TestimonialForm })));
 
 export default function App() {
   const { isAudioEnabled, volume } = useStore();
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Check if device is mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     let startTime = Date.now();
@@ -37,50 +49,59 @@ export default function App() {
       
       if (progress < 100) {
         requestAnimationFrame(updateProgress);
-      } else {
-        setTimeout(() => setIsLoading(false), 300);
       }
     };
 
     requestAnimationFrame(updateProgress);
   }, []);
 
-  if (isLoading) {
-    return <LoadingScreen progress={loadingProgress} />;
-  }
-
   return (
     <>
-      <CustomCursor />
+      {!isMobile && <CustomCursor />}
       <InteractiveBackground />
       <AudioControls />
       
       <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route path="/admin/*" element={<AdminPanel />} />
-          <Route path="/testimonials/new" element={<TestimonialForm />} />
-          <Route path="/" element={
-            <Suspense fallback={<LoadingScreen progress={loadingProgress} />}>
-              <main className="relative">
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <HeroSection isAudioEnabled={isAudioEnabled} />
-                  <TransitionEffect />
-                  <ProjectsSection />
-                  <SkillsSection />
-                  <ExperienceSection />
-                  <TestimonialsSection />
-                  <PricingSection />
-                  <ContactSection />
-                </motion.div>
-              </main>
-            </Suspense>
-          } />
-        </Routes>
+        {isLoading ? (
+          <LoadingScreen 
+            progress={loadingProgress} 
+            onComplete={() => setIsLoading(false)}
+          />
+        ) : (
+          <Routes location={location} key={location.pathname}>
+            <Route path="/admin/*" element={
+              <Suspense fallback={<LoadingScreen progress={loadingProgress} />}>
+                <AdminPanel />
+              </Suspense>
+            } />
+            <Route path="/testimonials/new" element={
+              <Suspense fallback={<LoadingScreen progress={loadingProgress} />}>
+                <TestimonialForm />
+              </Suspense>
+            } />
+            <Route path="/" element={
+              <Suspense fallback={<LoadingScreen progress={loadingProgress} />}>
+                <main className="relative">
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <HeroSection isAudioEnabled={isAudioEnabled} />
+                    <TransitionEffect />
+                    <ProjectsSection />
+                    <SkillsSection />
+                    <ExperienceSection />
+                    <TestimonialsSection />
+                    <PricingSection />
+                    <ContactSection />
+                  </motion.div>
+                </main>
+              </Suspense>
+            } />
+          </Routes>
+        )}
       </AnimatePresence>
     </>
   );

@@ -9,18 +9,44 @@ export const AudioControls = () => {
   const soundEffectRef = useRef<HTMLAudioElement | null>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [showMobileControls, setShowMobileControls] = useState(false);
 
   useEffect(() => {
+    // Check if device is mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    // Initialize audio elements
     audioRef.current = new Audio(audioFiles.intro);
     audioRef.current.loop = true;
     audioRef.current.volume = volume;
     soundEffectRef.current = new Audio(audioFiles.soundToggle);
     soundEffectRef.current.volume = volume;
 
-    // Auto-play on mount since isAudioEnabled is true by default
-    audioRef.current.play()
-      .then(() => setIsPlaying(true))
-      .catch(console.error);
+    // Add interaction listener
+    const handleInteraction = () => {
+      setHasInteracted(true);
+      if (isAudioEnabled && audioRef.current) {
+        audioRef.current.play()
+          .then(() => setIsPlaying(true))
+          .catch(() => {});
+      }
+      // Remove listener after first interaction
+      document.removeEventListener('click', handleInteraction);
+      document.removeEventListener('touchstart', handleInteraction);
+    };
+
+    document.addEventListener('click', handleInteraction);
+    document.addEventListener('touchstart', handleInteraction);
 
     return () => {
       if (audioRef.current) {
@@ -30,21 +56,25 @@ export const AudioControls = () => {
       if (soundEffectRef.current) {
         soundEffectRef.current = null;
       }
+      document.removeEventListener('click', handleInteraction);
+      document.removeEventListener('touchstart', handleInteraction);
     };
   }, []);
 
   useEffect(() => {
+    if (!hasInteracted) return;
+
     if (audioRef.current) {
       if (isAudioEnabled) {
         audioRef.current.play()
           .then(() => setIsPlaying(true))
-          .catch(console.error);
+          .catch(() => setIsPlaying(false));
       } else {
         audioRef.current.pause();
         setIsPlaying(false);
       }
     }
-  }, [isAudioEnabled]);
+  }, [isAudioEnabled, hasInteracted]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -56,13 +86,104 @@ export const AudioControls = () => {
   }, [volume]);
 
   const handleToggleAudio = () => {
+    if (!hasInteracted) {
+      setHasInteracted(true);
+    }
+    
     if (soundEffectRef.current) {
       soundEffectRef.current.currentTime = 0;
-      soundEffectRef.current.play().catch(console.error);
+      soundEffectRef.current.play().catch(() => {});
     }
     setAudioEnabled(!isAudioEnabled);
   };
 
+  // Mobile version
+  if (isMobile) {
+    return (
+      <div className="fixed bottom-4 right-4 z-50">
+        <motion.button
+          onClick={() => setShowMobileControls(true)}
+          className="w-12 h-12 rounded-full bg-black/80 border border-[#00FF41]/30 backdrop-blur-lg flex items-center justify-center"
+          whileTap={{ scale: 0.95 }}
+        >
+          {isAudioEnabled ? (
+            <Volume2 className="w-6 h-6 text-[#00FF41]" />
+          ) : (
+            <VolumeX className="w-6 h-6 text-gray-400" />
+          )}
+        </motion.button>
+
+        <AnimatePresence>
+          {showMobileControls && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4"
+            >
+              <div className="w-full max-w-sm bg-black/90 border border-[#00FF41]/30 rounded-lg p-6 space-y-6">
+                <div className="text-center space-y-2">
+                  <h3 className="text-[#00FF41] text-lg font-bold">Audio Settings</h3>
+                  <p className="text-[#00FF41]/70 text-sm">
+                    Control sound effects and volume
+                  </p>
+                </div>
+
+                <div className="space-y-6">
+                  <button
+                    onClick={handleToggleAudio}
+                    className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#00FF41]/10 border border-[#00FF41]/30 rounded-lg"
+                  >
+                    {isAudioEnabled ? (
+                      <>
+                        <Volume2 className="w-5 h-5 text-[#00FF41]" />
+                        <span className="text-[#00FF41]">Sound Enabled</span>
+                      </>
+                    ) : (
+                      <>
+                        <VolumeX className="w-5 h-5 text-gray-400" />
+                        <span className="text-gray-400">Sound Disabled</span>
+                      </>
+                    )}
+                  </button>
+
+                  {isAudioEnabled && (
+                    <div className="space-y-2">
+                      <label className="text-[#00FF41] text-sm flex items-center gap-2">
+                        <Music className="w-4 h-4" />
+                        Volume
+                      </label>
+                      <input
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.01"
+                        value={volume}
+                        onChange={(e) => setVolume(parseFloat(e.target.value))}
+                        className="w-full accent-[#00FF41]"
+                      />
+                      <div className="text-right text-[#00FF41] text-xs">
+                        {Math.round(volume * 100)}%
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <button
+                  onClick={() => setShowMobileControls(false)}
+                  className="w-full px-4 py-3 bg-black/50 border border-[#00FF41]/30 rounded-lg text-[#00FF41]"
+                >
+                  Close
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    );
+  }
+
+  // Desktop version
   return (
     <motion.div
       initial={{ opacity: 0 }}
