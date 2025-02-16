@@ -2,6 +2,21 @@ import React, { useEffect, useRef } from 'react';
 import { useStore } from '../store/useStore';
 
 export const CustomCursor = () => {
+  // Check if it's a touch device or mobile viewport
+  const isTouchDevice = () => {
+    return (('ontouchstart' in window) ||
+      (navigator.maxTouchPoints > 0));
+  };
+
+  const isSmallViewport = () => {
+    return window.innerWidth <= 768;
+  };
+
+  // Don't render on touch devices or small viewports
+  if (isTouchDevice() || isSmallViewport()) {
+    return null;
+  }
+
   const cursorRef = useRef<HTMLDivElement>(null);
   const cursorDotRef = useRef<HTMLDivElement>(null);
   const cursorPosition = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
@@ -43,10 +58,14 @@ export const CustomCursor = () => {
       if (cursor) {
         cursor.style.transform = `translate3d(${cursorPosition.current.x - 16}px, ${cursorPosition.current.y - 16}px, 0) scale(1.5)`;
       }
-      // Play hover sound
+      // Play hover sound only after user interaction
       if (isAudioEnabled && hoverSoundRef.current) {
-        hoverSoundRef.current.currentTime = 0;
-        hoverSoundRef.current.play().catch(console.error);
+        document.addEventListener('click', () => {
+          if (hoverSoundRef.current) {
+            hoverSoundRef.current.currentTime = 0;
+            hoverSoundRef.current.play().catch(() => {});
+          }
+        }, { once: true });
       }
     };
 
@@ -88,13 +107,6 @@ export const CustomCursor = () => {
     };
   }, [isAudioEnabled, volume]);
 
-  // Update hover sound volume when global volume changes
-  useEffect(() => {
-    if (hoverSoundRef.current) {
-      hoverSoundRef.current.volume = volume;
-    }
-  }, [volume]);
-
   return (
     <>
       <div
@@ -121,13 +133,6 @@ export const CustomCursor = () => {
       >
         <div className="w-1 h-1 rounded-full bg-[#00FF41]" />
       </div>
-
-      <style>{`
-        @keyframes pulse {
-          0%, 100% { transform: scale(1); opacity: 1; }
-          50% { transform: scale(1.5); opacity: 0; }
-        }
-      `}</style>
     </>
   );
 };
