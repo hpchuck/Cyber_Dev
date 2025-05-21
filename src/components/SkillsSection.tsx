@@ -34,10 +34,10 @@ export const SkillsSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const dragStartRef = useRef<{ x: number; scrollLeft: number } | null>(null);
-  const animationFrameRef = useRef<number>();
-  const scrollSpeedRef = useRef(1);
-  const directionRef = useRef(1);
+  const [isAutoScrollPaused, setIsAutoScrollPaused] = useState(false);
+  const autoScrollRef = useRef<number>();
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -49,90 +49,90 @@ export const SkillsSection = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Auto scroll effect
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
-    let lastTimestamp = 0;
-    const animate = (timestamp: number) => {
-      if (!container || isDragging) {
-        animationFrameRef.current = requestAnimationFrame(animate);
+    const autoScroll = () => {
+      if (isAutoScrollPaused || isDragging) {
+        autoScrollRef.current = requestAnimationFrame(autoScroll);
         return;
       }
 
-      // Calculate delta time for smooth animation
-      const deltaTime = lastTimestamp ? (timestamp - lastTimestamp) / 16 : 1;
-      lastTimestamp = timestamp;
-
       const maxScroll = container.scrollWidth - container.clientWidth;
-      container.scrollLeft += scrollSpeedRef.current * directionRef.current * deltaTime;
+      const currentScroll = container.scrollLeft;
+      const step = 1; // Smoother scrolling with smaller step
 
-      // Smooth direction reversal at boundaries
-      if (container.scrollLeft >= maxScroll - 1) {
-        directionRef.current = -1;
-      } else if (container.scrollLeft <= 1) {
-        directionRef.current = 1;
+      if (currentScroll >= maxScroll) {
+        // Smooth loop back to start
+        container.scrollTo({
+          left: 0,
+          behavior: 'smooth'
+        });
+      } else {
+        container.scrollLeft += step;
       }
 
-      animationFrameRef.current = requestAnimationFrame(animate);
+      autoScrollRef.current = requestAnimationFrame(autoScroll);
     };
 
-    animationFrameRef.current = requestAnimationFrame(animate);
+    autoScrollRef.current = requestAnimationFrame(autoScroll);
 
     return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
+      if (autoScrollRef.current) {
+        cancelAnimationFrame(autoScrollRef.current);
       }
     };
-  }, [isDragging]);
+  }, [isAutoScrollPaused, isDragging]);
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (!containerRef.current) return;
     setIsDragging(true);
-    dragStartRef.current = {
-      x: e.pageX - containerRef.current.offsetLeft,
-      scrollLeft: containerRef.current.scrollLeft
-    };
+    setIsAutoScrollPaused(true);
+    setStartX(e.pageX - (containerRef.current?.offsetLeft || 0));
+    setScrollLeft(containerRef.current?.scrollLeft || 0);
   };
 
   const handleMouseUp = () => {
     setIsDragging(false);
-    dragStartRef.current = null;
+    setTimeout(() => setIsAutoScrollPaused(false), 1000);
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || !containerRef.current || !dragStartRef.current) return;
+    if (!isDragging) return;
     e.preventDefault();
-    const x = e.pageX - containerRef.current.offsetLeft;
-    const walk = (x - dragStartRef.current.x) * 2;
-    containerRef.current.scrollLeft = dragStartRef.current.scrollLeft - walk;
+    
+    const x = e.pageX - (containerRef.current?.offsetLeft || 0);
+    const walk = (x - startX) * 2;
+    if (containerRef.current) {
+      containerRef.current.scrollLeft = scrollLeft - walk;
+    }
   };
 
   const handleMouseLeave = () => {
     setIsDragging(false);
-    dragStartRef.current = null;
+    setTimeout(() => setIsAutoScrollPaused(false), 1000);
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    if (!containerRef.current) return;
     setIsDragging(true);
-    dragStartRef.current = {
-      x: e.touches[0].pageX - containerRef.current.offsetLeft,
-      scrollLeft: containerRef.current.scrollLeft
-    };
+    setIsAutoScrollPaused(true);
+    setStartX(e.touches[0].pageX - (containerRef.current?.offsetLeft || 0));
+    setScrollLeft(containerRef.current?.scrollLeft || 0);
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging || !containerRef.current || !dragStartRef.current) return;
-    const x = e.touches[0].pageX - containerRef.current.offsetLeft;
-    const walk = (x - dragStartRef.current.x) * 2;
-    containerRef.current.scrollLeft = dragStartRef.current.scrollLeft - walk;
+    if (!isDragging) return;
+    
+    const x = e.touches[0].pageX - (containerRef.current?.offsetLeft || 0);
+    const walk = (x - startX) * 2;
+    if (containerRef.current) {
+      containerRef.current.scrollLeft = scrollLeft - walk;
+    }
   };
 
   const handleTouchEnd = () => {
     setIsDragging(false);
-    dragStartRef.current = null;
+    setTimeout(() => setIsAutoScrollPaused(false), 1000);
   };
 
   const categoryColors: Record<string, string> = {
@@ -159,29 +159,33 @@ export const SkillsSection = () => {
         </h2>
 
         <div className="relative">
-          <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-black via-black/80 to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-black via-black/80 to-transparent z-10 pointer-events-none" />
+          {/* Gradient fade on edges */}
+          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
 
           <div 
             ref={containerRef}
-            className="flex gap-6 py-4 overflow-x-auto scrollbar-hide select-none"
+            className="flex gap-6 py-4 overflow-x-auto hide-scrollbar"
             style={{ 
-              scrollBehavior: 'smooth',
-              WebkitOverflowScrolling: 'touch',
               cursor: isDragging ? 'grabbing' : 'grab',
-              userSelect: 'none'
+              userSelect: 'none',
+              WebkitUserSelect: 'none',
+              msUserSelect: 'none',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none'
             }}
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}
-            onMouseLeave={handleMouseLeave}
             onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
             onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
             onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           >
-            {skills.map((skill) => (
+            {/* Duplicate skills for infinite scroll effect */}
+            {[...skills, ...skills].map((skill, index) => (
               <motion.div
-                key={skill.id}
+                key={`${skill.id}-${index}`}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 whileHover={{ scale: 1.05, y: -5 }}
@@ -224,12 +228,12 @@ export const SkillsSection = () => {
                 />
 
                 <motion.div
-                  className="absolute inset-0 rounded-lg"
+                  className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                   initial={{ opacity: 0 }}
                   animate={hoveredSkill === skill.id ? { opacity: 1 } : { opacity: 0 }}
                   style={{
                     background: `linear-gradient(45deg, ${categoryColors[skill.category]?.split(' ')[1] || '#00FF41'}, ${categoryColors[skill.category]?.split(' ')[3] || '#00FFFF'})`,
-                    filter: 'blur(8px)',
+                    filter: 'blur(20px)',
                     zIndex: -1
                   }}
                 />
@@ -238,6 +242,16 @@ export const SkillsSection = () => {
           </div>
         </div>
       </motion.div>
+
+      <style>{`
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </section>
   );
 };

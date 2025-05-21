@@ -307,13 +307,13 @@ CYBER_DEV.glitch-text {
   border-radius: 3px;
 }
 
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
 .gradient-animate {
@@ -335,4 +335,15 @@ CYBER_DEV.glitch-text {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+/* Smooth scrolling for non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+  .smooth-scroll {
+    scroll-behavior: smooth;
+  }
+}
+
+.touch-pan-x {
+  touch-action: pan-x;
 }
