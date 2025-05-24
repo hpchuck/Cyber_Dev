@@ -7,6 +7,8 @@ import { TransitionEffect } from './components/TransitionEffect';
 import { MobileNav } from './components/MobileNav';
 import { ScrollToTop } from './components/ScrollToTop';
 import { MetaTags } from './components/MetaTags';
+import { analytics, trackPageLoad } from './utils/analytics';
+import { PerformanceMonitor } from './components/PerformanceMonitor';
 
 // Lazy load pages for better performance
 const HomePage = React.lazy(() => import('./pages/HomePage'));
@@ -17,6 +19,7 @@ function App() {
   const location = useLocation();
   const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [showPerformanceMonitor, setShowPerformanceMonitor] = useState(false);
 
   useEffect(() => {
     // Check if on mobile device
@@ -30,9 +33,34 @@ function App() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Track page loads
+  useEffect(() => {
+    trackPageLoad();
+  }, [location.pathname]);
+
+  // Performance monitor keyboard shortcut (Ctrl/Cmd + Shift + P)
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'P') {
+        event.preventDefault();
+        setShowPerformanceMonitor(prev => !prev);
+      }
+    };
+
+    // Only enable in development mode
+    if (process.env.NODE_ENV === 'development') {
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
+    }
+  }, []);
+
   // Handle loading complete
   const handleLoadingComplete = () => {
     setLoading(false);
+    
+    // Track app initialization performance
+    const initTime = performance.now();
+    analytics['recordMetric']('app_init', initTime, window.location.href);
   };
 
   return (
@@ -44,6 +72,14 @@ function App() {
       
       {/* Custom cursor for desktop */}
       {!isMobile && <CustomCursor />}
+      
+      {/* Performance Monitor (Development only) */}
+      {process.env.NODE_ENV === 'development' && (
+        <PerformanceMonitor 
+          isVisible={showPerformanceMonitor} 
+          onClose={() => setShowPerformanceMonitor(false)} 
+        />
+      )}
       
       {/* Main content */}
       <AnimatePresence mode="wait">
