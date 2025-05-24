@@ -1,108 +1,71 @@
-import React, { Suspense, useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import React, { Suspense, useState, useEffect } from 'react';
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
+import MinimalLoading from './components/MinimalLoading';
 import { CustomCursor } from './components/CustomCursor';
-import { AudioControls } from './components/AudioControls';
-import { InteractiveBackground } from './components/InteractiveBackground';
-import { LoadingScreen } from './components/LoadingScreen';
 import { TransitionEffect } from './components/TransitionEffect';
-import { useStore } from './store/useStore';
+import { MobileNav } from './components/MobileNav';
+import { ScrollToTop } from './components/ScrollToTop';
+import { MetaTags } from './components/MetaTags';
 
-// Lazy load components
-const HeroSection = React.lazy(() => import('./components/HeroSection').then(module => ({ default: module.HeroSection })));
-const ProjectsSection = React.lazy(() => import('./components/ProjectsSection').then(module => ({ default: module.ProjectsSection })));
-const SkillsSection = React.lazy(() => import('./components/SkillsSection').then(module => ({ default: module.SkillsSection })));
-const ExperienceSection = React.lazy(() => import('./components/ExperienceSection').then(module => ({ default: module.ExperienceSection })));
-const TestimonialsSection = React.lazy(() => import('./components/TestimonialsSection').then(module => ({ default: module.TestimonialsSection })));
-const ContactSection = React.lazy(() => import('./components/ContactSection').then(module => ({ default: module.ContactSection })));
-const PricingSection = React.lazy(() => import('./components/PricingSection').then(module => ({ default: module.PricingSection })));
-const AdminPanel = React.lazy(() => import('./components/AdminPanel').then(module => ({ default: module.AdminPanel })));
-const TestimonialForm = React.lazy(() => import('./components/TestimonialForm').then(module => ({ default: module.TestimonialForm })));
+// Lazy load pages for better performance
+const HomePage = React.lazy(() => import('./pages/HomePage'));
+const AdminPage = React.lazy(() => import('./pages/AdminPage'));
+const NotFoundPage = React.lazy(() => import('./pages/NotFoundPage'));
 
-export default function App() {
-  const { isAudioEnabled, volume } = useStore();
-  const [loadingProgress, setLoadingProgress] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+function App() {
   const location = useLocation();
+  const [loading, setLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // Check if device is mobile
+    // Check if on mobile device
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
+      setIsMobile(window.innerWidth < 768);
     };
     
     checkMobile();
     window.addEventListener('resize', checkMobile);
+    
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  useEffect(() => {
-    let startTime = Date.now();
-    const duration = 2500;
-
-    const updateProgress = () => {
-      const elapsed = Date.now() - startTime;
-      const progress = Math.min((elapsed / duration) * 100, 100);
-      
-      setLoadingProgress(progress);
-      
-      if (progress < 100) {
-        requestAnimationFrame(updateProgress);
-      }
-    };
-
-    requestAnimationFrame(updateProgress);
-  }, []);
+  // Handle loading complete
+  const handleLoadingComplete = () => {
+    setLoading(false);
+  };
 
   return (
-    <>
-      {!isMobile && <CustomCursor />}
-      <InteractiveBackground />
-      <AudioControls />
+    <div className="app relative overflow-hidden">
+      <MetaTags />
       
+      {/* Loading screen */}
+      {loading && <MinimalLoading onLoadingComplete={handleLoadingComplete} />}
+      
+      {/* Custom cursor for desktop */}
+      {!isMobile && <CustomCursor />}
+      
+      {/* Main content */}
       <AnimatePresence mode="wait">
-        {isLoading ? (
-          <LoadingScreen 
-            progress={loadingProgress} 
-            onComplete={() => setIsLoading(false)}
-          />
-        ) : (
-          <Routes location={location} key={location.pathname}>
-            <Route path="/admin/*" element={
-              <Suspense fallback={<LoadingScreen progress={loadingProgress} />}>
-                <AdminPanel />
-              </Suspense>
-            } />
-            <Route path="/testimonials/new" element={
-              <Suspense fallback={<LoadingScreen progress={loadingProgress} />}>
-                <TestimonialForm />
-              </Suspense>
-            } />
-            <Route path="/" element={
-              <Suspense fallback={<LoadingScreen progress={loadingProgress} />}>
-                <main className="relative">
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <HeroSection isAudioEnabled={isAudioEnabled} />
-                    <TransitionEffect />
-                    <ProjectsSection />
-                    <SkillsSection />
-                    <ExperienceSection />
-                    <TestimonialsSection />
-                    <PricingSection />
-                    <ContactSection />
-                  </motion.div>
-                </main>
-              </Suspense>
-            } />
-          </Routes>
+        {!loading && (
+          <>
+            <ScrollToTop />
+            <TransitionEffect />
+            <MobileNav />
+            
+            <Suspense fallback={<div className="h-screen w-screen bg-black" />}>
+              <Routes location={location} key={location.pathname}>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/admin" element={<AdminPage />} />
+                <Route path="/404" element={<NotFoundPage />} />
+                <Route path="*" element={<Navigate to="/404" />} />
+              </Routes>
+            </Suspense>
+          </>
         )}
       </AnimatePresence>
-    </>
+    </div>
   );
 }
+
+export default App;

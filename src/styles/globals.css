@@ -1,3 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import './glassmorphism.css';
+@import './animations.css';
+
+:root {
+  /* Professional Black Theme */
+  --color-primary: #000000;     /* Pure Black */
+  --color-secondary: #0A0A0A;   /* Off Black */
+  --color-tertiary: #111111;    /* Very Dark Gray */
+  --color-accent1: #6366F1;     /* Indigo */
+  --color-accent2: #8B5CF6;     /* Purple */
+  --color-accent3: #EC4899;     /* Pink */
+  --color-success: #10B981;     /* Green */
+  --color-warning: #F59E0B;     /* Amber */
+  --color-dark: #030303;        /* Darker shade */
+  --color-light: #F9FAFB;       /* Light */
+  
+  --blur-size: 16px;
+  --transition-speed: 0.3s;
+
+  --color-accent1-rgb: 99, 102, 241; /* Indigo */
+  --color-accent2-rgb: 139, 92, 246; /* Purple */
+  --color-accent3-rgb: 236, 72, 153;  /* Pink */
+}
+
+/* General styles */
+body {
+  background-color: #000000;
+  color: #F9FAFB;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0A0A0A;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #6366F1;
+  background: linear-gradient(180deg, #6366F1, #8B5CF6);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #818CF8, #A78BFA);
+}
+
 /* Modify the cursor rules to only apply on desktop */
 @media (min-width: 769px) {
   * {
@@ -20,4 +72,295 @@
   * {
     cursor: auto !important;
   }
+}
+
+/* Common component styles */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #6366F1, #8B5CF6);
+  color: white;
+  border: none;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+}
+
+.btn-secondary {
+  background: rgba(15, 15, 15, 0.6);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: white;
+}
+
+.btn-secondary:hover {
+  border-color: rgba(99, 102, 241, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+}
+
+/* Section styling */
+.section {
+  padding: 6rem 1.5rem;
+  position: relative;
+}
+
+.section-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, #6366F1, #8B5CF6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+/* Section Heading Style */
+.section-heading {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--color-accent1) 0%, var(--color-accent2) 50%, var(--color-accent3) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent; /* Corrected and ensured prefix */
+  /* text-fill-color: transparent; */ /* Removed non-standard */
+  text-shadow: 0 2px 10px rgba(0,0,0,0.2); /* Subtle shadow for depth */
+}
+
+/* Card styling */
+.card {
+  background: rgba(15, 15, 15, 0.6);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 1rem;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+  border-color: rgba(99, 102, 241, 0.15);
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition-property: all;
+  transition-duration: 300ms;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  color: #3B82F6;
+  backdrop-filter: blur(8px);
+}
+
+.btn:hover {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(59, 130, 246, 0.2);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #3B82F6, #8B5CF6);
+  color: white;
+  border: none;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #60A5FA, #A78BFA);
+  box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+}
+
+/* Card styles */
+.card {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(var(--blur-size));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all var(--transition-speed) ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(59, 130, 246, 0.2);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3),
+              0 0 15px -5px rgba(59, 130, 246, 0.2);
+}
+
+/* Clean code styles */
+.code {
+  font-family: 'JetBrains Mono', monospace;
+  background: rgba(15, 23, 42, 0.8);
+  padding: 0.2em 0.4em;
+  border-radius: 0.3em;
+  font-size: 0.9em;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+/* Text shadows */
+.text-shadow-sm {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.text-shadow {
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.text-shadow-lg {
+  text-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* Subtle background grid pattern */
+.bg-grid-pattern {
+  background-image: linear-gradient(rgba(59, 130, 246, 0.05) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center center;
+}
+
+/* Input field styling */
+.form-input,
+.form-textarea {
+  background-color: rgba(10, 10, 10, 0.7); /* Darker, slightly transparent background */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--color-light);
+  border-radius: 0.375rem; /* Tailwind's rounded-md */
+  padding: 0.75rem 1rem;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: rgba(249, 250, 251, 0.4); /* Lighter placeholder text */
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--color-accent1);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3); /* Indigo-500 focus ring */
+}
+
+/* Shimmer button primary */
+.shimmer-button-primary {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--color-accent1), var(--color-accent2));
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.shimmer-button-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transition: left 0.7s ease-in-out;
+}
+
+.shimmer-button-primary:hover::before {
+  left: 100%;
+}
+
+.shimmer-button-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 0 20px rgba(var(--color-accent1-rgb), 0.3);
+}
+
+
+/* Glass button styling */
+.glass-button {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--color-light);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Optional: Add a subtle shimmer to glass buttons too */
+.glass-button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgba(255, 255, 255, 0.15),
+    transparent
+  );
+  transition: left 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.glass-button:hover::after {
+  left: 150%;
 }

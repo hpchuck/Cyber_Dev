@@ -1,0 +1,29 @@
+/* Custom component styles using Tailwind's @apply directive */
+@layer components {
+  body {
+    @apply bg-black text-white;
+    font-family: var(--font-sans);
+  }
+
+  .font-mono {
+    @apply font-mono;
+  }
+
+  .section-heading {
+    @apply text-4xl md:text-6xl font-bold mb-12 text-center;
+    font-family: var(--font-display);
+  }
+
+  .gradient-text {
+    background: linear-gradient(90deg, #6366F1, #8B5CF6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    display: inline-block;
+  }
+  
+  .btn {
+    @apply px-4 py-2 rounded-lg transition-all duration-300;
+  }
+}

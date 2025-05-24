@@ -1,10 +1,14 @@
-import React from 'react';
+import { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Star, Quote } from 'lucide-react';
+import { Star, Quote, MessageCircle } from 'lucide-react';
 import { useStore } from '../store/useStore';
+import useGSAPAnimations from '../hooks/useGSAPAnimations';
 
 export const TestimonialsSection = () => {
   const { testimonials } = useStore();
+  const { addToGlassCards, addToReveal } = useGSAPAnimations();
+  const sectionRef = useRef<HTMLElement>(null);
+  const testimonialRefs = useRef<(HTMLDivElement | null)[]>([]);
   const approvedTestimonials = testimonials.filter(t => t.approved);
 
   if (approvedTestimonials.length === 0) {
@@ -15,47 +19,87 @@ export const TestimonialsSection = () => {
                   approvedTestimonials.length === 2 ? 'md:grid-cols-2' :
                   'md:grid-cols-3';
 
-  return (
-    <section id="testimonials" className="py-20 px-4 md:px-8 relative">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,65,0.1)_0%,transparent_70%)]" />
-      <div className="absolute inset-0 bg-grid-pattern opacity-20" />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-transparent" />
+  // Initialize refs for GSAP animations when the component mounts
+  useEffect(() => {
+    // Add testimonial cards to glass cards for 3D effect
+    testimonialRefs.current.forEach(ref => {
+      if (ref) addToGlassCards(ref);
+    });
+    
+    // Add section for reveal animation
+    if (sectionRef.current) {
+      const title = sectionRef.current.querySelector('h2');
+      if (title) addToReveal(title as HTMLElement);
+    }
+  }, [addToGlassCards, addToReveal]);
 
+  return (
+    <section 
+      id="testimonials" 
+      className="py-20 px-4 md:px-8 relative overflow-hidden"
+      ref={sectionRef}
+    >
+      {/* Background gradients */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(139,92,246,0.1)_0%,transparent_70%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(236,72,153,0.05)_0%,transparent_70%)]" />
+      
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
         viewport={{ once: true }}
         className="max-w-7xl mx-auto relative z-10"
       >
-        <h2 className="section-heading text-[#00FF41] mb-16">
-          CLIENT_FEEDBACK
-        </h2>
+        <motion.h2 
+          className="section-heading gradient-text mb-4 text-center"
+          initial={{ y: 30, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
+          Client Testimonials
+        </motion.h2>
 
-        <div className={`grid grid-cols-1 ${gridCols} gap-8 max-w-5xl mx-auto`}>
+        <motion.p
+          className="text-light/70 max-w-2xl mb-16 text-center mx-auto text-lg md:text-xl"
+          initial={{ y: 30, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+        >
+          Hear from satisfied clients about their experience working with me.
+        </motion.p>
+
+        <div className={`grid grid-cols-1 ${gridCols} gap-8 max-w-6xl mx-auto`}>
           {approvedTestimonials.map((testimonial, index) => (
             <motion.div
               key={testimonial.id}
-              initial={{ opacity: 0, y: 20 }}
+              ref={el => {
+                testimonialRefs.current[index] = el;
+              }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
               className="relative group"
             >
               <motion.div
                 whileHover={{ y: -5 }}
-                className="backdrop-blur-md bg-black/30 border border-[#00FF41]/20 rounded-lg p-6 relative overflow-hidden"
+                className="glass-card card-3d-effect p-6 relative overflow-hidden"
               >
-                <Quote className="absolute top-4 right-4 w-8 h-8 text-[#00FF41]/20" />
+                <div className="absolute top-3 right-3 w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-br from-accent1/20 to-accent3/20 backdrop-blur-md">
+                  <MessageCircle className="w-5 h-5 text-accent2" />
+                </div>
                 
-                <div className="flex items-center gap-4 mb-4">
+                <div className="flex items-center gap-4 mb-6">
                   <div className="relative">
                     <img
-                      src={testimonial.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(testimonial.name)}&background=000&color=00FF41`}
+                      src={testimonial.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(testimonial.name)}&background=111&color=ddd`}
                       alt={testimonial.name}
-                      className="w-12 h-12 rounded-full border-2 border-[#00FF41]/30"
+                      className="w-14 h-14 rounded-full border-2 border-accent1/30 p-0.5"
                     />
                     <motion.div
-                      className="absolute inset-0 border-2 border-[#00FF41]/30 rounded-full"
+                      className="absolute inset-0 border-2 border-accent1/30 rounded-full"
                       animate={{
                         scale: [1, 1.2, 1],
                         opacity: [1, 0, 1],
@@ -69,7 +113,7 @@ export const TestimonialsSection = () => {
                   </div>
                   
                   <div>
-                    <h3 className="text-lg font-bold text-[#00FF41]">{testimonial.name}</h3>
+                    <h3 className="text-lg font-bold text-white group-hover:text-accent1 transition-colors duration-300">{testimonial.name}</h3>
                     <p className="text-sm text-gray-400">
                       {testimonial.role} @ {testimonial.company}
                     </p>
@@ -80,25 +124,40 @@ export const TestimonialsSection = () => {
                   {Array.from({ length: 5 }).map((_, i) => (
                     <Star
                       key={i}
-                      className={`w-4 h-4 ${
+                      className={`w-5 h-5 ${
                         i < testimonial.rating
-                          ? 'text-[#00FF41]'
-                          : 'text-[#00FF41]/20'
+                          ? 'text-indigo-400'
+                          : 'text-gray-600'
                       }`}
-                      fill={i < testimonial.rating ? '#00FF41' : 'none'}
+                      fill={i < testimonial.rating ? 'currentColor' : 'none'}
                     />
                   ))}
                 </div>
 
-                <p className="text-gray-300 relative z-10">
-                  "{testimonial.content}"
-                </p>
+                <blockquote className="relative z-10 pl-5 border-l-2 border-indigo-400/30">
+                  <Quote className="absolute -top-2 -left-2 w-6 h-6 text-indigo-400/30 transform -scale-x-100" />
+                  <p className="text-gray-300 italic">
+                    "{testimonial.content}"
+                  </p>
+                </blockquote>
 
+                {/* Hover effect - shimmer */}
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-[#00FF41]/10 via-transparent to-[#00FF41]/10"
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-accent1/10 to-transparent"
                   initial={{ x: '-100%' }}
                   whileHover={{ x: '100%' }}
                   transition={{ duration: 1, ease: 'easeInOut' }}
+                />
+                
+                {/* Card glow on hover */}
+                <motion.div
+                  className="absolute -inset-px rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 0.1 }}
+                  style={{
+                    background: `linear-gradient(45deg, var(--accent1), var(--accent2))`,
+                    filter: 'blur(20px)',
+                  }}
                 />
               </motion.div>
             </motion.div>
