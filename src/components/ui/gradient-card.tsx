@@ -1,12 +1,10 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 export const GradientCard = () => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
-
   // Handle mouse movement for 3D effect
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (cardRef.current) {
@@ -15,8 +13,6 @@ export const GradientCard = () => {
       // Calculate mouse position relative to card center
       const x = e.clientX - rect.left - rect.width / 2;
       const y = e.clientY - rect.top - rect.height / 2;
-
-      setMousePosition({ x, y });
 
       // Calculate rotation (limited range for subtle effect)
       const rotateX = -(y / rect.height) * 5; // Max 5 degrees rotation

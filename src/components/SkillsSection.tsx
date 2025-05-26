@@ -67,12 +67,11 @@ export const SkillsSection = () => {
       const currentScroll = container.scrollLeft;
       const step = 0.5; // Slower, smoother scrolling
 
-      if (currentScroll >= maxScroll) {
-        // Smooth loop back to start
-        container.scrollTo({
-          left: 0,
-          behavior: 'smooth'
-        });
+      if (currentScroll >= maxScroll - 1) {
+        // Reset to start without smooth behavior for seamless loop
+        setTimeout(() => {
+          container.scrollLeft = 0;
+        }, 100);
       } else {
         container.scrollLeft += step;
       }
@@ -80,9 +79,13 @@ export const SkillsSection = () => {
       autoScrollRef.current = requestAnimationFrame(autoScroll);
     };
 
-    autoScrollRef.current = requestAnimationFrame(autoScroll);
+    // Start auto scroll with delay
+    const timeoutId = setTimeout(() => {
+      autoScrollRef.current = requestAnimationFrame(autoScroll);
+    }, 1000);
 
     return () => {
+      clearTimeout(timeoutId);
       if (autoScrollRef.current) {
         cancelAnimationFrame(autoScrollRef.current);
       }
@@ -137,15 +140,6 @@ export const SkillsSection = () => {
   const handleTouchEnd = () => {
     setIsDragging(false);
     setTimeout(() => setIsAutoScrollPaused(false), 1000);
-  };
-
-  const categoryColors: Record<string, string> = {
-    Frontend: 'from-accent1 to-accent2',
-    Backend: 'from-accent2 to-accent3',
-    'AI/ML': 'from-accent3 to-accent1',
-    DevOps: 'from-accent1 to-accent3',
-    Database: 'from-accent2 to-accent1',
-    Other: 'from-accent3 to-accent2'
   };
 
   // Initialize refs for GSAP animations when the component mounts
@@ -217,39 +211,46 @@ export const SkillsSection = () => {
               ref={el => {
                 skillCardRefs.current[index] = el;
               }}
-              className={`skill-card relative group p-6 rounded-lg glass-card card-3d-effect ${
+              className={`skill-card relative group p-6 rounded-lg ${
                 isMobile ? 'w-40 h-48' : 'w-48 h-56'
               } flex-shrink-0 flex flex-col items-center justify-center gap-4 overflow-hidden`}
+              style={{
+                background: 'rgba(15, 23, 42, 0.9)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 20px rgba(99, 102, 241, 0.1)'
+              }}
               onHoverStart={() => setHoveredSkill(skill.id)}
               onHoverEnd={() => setHoveredSkill(null)}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.05 % 1 }} // Modulo to not delay duplicates too much
+              transition={{ duration: 0.6, delay: index * 0.05 % 1 }}
             >
               <div 
                 className={`text-white relative z-10 text-3xl mb-2 ${
                   hoveredSkill === skill.id ? 'animate-bounce' : ''
                 }`}
               >
-                <div className="bg-gradient-to-br from-accent1/80 to-accent2/80 p-3 rounded-full">
+                <div className="bg-gradient-to-br from-indigo-500/90 to-purple-600/90 p-3 rounded-full shadow-lg border border-white/20">
                   {iconMap[skill.icon.toLowerCase()] || <Code />}
                 </div>
               </div>
               
               <div className="text-center">
                 <span 
-                  className="text-base font-mono text-white font-medium relative z-10 block"
+                  className="text-base font-semibold text-white relative z-10 block mb-1"
+                  style={{ fontFamily: 'var(--font-primary)' }}
                 >
                   {skill.name}
                 </span>
-                <span className="text-xs text-light/60 mt-1 block">
+                <span className="text-xs text-gray-300 mt-1 block font-medium">
                   {skill.category}
                 </span>
               </div>
 
               {/* Hover effect */}
               <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-accent1/10 via-transparent to-accent2/10"
+                className="absolute inset-0 bg-gradient-to-r from-indigo-500/20 via-transparent to-purple-500/20"
                 initial={{ x: '-100%' }}
                 animate={hoveredSkill === skill.id ? { x: '100%' } : {}}
                 transition={{ duration: 1, ease: 'easeInOut' }}
@@ -259,21 +260,21 @@ export const SkillsSection = () => {
               <motion.div
                 className="absolute -inset-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"
                 initial={{ opacity: 0 }}
-                animate={hoveredSkill === skill.id ? { opacity: 0.2 } : { opacity: 0 }}
+                animate={hoveredSkill === skill.id ? { opacity: 0.3 } : { opacity: 0 }}
                 style={{
-                  background: `linear-gradient(45deg, var(--${categoryColors[skill.category]?.split('-')[1] || 'accent1'}), var(--${categoryColors[skill.category]?.split('-')[3] || 'accent2'}))`,
+                  background: 'linear-gradient(45deg, rgba(99, 102, 241, 0.6), rgba(139, 92, 246, 0.6))',
                   filter: 'blur(20px)',
                 }}
               />
 
-              {/* Gradient border */}
+              {/* Enhanced border glow */}
               <motion.div
                 className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 z-0"
                 initial={{ opacity: 0 }}
                 animate={hoveredSkill === skill.id ? { opacity: 1 } : { opacity: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <div className="absolute inset-0 glass-gradient-border rounded-lg"></div>
+                <div className="absolute inset-0 rounded-lg border border-indigo-400/50 shadow-[0_0_20px_rgba(99,102,241,0.3)]"></div>
               </motion.div>
             </motion.div>
           ))}

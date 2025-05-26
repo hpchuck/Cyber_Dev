@@ -3,7 +3,6 @@ import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import MinimalLoading from './components/MinimalLoading';
 import { CustomCursor } from './components/CustomCursor';
-import { TransitionEffect } from './components/TransitionEffect';
 import { MobileNav } from './components/MobileNav';
 import { ScrollToTop } from './components/ScrollToTop';
 import { MetaTags } from './components/MetaTags';
@@ -86,7 +85,6 @@ function App() {
         {!loading && (
           <>
             <ScrollToTop />
-            <TransitionEffect />
             <MobileNav />
             
             <Suspense fallback={<div className="h-screen w-screen bg-black" />}>

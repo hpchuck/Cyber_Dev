@@ -166,7 +166,14 @@ export const ContactSection = () => {
           initial={{ y: 30, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.3 }}
+          style={{ 
+            position: 'sticky',
+            top: 0,
+            zIndex: 20,
+            visibility: 'visible',
+            display: 'block'
+          }}
         >
           Get in Touch
         </motion.h2>
@@ -176,7 +183,11 @@ export const ContactSection = () => {
           initial={{ y: 30, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.3 }}
+          style={{ 
+            visibility: 'visible',
+            display: 'block'
+          }}
         >
           Have a project idea or just want to connect? Feel free to reach out.
         </motion.p>

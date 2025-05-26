@@ -51,21 +51,33 @@ export const TestimonialsSection = () => {
         className="max-w-7xl mx-auto relative z-10"
       >
         <motion.h2 
-          className="section-heading gradient-text mb-4 text-center"
+          className="text-5xl md:text-6xl font-bold text-center mb-4"
+          style={{ 
+            fontFamily: 'var(--font-primary)',
+            background: 'linear-gradient(135deg, #ffffff 0%, #e5e7eb 50%, #d1d5db 100%)',
+            WebkitBackgroundClip: 'text',
+            backgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            textShadow: '0 2px 10px rgba(255,255,255,0.1)',
+            opacity: 1,
+            visibility: 'visible',
+            display: 'block'
+          }}
           initial={{ y: 30, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.3 }}
         >
           Client Testimonials
         </motion.h2>
 
         <motion.p
-          className="text-light/70 max-w-2xl mb-16 text-center mx-auto text-lg md:text-xl"
+          className="text-gray-300 max-w-2xl mb-16 text-center mx-auto text-lg md:text-xl font-medium"
+          style={{ fontFamily: 'var(--font-primary)' }}
           initial={{ y: 30, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.3 }}
         >
           Hear from satisfied clients about their experience working with me.
         </motion.p>
