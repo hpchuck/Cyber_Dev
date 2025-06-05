@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { HeroSection } from '../components/HeroSection';
-import { ExperienceSection } from '../components/ExperienceSection';
-import { ProjectsSection } from '../components/ProjectsSection';
 import { SkillsSection } from '../components/SkillsSection';
-import { PricingSection } from '../components/PricingSection';
-import { TestimonialsSection } from '../components/TestimonialsSection';
-import { ContactSection } from '../components/ContactSection';
-import { FooterSection } from '../components/FooterSection';
+
+// Lazy load heavy components for better performance
+const ExperienceSection = React.lazy(() => import('../components/ExperienceSection').then(module => ({ default: module.ExperienceSection })));
+const ProjectsSection = React.lazy(() => import('../components/ProjectsSection').then(module => ({ default: module.ProjectsSection })));
+const PricingSection = React.lazy(() => import('../components/PricingSection').then(module => ({ default: module.PricingSection })));
+const TestimonialsSection = React.lazy(() => import('../components/TestimonialsSection').then(module => ({ default: module.TestimonialsSection })));
+const ContactSection = React.lazy(() => import('../components/ContactSection').then(module => ({ default: module.ContactSection })));
+const FooterSection = React.lazy(() => import('../components/FooterSection').then(module => ({ default: module.FooterSection })));
+
+// Loading component for lazy-loaded sections
+const SectionLoader = () => (
+  <div className="flex items-center justify-center py-20">
+    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500"></div>
+  </div>
+);
 
 // Page transition variants
 const pageVariants = {
@@ -42,12 +51,30 @@ const HomePage = () => {
     >
       <HeroSection />
       <SkillsSection />
-      <ProjectsSection />
-      <ExperienceSection />
-      <PricingSection />
-      <TestimonialsSection />
-      <ContactSection />
-      <FooterSection />
+      
+      <Suspense fallback={<SectionLoader />}>
+        <ProjectsSection />
+      </Suspense>
+      
+      <Suspense fallback={<SectionLoader />}>
+        <ExperienceSection />
+      </Suspense>
+      
+      <Suspense fallback={<SectionLoader />}>
+        <PricingSection />
+      </Suspense>
+      
+      <Suspense fallback={<SectionLoader />}>
+        <TestimonialsSection />
+      </Suspense>
+      
+      <Suspense fallback={<SectionLoader />}>
+        <ContactSection />
+      </Suspense>
+      
+      <Suspense fallback={<SectionLoader />}>
+        <FooterSection />
+      </Suspense>
     </motion.div>
   );
 };

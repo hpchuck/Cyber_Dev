@@ -13,7 +13,7 @@ import './styles/globals.css';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <HelmetProvider>
-      <Router>
+      <Router basename="/Cyber_Dev">
         <App />
       </Router>
     </HelmetProvider>
