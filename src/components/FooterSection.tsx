@@ -2,7 +2,7 @@ import { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Twitter, Mail, ExternalLink, Code, Heart } from 'lucide-react';
 import useGSAPAnimations from '../hooks/useGSAPAnimations';
-import { SplashCursor } from '@/components/ui/splash-cursor';
+import { LazySplashCursor } from '@/components/lazy/LazySplashCursor';
 
 const socialLinks = [
   { name: 'Github', icon: <Github className="w-5 h-5" />, url: 'https://github.com' },
@@ -39,7 +39,7 @@ export const FooterSection = () => {
     >
       {/* Splash Cursor Animation */}
       <div className="absolute inset-0 z-0">
-        <SplashCursor 
+        <LazySplashCursor 
           SPLAT_RADIUS={0.25}
           SPLAT_FORCE={3000}
           DENSITY_DISSIPATION={5}
@@ -60,9 +60,18 @@ export const FooterSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="text-2xl font-bold section-heading gradient-text mb-4"
+              className="text-4xl sm:text-5xl md:text-6xl font-bold text-left mb-6 tracking-tight"
+              style={{ 
+                fontFamily: 'var(--font-primary)',
+              }}
             >
-              Let's Connect
+              <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80">
+                Let's
+              </span>
+              <br />
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300">
+                Connect
+              </span>
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 20 }}

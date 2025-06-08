@@ -30,6 +30,10 @@
 }
 
 /* General styles */
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: #000000;
   color: #F9FAFB;
@@ -277,24 +281,28 @@ body {
 /* Input field styling */
 .form-input,
 .form-textarea {
-  background-color: rgba(10, 10, 10, 0.7); /* Darker, slightly transparent background */
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--color-light);
+  background-color: rgba(10, 10, 10, 0.8) !important; /* Darker, slightly transparent background */
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: var(--color-light) !important;
   border-radius: 0.375rem; /* Tailwind's rounded-md */
   padding: 0.75rem 1rem;
   transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  cursor: text !important;
+  z-index: 10;
+  position: relative;
 }
 
 .form-input::placeholder,
 .form-textarea::placeholder {
-  color: rgba(249, 250, 251, 0.4); /* Lighter placeholder text */
+  color: rgba(249, 250, 251, 0.5) !important; /* Lighter placeholder text */
 }
 
 .form-input:focus,
 .form-textarea:focus {
-  outline: none;
-  border-color: var(--color-accent1);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3); /* Indigo-500 focus ring */
+  outline: none !important;
+  border-color: var(--color-accent1) !important;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3) !important; /* Indigo-500 focus ring */
+  background-color: rgba(10, 10, 10, 0.9) !important;
 }
 
 /* Shimmer button primary */
@@ -376,4 +384,18 @@ body {
 
 .glass-button:hover::after {
   left: 150%;
+}
+
+/* Shimmer animation for Skills section cards */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) skewX(-15deg);
+  }
+  100% {
+    transform: translateX(100%) skewX(-15deg);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 0.8s ease-in-out;
 }

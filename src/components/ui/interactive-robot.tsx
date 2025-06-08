@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { SimpleRobot } from './simple-robot';
-import { SplineScene } from './splite';
+import { LazySplineScene } from '../lazy/LazySplineScene';
 import { Play, Square } from 'lucide-react';
 
 interface InteractiveRobotProps {
@@ -34,7 +34,7 @@ export function InteractiveRobot({ className = "" }: InteractiveRobotProps) {
           <SimpleRobot className="w-full h-full" />
         ) : (
           <div className="w-full h-full">
-            <SplineScene 
+            <LazySplineScene 
               scene="https://prod.spline.design/6Iq1hzMCPlKMhS6o/scene.splinecode"
               className="w-full h-full"
             />

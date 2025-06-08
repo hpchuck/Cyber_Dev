@@ -1,9 +1,9 @@
 import React, { Suspense } from 'react';
 import { motion } from 'framer-motion';
-import { HeroSection } from '../components/HeroSection';
 import { SkillsSection } from '../components/SkillsSection';
 
-// Lazy load heavy components for better performance
+// Lazy load ALL heavy components for better performance  
+const HeroSection = React.lazy(() => import('../components/HeroSection').then(module => ({ default: module.HeroSection })));
 const ExperienceSection = React.lazy(() => import('../components/ExperienceSection').then(module => ({ default: module.ExperienceSection })));
 const ProjectsSection = React.lazy(() => import('../components/ProjectsSection').then(module => ({ default: module.ProjectsSection })));
 const PricingSection = React.lazy(() => import('../components/PricingSection').then(module => ({ default: module.PricingSection })));
@@ -49,7 +49,9 @@ const HomePage = () => {
       variants={pageVariants}
       className="bg-black text-white overflow-hidden"
     >
-      <HeroSection />
+      <Suspense fallback={<SectionLoader />}>
+        <HeroSection />
+      </Suspense>
       <SkillsSection />
       
       <Suspense fallback={<SectionLoader />}>

@@ -44,25 +44,18 @@ export const ExperienceSection = () => {
         className="max-w-7xl mx-auto relative z-10"
       >
         <motion.h2 
-          className="text-5xl md:text-6xl font-bold text-center mb-4"
-          style={{ 
-            fontFamily: 'var(--font-primary)',
-            background: 'linear-gradient(135deg, #ffffff 0%, #e5e7eb 50%, #d1d5db 100%)',
-            WebkitBackgroundClip: 'text',
-            backgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            textShadow: '0 2px 10px rgba(255,255,255,0.1)',
-            opacity: 1,
-            visibility: 'visible',
-            display: 'block'
-          }}
+          className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-center mb-16"
           initial={{ y: 30, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <span className="text-indigo-400">Experience</span>_Log
-          <div className="mt-2 mx-auto w-24 h-1 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
+          <span className="block bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80">
+            Professional
+          </span>
+          <span className="block bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300">
+            Experience
+          </span>
         </motion.h2>
 
         <motion.p

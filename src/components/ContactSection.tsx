@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Send, Github, Linkedin, Twitter, Mail, MapPin, Phone } from 'lucide-react';
 import useGSAPAnimations from '../hooks/useGSAPAnimations';
-import { SplashCursor } from '@/components/ui/splash-cursor';
+import { LazySplashCursor } from '@/components/lazy/LazySplashCursor';
 
 const SocialIcon = ({ href, icon: Icon, label }: { href: string; icon: typeof Github; label: string }) => (
   <motion.a
@@ -140,7 +140,7 @@ export const ContactSection = () => {
     >
       {/* Splash Cursor Animation */}
       <div className="absolute inset-0 z-0">
-        <SplashCursor 
+        <LazySplashCursor 
           SPLAT_RADIUS={0.3}
           SPLAT_FORCE={4000}
           DENSITY_DISSIPATION={4}
@@ -162,20 +162,19 @@ export const ContactSection = () => {
         className="max-w-6xl mx-auto relative z-10"
       >
         <motion.h2 
-          className="section-heading gradient-text mb-4 text-center"
+          className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-center mb-4 tracking-tight"
           initial={{ y: 30, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true, amount: 0.3 }}
-          style={{ 
-            position: 'sticky',
-            top: 0,
-            zIndex: 20,
-            visibility: 'visible',
-            display: 'block'
-          }}
         >
-          Get in Touch
+          <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80">
+            Get In
+          </span>
+          <br />
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300">
+            Touch
+          </span>
         </motion.h2>
 
         <motion.p
@@ -265,7 +264,7 @@ export const ContactSection = () => {
                 required
                 value={formState.name}
                 onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                className="form-input block w-full rounded-md bg-black/30 border-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-white placeholder-gray-500"
+                className="form-input block w-full rounded-md bg-black/50 border border-gray-600 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 sm:text-sm text-white placeholder-gray-400 transition-all duration-200 cursor-text"
                 placeholder="Your Name"
               />
             </div>
@@ -280,7 +279,7 @@ export const ContactSection = () => {
                 required
                 value={formState.email}
                 onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                className="form-input block w-full rounded-md bg-black/30 border-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-white placeholder-gray-500"
+                className="form-input block w-full rounded-md bg-black/50 border border-gray-600 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 sm:text-sm text-white placeholder-gray-400 transition-all duration-200 cursor-text"
                 placeholder="you@example.com"
               />
             </div>
@@ -295,7 +294,7 @@ export const ContactSection = () => {
                 rows={4}
                 value={formState.message}
                 onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                className="form-textarea block w-full rounded-md bg-black/30 border-gray-700 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-white placeholder-gray-500"
+                className="form-textarea block w-full rounded-md bg-black/50 border border-gray-600 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 sm:text-sm text-white placeholder-gray-400 transition-all duration-200 cursor-text resize-none"
                 placeholder="Your message..."
               />
             </div>

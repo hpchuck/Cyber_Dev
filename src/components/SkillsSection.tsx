@@ -1,16 +1,28 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useStore } from '../store/useStore';
-import { Code, Database, Brain, Cloud, Terminal, Lock, Repeat as ReactIcon, Github as Git, 
-         Pocket as Docker, Code as Nodejs, Server, Globe, Shield, Cpu, Zap, Wifi, 
+import { Code, Database, Brain, Cloud, Terminal, Lock, Github as Git, 
+         Server, Globe, Shield, Cpu, Zap, Wifi, 
          Layers, Box, Command, Webhook } from 'lucide-react';
-import useGSAPAnimations from '../hooks/useGSAPAnimations';
+import { GlowingEffect } from '@/components/ui/glowing-effect';
 
 export const iconMap: Record<string, React.ReactNode> = {
-  react: <ReactIcon />,
-  nodejs: <Nodejs />,
+  react: (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+      <path d="M12 10.11c1.03 0 1.87.84 1.87 1.89s-.84 1.89-1.87 1.89-1.87-.84-1.87-1.89.84-1.89 1.87-1.89M7.37 20c.63.38 2.01-.2 3.6-1.7-.52-.59-1.03-1.23-1.51-1.9a22.7 22.7 0 01-2.4-.36c-.51 2.14-.32 3.61.31 3.96m.71-5.74l-.29-.51c-.11.29-.22.58-.29.86.27.06.57.11.88.16l-.3-.51m6.54-.76l.81-1.5-.81-1.5c-.3-.53-.62-1-.91-1.47C13.17 9 12.6 9 12 9s-1.17 0-1.71.03c-.29.47-.61.94-.91 1.47L8.57 12l.81 1.5c.3.53.62 1 .91 1.47.54.03 1.11.03 1.71.03s1.17 0 1.71-.03c.29-.47.61-.94.91-1.47M12 6.78c-.19.22-.39.45-.59.72h1.18c-.2-.27-.4-.5-.59-.72m0 10.44c.19-.22.39-.45.59-.72h-1.18c.2.27.4.5.59.72M16.62 4c-.62-.38-2 .2-3.59 1.7.52.59 1.03 1.23 1.51 1.9.82.08 1.63.2 2.4.36.51-2.14.32-3.61-.32-3.96m-.7 5.74l.29.51c.11-.29.22-.58.29-.86-.27-.06-.57-.11-.88-.16l.3.51m1.45-7.05c1.47.84 1.63 3.05 1.01 5.63 2.54.75 4.37 1.99 4.37 3.68s-1.83 2.93-4.37 3.68c.62 2.58.46 4.79-1.01 5.63-1.46.84-3.45-.12-5.37-1.95-1.92 1.83-3.91 2.79-5.37 1.95-1.47-.84-1.63-3.05-1.01-5.63-2.54-.75-4.37-1.99-4.37-3.68s1.83-2.93 4.37-3.68c-.62-2.58-.46-4.79 1.01-5.63 1.46-.84 3.45.12 5.37 1.95 1.92-1.83 3.91-2.79 5.37-1.95z"/>
+    </svg>
+  ),
+  nodejs: (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+      <path d="M12 1.85c-.27 0-.55.07-.78.2l-7.44 4.3c-.48.28-.78.8-.78 1.36v8.58c0 .56.3 1.08.78 1.36l1.95 1.12c.95.46 1.27.46 1.71.46.85 0 1.41-.52 1.41-1.4V9.47c0-.16-.13-.28-.28-.28H7.5c-.15 0-.28.12-.28.28v7.36c0 .4-.43.72-.43.72-.5 0-.87-.31-.87-.7V7.21c0-.28.15-.54.39-.68l7.44-4.3c.24-.14.52-.14.76 0l7.44 4.3c.24.14.39.4.39.68v9.58c0 .28-.15.54-.39.68l-7.44 4.3c-.24.14-.52.14-.76 0l-1.89-1.12c-.17-.1-.32-.04-.49.04-.18.08-.15.13-.15.13.1.06.21.16.26.18l1.85 1.08c.24.14.50.21.78.21s.54-.07.78-.21l7.44-4.3c.48-.28.78-.8.78-1.36V7.21c0-.56-.3-1.08-.78-1.36L12.78 2.05c-.23-.13-.51-.2-.78-.2z"/>
+    </svg>
+  ),
   brain: <Brain />,
-  container: <Docker />,
+  container: (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+      <path d="M20 9V7c0-1.1-.9-2-2-2h-3l-2-2H9L7 5H4c-1.1 0-2 .9-2 2v2c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2zM4 7h16v2H4V7z"/>
+    </svg>
+  ),
   database: <Database />,
   code: <Code />,
   server: <Server />,
@@ -31,17 +43,14 @@ export const iconMap: Record<string, React.ReactNode> = {
 
 export const SkillsSection = () => {
   const { skills } = useStore();
-  const { addToStaggerItems, addToGlassCards } = useGSAPAnimations();
   const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const sectionRef = useRef<HTMLElement>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [isAutoScrollPaused, setIsAutoScrollPaused] = useState(false);
   const autoScrollRef = useRef<number>();
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
-  const skillCardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -65,10 +74,9 @@ export const SkillsSection = () => {
 
       const maxScroll = container.scrollWidth - container.clientWidth;
       const currentScroll = container.scrollLeft;
-      const step = 0.5; // Slower, smoother scrolling
+      const step = 0.5;
 
       if (currentScroll >= maxScroll - 1) {
-        // Reset to start without smooth behavior for seamless loop
         setTimeout(() => {
           container.scrollLeft = 0;
         }, 100);
@@ -79,7 +87,6 @@ export const SkillsSection = () => {
       autoScrollRef.current = requestAnimationFrame(autoScroll);
     };
 
-    // Start auto scroll with delay
     const timeoutId = setTimeout(() => {
       autoScrollRef.current = requestAnimationFrame(autoScroll);
     }, 1000);
@@ -142,25 +149,10 @@ export const SkillsSection = () => {
     setTimeout(() => setIsAutoScrollPaused(false), 1000);
   };
 
-  // Initialize refs for GSAP animations when the component mounts
-  useEffect(() => {
-    // Add skill cards to glass cards for 3D effect
-    skillCardRefs.current.forEach(ref => {
-      if (ref) addToGlassCards(ref);
-    });
-    
-    // Add section ref for staggered animations
-    if (sectionRef.current) {
-      const items = sectionRef.current.querySelectorAll('.skill-card');
-      items.forEach(item => addToStaggerItems(item as HTMLElement));
-    }
-  }, [addToGlassCards, addToStaggerItems]);
-
   return (
     <section 
       id="skills" 
       className="py-16 px-4 md:px-8 relative overflow-hidden"
-      ref={sectionRef}
     >
       {/* Background gradients */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.08)_0%,transparent_70%)]" />
@@ -172,9 +164,21 @@ export const SkillsSection = () => {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
       >
-        <h2 className="section-heading mb-4 text-center">
-          Skills & Toolkit
-        </h2>
+        <motion.h2 
+          className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-center mb-4 tracking-tight"
+          initial={{ y: 30, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true, amount: 0.3 }}
+        >
+          <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80">
+            Skills
+          </span>
+          <br />
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300">
+            Toolkit
+          </span>
+        </motion.h2>
         <p className="text-light/70 max-w-2xl mb-12 text-center mx-auto">
           My diverse technical skills and the tools I use to build cutting-edge solutions.
         </p>
@@ -205,79 +209,99 @@ export const SkillsSection = () => {
           onTouchEnd={handleTouchEnd}
         >
           {/* Duplicate skills for infinite scroll effect */}
-          {[...skills, ...skills].map((skill, index) => (
-            <motion.div
-              key={`${skill.id}-${index}`}
-              ref={el => {
-                skillCardRefs.current[index] = el;
-              }}
-              className={`skill-card relative group p-6 rounded-lg ${
-                isMobile ? 'w-40 h-48' : 'w-48 h-56'
-              } flex-shrink-0 flex flex-col items-center justify-center gap-4 overflow-hidden`}
-              style={{
-                background: 'rgba(15, 23, 42, 0.9)',
-                backdropFilter: 'blur(20px)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), 0 0 20px rgba(99, 102, 241, 0.1)'
-              }}
-              onHoverStart={() => setHoveredSkill(skill.id)}
-              onHoverEnd={() => setHoveredSkill(null)}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.05 % 1 }}
-            >
-              <div 
-                className={`text-white relative z-10 text-3xl mb-2 ${
-                  hoveredSkill === skill.id ? 'animate-bounce' : ''
-                }`}
-              >
-                <div className="bg-gradient-to-br from-indigo-500/90 to-purple-600/90 p-3 rounded-full shadow-lg border border-white/20">
-                  {iconMap[skill.icon.toLowerCase()] || <Code />}
-                </div>
-              </div>
-              
-              <div className="text-center">
-                <span 
-                  className="text-base font-semibold text-white relative z-10 block mb-1"
-                  style={{ fontFamily: 'var(--font-primary)' }}
-                >
-                  {skill.name}
-                </span>
-                <span className="text-xs text-gray-300 mt-1 block font-medium">
-                  {skill.category}
-                </span>
-              </div>
-
-              {/* Hover effect */}
+          {[...skills, ...skills].map((skill, index) => {
+            const isHovered = hoveredSkill === skill.id;
+            return (
               <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-indigo-500/20 via-transparent to-purple-500/20"
-                initial={{ x: '-100%' }}
-                animate={hoveredSkill === skill.id ? { x: '100%' } : {}}
-                transition={{ duration: 1, ease: 'easeInOut' }}
-              />
-
-              {/* Background glow */}
-              <motion.div
-                className="absolute -inset-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"
-                initial={{ opacity: 0 }}
-                animate={hoveredSkill === skill.id ? { opacity: 0.3 } : { opacity: 0 }}
-                style={{
-                  background: 'linear-gradient(45deg, rgba(99, 102, 241, 0.6), rgba(139, 92, 246, 0.6))',
-                  filter: 'blur(20px)',
+                key={`${skill.id}-${index}`}
+                className={`relative rounded-2xl ${
+                  isMobile ? 'w-40 h-48' : 'w-48 h-56'
+                } flex-shrink-0 flex flex-col items-center justify-center gap-4 overflow-hidden bg-slate-900/50 backdrop-blur-sm border border-slate-800/50`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ 
+                  opacity: 1, 
+                  y: 0,
                 }}
-              />
-
-              {/* Enhanced border glow */}
-              <motion.div
-                className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 z-0"
-                initial={{ opacity: 0 }}
-                animate={hoveredSkill === skill.id ? { opacity: 1 } : { opacity: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ 
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 25,
+                  delay: index * 0.05 % 1 
+                }}
+                onHoverStart={() => {
+                  setHoveredSkill(skill.id);
+                  setIsAutoScrollPaused(true);
+                }}
+                onHoverEnd={() => {
+                  setHoveredSkill(null);
+                  setTimeout(() => setIsAutoScrollPaused(false), 100);
+                }}
+                whileHover={{ 
+                  y: -8,
+                  scale: 1.05,
+                  transition: { 
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 25,
+                    duration: 0.2
+                  }
+                }}
+                whileTap={{ scale: 0.98 }}
               >
-                <div className="absolute inset-0 rounded-lg border border-indigo-400/50 shadow-[0_0_20px_rgba(99,102,241,0.3)]"></div>
+                {/* GlowingEffect Integration */}
+                <GlowingEffect
+                  variant="default"
+                  disabled={!isHovered}
+                  proximity={100}
+                  spread={80}
+                  blur={20}
+                  glow={true}
+                  movementDuration={0.8}
+                  borderWidth={2}
+                  className="opacity-75"
+                />
+
+                {/* Content container */}
+                <div className="relative z-10 h-full flex flex-col items-center justify-center gap-4 p-6">
+                  {/* Icon circle */}
+                  <motion.div
+                    className="w-12 h-12 rounded-full flex items-center justify-center mb-2 bg-slate-800/80 border border-slate-700/50"
+                    animate={{
+                      scale: isHovered ? 1.1 : 1,
+                      backgroundColor: isHovered ? "#1e293b" : "#1e293b80",
+                    }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className="text-white text-xl">
+                      {iconMap[skill.icon.toLowerCase()] || <Code />}
+                    </div>
+                  </motion.div>
+                  
+                  {/* Text content */}
+                  <div className="text-center">
+                    <motion.div 
+                      className="text-base font-semibold text-white block mb-1"
+                      animate={{
+                        color: isHovered ? "#ffffff" : "#e5e7eb",
+                      }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {skill.name}
+                    </motion.div>
+                    <motion.span 
+                      className="text-xs font-medium text-slate-400"
+                      animate={{
+                        color: isHovered ? "#a78bfa" : "#9ca3af"
+                      }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {skill.category}
+                    </motion.span>
+                  </div>
+                </div>
               </motion.div>
-            </motion.div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useStore } from '../store/useStore';
 import { motion } from 'framer-motion';
 
@@ -40,6 +40,7 @@ const ProjectIcon = ({ category }: { category: string }) => {
 export const ProjectsSection = () => {
   const { projects } = useStore();
   const sectionRef = useRef<HTMLElement>(null);
+  const [hoveredProject, setHoveredProject] = useState<string | null>(null);
 
   const filteredProjects = projects;
 
@@ -48,84 +49,315 @@ export const ProjectsSection = () => {
       id="projects" 
       ref={sectionRef}
       className="py-20 px-4 md:px-8 relative overflow-hidden bg-black min-h-screen flex flex-col items-center justify-center"
-    >
-      <h2 className="text-5xl md:text-6xl font-bold text-center mb-4" style={{ 
-        fontFamily: 'var(--font-primary)',
-        background: 'linear-gradient(135deg, #ffffff 0%, #e5e7eb 50%, #3b82f6 100%)',
-        WebkitBackgroundClip: 'text',
-        backgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        textShadow: '0 2px 10px rgba(255,255,255,0.1)'
-      }}>
-        Projects
-      </h2>
+    >        <motion.h2 
+          className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-center mb-4 tracking-tight"
+          initial={{ y: 30, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true, amount: 0.3 }}
+        >
+          <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80">
+            Featured
+          </span>
+          <br />
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300">
+            Projects
+          </span>
+        </motion.h2>
       <p className="text-center text-gray-300 max-w-3xl mx-auto mb-16 text-lg md:text-xl font-medium" style={{ fontFamily: 'var(--font-primary)' }}>
         Explore a curated selection of my work, showcasing innovative and effective solutions.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-        {filteredProjects.map((project, index) => (
-          <motion.div
-            key={project.id}
-            className="relative rounded-[32px] overflow-hidden group w-full max-w-[360px] mx-auto"
-            style={{
-              height: "450px",
-              background: "linear-gradient(145deg, #0e131f 0%, #1a1f35 50%, #0f1629 100%)",
-              boxShadow: "0 0 80px 10px rgba(59, 130, 246, 0.4), 0 0 0 1px #374151, 0 0 0 100vw rgba(0, 12, 24, 0.05) inset"
-            }}
-            initial={{ opacity: 0, y: 50, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.6, delay: index * 0.1 }}
-            whileHover={{ scale: 1.05, y: -10 }}
-          >
-            {/* Enhanced glow at the bottom with blue accent */}
-            <div className="absolute bottom-0 left-0 right-0 h-2/3 z-10 pointer-events-none" style={{
-              background: `radial-gradient(ellipse at bottom, rgba(59, 130, 246, 0.8) 0%, rgba(79, 70, 229, 0.4) 40%, rgba(120, 87, 255, 0.2) 60%, transparent 100%)`,
-              filter: "blur(32px)"
-            }} />
-            
-            {/* Card content */}
-            <div className="relative z-20 flex flex-col h-full p-10">
-              {/* 3D Star icon in circle based on category */}
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500/20 to-purple-600/20 backdrop-blur-sm border border-white/30 flex items-center justify-center mb-8 shadow-lg">
-                <div className="transform hover:rotate-12 transition-transform duration-300">
-                  <ProjectIcon category={project.category} />
-                </div>
-              </div>
-              
-              <h3 className="text-2xl font-bold text-white mb-4" style={{ fontFamily: 'var(--font-primary)' }}>
-                {project.title}
-              </h3>
-              
-              <p className="text-gray-200 text-base mb-8 max-w-xs leading-relaxed" style={{ fontFamily: 'var(--font-primary)' }}>
-                {project.description}
-              </p>
-              
-              <a 
-                href={project.live || project.github || '#'} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="mt-auto font-semibold text-white flex items-center gap-2 group/link hover:text-blue-300 transition-colors duration-300"
-                style={{ fontFamily: 'var(--font-primary)' }}
+        {filteredProjects.map((project, index) => {
+          const isHovered = hoveredProject === project.id;
+          return (
+            <motion.div
+              key={project.id}
+              className="relative rounded-[32px] overflow-hidden mx-auto cursor-pointer"
+              style={{
+                width: "360px",
+                height: "450px",
+                transformStyle: "preserve-3d",
+                backgroundColor: "#0e131f",
+                boxShadow: "0 -10px 80px 8px rgba(78, 99, 255, 0.2), 0 0 10px 0 rgba(0, 0, 0, 0.5)",
+              }}
+              initial={{ opacity: 0, y: 50, scale: 0.95 }}
+              animate={{ 
+                opacity: 1, 
+                y: isHovered ? -5 : 0, 
+                scale: isHovered ? 1.02 : 1 
+              }}
+              transition={{ 
+                type: "spring",
+                stiffness: 300,
+                damping: 25,
+                duration: 0.6, 
+                delay: index * 0.1 
+              }}
+              onHoverStart={() => setHoveredProject(project.id)}
+              onHoverEnd={() => setHoveredProject(null)}
+              onClick={() => {
+                const url = project.live || project.github;
+                if (url && url !== '#') {
+                  window.open(url, '_blank', 'noopener,noreferrer');
+                }
+              }}
+            >
+              {/* Subtle glass reflection overlay */}
+              <motion.div
+                className="absolute inset-0 z-35 pointer-events-none rounded-[32px]"
+                style={{
+                  background: "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 80%, rgba(255,255,255,0.05) 100%)",
+                  backdropFilter: "blur(2px)",
+                }}
+                animate={{
+                  opacity: isHovered ? 0.7 : 0.5,
+                }}
+                transition={{
+                  duration: 0.4,
+                  ease: "easeOut"
+                }}
+              />
+
+              {/* Dark background with black gradient */}
+              <div
+                className="absolute inset-0 z-0 rounded-[32px]"
+                style={{
+                  background: "linear-gradient(180deg, #000000 0%, #000000 70%)",
+                }}
+              />
+
+              {/* Noise texture overlay */}
+              <motion.div
+                className="absolute inset-0 opacity-30 mix-blend-overlay z-10 rounded-[32px]"
+                style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+                }}
+                animate={{
+                  opacity: isHovered ? 0.4 : 0.3,
+                }}
+              />
+
+              {/* Purple/blue glow effect */}
+              <motion.div
+                className="absolute bottom-0 left-0 right-0 h-2/3 z-20 rounded-[32px]"
+                style={{
+                  background: `
+                    radial-gradient(ellipse at bottom right, rgba(172, 92, 255, 0.5) -10%, rgba(79, 70, 229, 0) 70%),
+                    radial-gradient(ellipse at bottom left, rgba(56, 189, 248, 0.5) -10%, rgba(79, 70, 229, 0) 70%)
+                  `,
+                  filter: "blur(40px)",
+                }}
+                animate={{
+                  opacity: isHovered ? 0.8 : 0.6,
+                }}
+                transition={{
+                  duration: 0.4,
+                  ease: "easeOut"
+                }}
+              />
+
+              {/* Central purple glow */}
+              <motion.div
+                className="absolute bottom-0 left-0 right-0 h-2/3 z-21 rounded-[32px]"
+                style={{
+                  background: `
+                    radial-gradient(circle at bottom center, rgba(161, 58, 229, 0.6) -20%, rgba(79, 70, 229, 0) 60%)
+                  `,
+                  filter: "blur(45px)",
+                }}
+                animate={{
+                  opacity: isHovered ? 0.7 : 0.5,
+                }}
+                transition={{
+                  duration: 0.4,
+                  ease: "easeOut"
+                }}
+              />
+
+              {/* Enhanced bottom border glow */}
+              <motion.div
+                className="absolute bottom-0 left-0 right-0 h-[2px] z-25 rounded-[32px]"
+                style={{
+                  background: "linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.7) 50%, rgba(255, 255, 255, 0.05) 100%)",
+                }}
+                animate={{
+                  boxShadow: isHovered
+                    ? "0 0 20px 4px rgba(172, 92, 255, 0.9), 0 0 30px 6px rgba(138, 58, 185, 0.7), 0 0 40px 8px rgba(56, 189, 248, 0.5)"
+                    : "0 0 15px 3px rgba(172, 92, 255, 0.8), 0 0 25px 5px rgba(138, 58, 185, 0.6), 0 0 35px 7px rgba(56, 189, 248, 0.4)",
+                  opacity: isHovered ? 1 : 0.9,
+                }}
+                transition={{
+                  duration: 0.4,
+                  ease: "easeOut"
+                }}
+              />
+
+              {/* Card content */}
+              <motion.div
+                className="relative flex flex-col h-full p-8 z-40"
+                animate={{
+                  z: isHovered ? 5 : 2,
+                }}
+                transition={{
+                  duration: 0.4,
+                  ease: "easeOut"
+                }}
               >
-                Learn More
-                <svg className="w-4 h-4 ml-1 group-hover/link:translate-x-1 transition-transform duration-300" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1 8H15M15 8L8 1M15 8L8 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </a>
-            </div>
-            
-            {/* Enhanced background glow effect */}
-            <div className="absolute inset-0 rounded-[32px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{
-              background: 'radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 70%)',
-              filter: 'blur(40px)'
-            }} />
-          </motion.div>
-        ))}
+                {/* Icon circle with shadow */}
+                <motion.div
+                  className="w-12 h-12 rounded-full flex items-center justify-center mb-6"
+                  style={{
+                    background: "linear-gradient(225deg, #171c2c 0%, #121624 100%)",
+                    position: "relative",
+                    overflow: "hidden"
+                  }}
+                  animate={{
+                    boxShadow: isHovered
+                      ? "0 8px 16px -2px rgba(0, 0, 0, 0.3), 0 4px 8px -1px rgba(0, 0, 0, 0.2), inset 2px 2px 5px rgba(255, 255, 255, 0.15), inset -2px -2px 5px rgba(0, 0, 0, 0.7)"
+                      : "0 6px 12px -2px rgba(0, 0, 0, 0.25), 0 3px 6px -1px rgba(0, 0, 0, 0.15), inset 1px 1px 3px rgba(255, 255, 255, 0.12), inset -2px -2px 4px rgba(0, 0, 0, 0.5)",
+                    scale: isHovered ? 1.05 : 1,
+                  }}
+                  transition={{
+                    duration: 0.4,
+                    ease: "easeOut"
+                  }}
+                >
+                  {/* Top-left highlight for realistic lighting */}
+                  <div
+                    className="absolute top-0 left-0 w-2/3 h-2/3 opacity-40"
+                    style={{
+                      background: "radial-gradient(circle at top left, rgba(255, 255, 255, 0.5), transparent 80%)",
+                      pointerEvents: "none",
+                      filter: "blur(10px)"
+                    }}
+                  />
+
+                  {/* Bottom shadow for depth */}
+                  <div
+                    className="absolute bottom-0 left-0 w-full h-1/2 opacity-50"
+                    style={{
+                      background: "linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent)",
+                      pointerEvents: "none",
+                      backdropFilter: "blur(3px)"
+                    }}
+                  />
+
+                  {/* Icon */}
+                  <div className="flex items-center justify-center w-full h-full relative z-10">
+                    <div className="transform hover:rotate-12 transition-transform duration-300">
+                      <ProjectIcon category={project.category} />
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Content positioning */}
+                <motion.div
+                  className="mb-auto"
+                  animate={{
+                    z: isHovered ? 5 : 2,
+                  }}
+                  transition={{
+                    duration: 0.4,
+                    ease: "easeOut"
+                  }}
+                >
+                  <motion.h3
+                    className="text-2xl font-medium text-white mb-3"
+                    style={{
+                      letterSpacing: "-0.01em",
+                      lineHeight: 1.2,
+                      fontFamily: 'var(--font-primary)'
+                    }}
+                    animate={{
+                      textShadow: isHovered ? "0 2px 4px rgba(0,0,0,0.2)" : "none",
+                    }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {project.title}
+                  </motion.h3>
+
+                  <motion.p
+                    className="text-sm mb-6 text-gray-300"
+                    style={{
+                      lineHeight: 1.5,
+                      fontWeight: 350,
+                      fontFamily: 'var(--font-primary)'
+                    }}
+                    animate={{
+                      opacity: isHovered ? 0.9 : 0.8,
+                    }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {project.description}
+                  </motion.p>
+
+                  {/* Visit Project Button */}
+                  <motion.div
+                    className="inline-flex items-center text-white text-sm font-medium group cursor-pointer"
+                    style={{ fontFamily: 'var(--font-primary)' }}
+                    animate={{
+                      opacity: isHovered ? 1 : 0.9,
+                    }}
+                    whileHover={{
+                      filter: "drop-shadow(0 0 5px rgba(255, 255, 255, 0.5))"
+                    }}
+                    transition={{ duration: 0.3 }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const url = project.live || project.github;
+                      if (url && url !== '#') {
+                        window.open(url, '_blank', 'noopener,noreferrer');
+                      }
+                    }}
+                  >
+                    Visit Project
+                    <motion.svg
+                      className="ml-1 w-4 h-4"
+                      width="8"
+                      height="8"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      animate={{
+                        x: isHovered ? 4 : 0
+                      }}
+                      transition={{
+                        duration: 0.6,
+                        ease: "easeOut"
+                      }}
+                    >
+                      <path
+                        d="M1 8H15M15 8L8 1M15 8L8 15"
+                        stroke="white"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </motion.svg>
+                  </motion.div>
+                </motion.div>
+              </motion.div>
+
+              {/* Shimmer effect on hover */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent z-25 rounded-[32px]"
+                initial={{ x: '-100%', skewX: -15 }}
+                animate={isHovered ? { 
+                  x: '100%',
+                  transition: { 
+                    duration: 0.8, 
+                    ease: "easeInOut"
+                  }
+                } : { x: '-100%' }}
+              />
+            </motion.div>
+          );
+        })}
       </div>
-      <div className="fixed inset-0 pointer-events-none z-0" aria-hidden="true">
-        <div className="absolute inset-0 bg-black" style={{ opacity: 0.95 }} />
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-gradient-to-b from-blue-600/30 via-indigo-700/20 via-purple-800/20 to-black/0 blur-3xl opacity-70" />
-      </div>
+      {/* Optimized background gradients */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.08)_0%,transparent_70%)] z-0" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(79,70,229,0.05)_0%,transparent_60%)] z-0" />
     </section>
   );
 };

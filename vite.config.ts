@@ -17,40 +17,97 @@ export default defineConfig({
   build: {
     target: 'esnext',
     minify: 'terser',
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 500, // Lower threshold to catch issues earlier
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
       },
       output: {
-        manualChunks: {
-          // React and core dependencies
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+        manualChunks: (id) => {
+          // React core dependencies
+          if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {
+            return 'react-vendor';
+          }
           
-          // Animation libraries
-          'animation': ['framer-motion', 'motion', 'gsap'],
+          // Split large 3D libraries into smaller chunks - be more specific
+          if (id.includes('@splinetool/react-spline') || id.includes('splinetool/react-spline')) {
+            return 'spline-react';
+          }
+          if (id.includes('@splinetool/runtime') || id.includes('splinetool/runtime')) {
+            return 'spline-runtime';
+          }
+          if (id.includes('three') && !id.includes('@react-three') && !id.includes('react-three')) {
+            return 'three-core';
+          }
+          if (id.includes('@react-three/fiber') || id.includes('react-three/fiber')) {
+            return 'r3f-fiber';
+          }
+          if (id.includes('@react-three/drei') || id.includes('react-three/drei')) {
+            return 'r3f-drei';
+          }
           
-          // 3D and Spline components (largest chunks)
-          'spline-3d': ['@splinetool/react-spline', '@splinetool/runtime'],
-          'three-js': ['three', '@react-three/fiber', '@react-three/drei'],
+          // Animation libraries (split motion from framer-motion)
+          if (id.includes('framer-motion')) {
+            return 'framer-motion';
+          }
+          if (id.includes('motion') && !id.includes('framer-motion')) {
+            return 'motion-lib';
+          }
+          if (id.includes('gsap')) {
+            return 'gsap-lib';
+          }
           
-          // UI components and utilities
-          'ui-libs': [
-            'lucide-react', 
-            '@radix-ui/react-checkbox',
-            '@radix-ui/react-label',
-            '@radix-ui/react-slot',
-            '@radix-ui/react-switch',
-            'class-variance-authority',
-            'clsx',
-            'tailwind-merge'
-          ],
+          // UI component libraries
+          if (id.includes('@radix-ui')) {
+            return 'radix-ui';
+          }
+          if (id.includes('lucide-react')) {
+            return 'lucide-icons';
+          }
           
           // Audio and effects
-          'effects': ['howler', 'canvas-confetti'],
+          if (id.includes('howler')) {
+            return 'audio-libs';
+          }
+          if (id.includes('canvas-confetti')) {
+            return 'effects-libs';
+          }
           
-          // State management and utilities
-          'utils': ['zustand', '@number-flow/react']
+          // Utilities and smaller libraries
+          if (id.includes('zustand') || id.includes('@number-flow/react') || 
+              id.includes('class-variance-authority') || id.includes('clsx') || 
+              id.includes('tailwind-merge')) {
+            return 'utils-libs';
+          }
+          
+          // Catch any remaining large node_modules and split them individually
+          if (id.includes('node_modules')) {
+            // Extract the package name from the path
+            const chunks = id.split('node_modules/')[1]?.split('/');
+            if (chunks && chunks.length > 0) {
+              const packageName = chunks[0].startsWith('@') ? `${chunks[0]}/${chunks[1]}` : chunks[0];
+              
+              // Split particularly large packages individually
+              if (['@splinetool', 'three', '@react-three', 'framer-motion', 'motion', 'gsap'].some(pkg => packageName.includes(pkg))) {
+                return `vendor-${packageName.replace('@', '').replace('/', '-')}`;
+              }
+            }
+            return 'vendor';
+          }
+        },
+        // Optimize chunk loading
+        chunkFileNames: (chunkInfo) => {
+          const facadeModuleId = chunkInfo.facadeModuleId 
+            ? chunkInfo.facadeModuleId.split('/').pop()?.replace(/\.\w+$/, '') 
+            : 'chunk';
+          return `js/${facadeModuleId}-[hash].js`;
+        },
+        entryFileNames: 'js/[name]-[hash].js',
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name?.endsWith('.css')) {
+            return 'css/[name]-[hash].css';
+          }
+          return 'assets/[name]-[hash].[ext]';
         },
       },
     },

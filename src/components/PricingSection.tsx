@@ -139,8 +139,10 @@ export const PricingSection = () => {
       >
         {/* Header */}
         <div className="text-center space-y-4 mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
-            <span className="text-indigo-400">PRICING</span>_MATRIX
+          <h2 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8">
+            <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80">Pricing</span>
+            <br />
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300">Matrix</span>
           </h2>
           <p className="text-gray-300 text-lg max-w-2xl mx-auto">
             Choose the plan that works for you. All plans include dedicated support and premium features.

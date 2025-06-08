@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown, Circle } from 'lucide-react';
 import { ShimmerButton } from './MicroAnimations';
-import { SplineScene } from './ui/splite';
+import { LazySplineScene } from './lazy/LazySplineScene';
 import { cn } from '../lib/utils';
 
 // ElegantShape component for floating geometric shapes
@@ -243,7 +243,7 @@ export const HeroSection: React.FC = () => {
               transition={{ duration: 1.2, delay: 0.8, ease: "easeOut" }}
               className="w-full h-full relative"
             >
-              <SplineScene 
+              <LazySplineScene 
                 scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
                 className="w-full h-full"
               />

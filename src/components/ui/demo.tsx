@@ -1,4 +1,4 @@
-import { SplineScene } from "@/components/ui/splite";
+import { LazySplineScene } from "../lazy/LazySplineScene";
 import { Card } from "@/components/ui/card"
 import { Spotlight } from "@/components/ui/spotlight"
  
@@ -24,7 +24,7 @@ export function SplineSceneBasic() {
 
         {/* Right content */}
         <div className="flex-1 relative">
-          <SplineScene 
+          <LazySplineScene 
             scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
             className="w-full h-full"
           />
