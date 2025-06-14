@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Send, Github, Linkedin, Twitter, Mail, MapPin, Phone } from 'lucide-react';
+import { Send, Github, Linkedin, Twitter, Mail, MapPin, Phone, Star } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import useGSAPAnimations from '../hooks/useGSAPAnimations';
 import { LazySplashCursor } from '@/components/lazy/LazySplashCursor';
 
@@ -91,7 +92,9 @@ export const ContactSection = () => {
   useEffect(() => {
     // Add form to glass cards for 3D effect
     if (formRef.current) addToGlassCards(formRef.current);
-    if (contactInfoRef.current) addToGlassCards(contactInfoRef.current);
+    
+    // Don't add contact info card to glass cards to prevent interference with button
+    // if (contactInfoRef.current) addToGlassCards(contactInfoRef.current);
     
     // Add section title for reveal animation
     if (sectionRef.current) {
@@ -139,7 +142,7 @@ export const ContactSection = () => {
       ref={sectionRef}
     >
       {/* Splash Cursor Animation */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 pointer-events-none">
         <LazySplashCursor 
           SPLAT_RADIUS={0.3}
           SPLAT_FORCE={4000}
@@ -191,21 +194,21 @@ export const ContactSection = () => {
           Have a project idea or just want to connect? Feel free to reach out.
         </motion.p>
 
-        <div className="grid md:grid-cols-2 gap-12">
-          <motion.div
+        <div className="grid md:grid-cols-2 gap-12">          <motion.div
             ref={contactInfoRef}
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="glass-card card-3d-effect p-8 space-y-8 relative overflow-hidden" 
+            className="glass-card card-3d-effect p-6 space-y-6 relative overflow-hidden" 
+            style={{ pointerEvents: 'auto' }}
           >
-            <h3 className="text-2xl font-bold text-white mb-6">Let's Create Something Amazing</h3>
-            <p className="text-gray-300 mb-8">
+            <h3 className="text-2xl font-bold text-white mb-4">Let's Create Something Amazing</h3>
+            <p className="text-gray-300 mb-6">
               Whether you have a project in mind or just want to chat about technology,
               I'm always open to new opportunities and collaborations.
             </p>
-
-            <div className="space-y-6 mb-10">
+            
+            <div className="space-y-4 mb-6">
               <div className="flex items-center gap-4 group">
                 <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center group-hover:from-indigo-500/30 group-hover:to-purple-500/30 transition-all duration-300">
                   <Mail className="w-5 h-5 text-gray-200 group-hover:text-indigo-400 transition-colors duration-300" />
@@ -237,11 +240,41 @@ export const ContactSection = () => {
               </div>
             </div>
 
-            <div className="flex justify-center space-x-6">
+            <div className="flex justify-center space-x-6 mb-6">
               <SocialIcon href="https://github.com" icon={Github} label="GitHub" />
               <SocialIcon href="https://linkedin.com" icon={Linkedin} label="LinkedIn" />
               <SocialIcon href="https://twitter.com" icon={Twitter} label="Twitter" />
             </div>
+
+            {/* Testimonial CTA */}
+            <motion.div
+              className="pt-4 border-t border-gray-700/50 relative z-10"
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              style={{ pointerEvents: 'auto' }}
+            >
+              <h4 className="text-lg font-semibold text-white mb-2">Share Your Experience</h4>
+              <p className="text-gray-400 text-sm mb-3">
+                Worked with me before? I'd love to hear your feedback!
+              </p>
+              
+              <Link
+                to="/testimonial"
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 rounded-lg text-yellow-400 hover:from-yellow-500/30 hover:to-orange-500/30 transition-colors cursor-pointer relative z-50 no-underline"
+                style={{ 
+                  pointerEvents: 'auto',
+                  position: 'relative',
+                  zIndex: 9999,
+                  display: 'flex',
+                  textDecoration: 'none'
+                }}
+                onClick={() => console.log('Leave a Review Link clicked!')}
+              >
+                <Star className="w-4 h-4" />
+                Leave a Review
+              </Link>
+            </motion.div>
           </motion.div>
 
           <motion.form
@@ -251,7 +284,7 @@ export const ContactSection = () => {
             whileInView="visible"
             viewport={{ once: true }}
             onSubmit={handleSubmit}
-            className="glass-card card-3d-effect p-8 space-y-6 relative overflow-hidden"
+            className="glass-card card-3d-effect p-6 space-y-5 relative overflow-hidden"
           >
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">Full Name</label>

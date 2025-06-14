@@ -1,7 +1,7 @@
 import React, { Suspense, useState, useEffect } from 'react';
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
-import MinimalLoading from './components/MinimalLoading';
+import CyberLoadingScreen from './components/CyberLoadingScreen';
 import { CustomCursor } from './components/CustomCursor';
 import { MobileNav } from './components/MobileNav';
 import { ScrollToTop } from './components/ScrollToTop';
@@ -13,6 +13,9 @@ import { PerformanceMonitor } from './components/PerformanceMonitor';
 const HomePage = React.lazy(() => import('./pages/HomePage'));
 const AdminPage = React.lazy(() => import('./pages/AdminPage'));
 const NotFoundPage = React.lazy(() => import('./pages/NotFoundPage'));
+
+// Lazy load components for better performance
+const TestimonialFormPage = React.lazy(() => import('./components/TestimonialForm').then(module => ({ default: module.TestimonialForm })));
 
 function App() {
   const location = useLocation();
@@ -67,7 +70,7 @@ function App() {
       <MetaTags />
       
       {/* Loading screen */}
-      {loading && <MinimalLoading onLoadingComplete={handleLoadingComplete} />}
+      {loading && <CyberLoadingScreen onLoadingComplete={handleLoadingComplete} />}
       
       {/* Custom cursor for desktop */}
       {!isMobile && <CustomCursor />}
@@ -91,6 +94,7 @@ function App() {
               <Routes location={location} key={location.pathname}>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/admin" element={<AdminPage />} />
+                <Route path="/testimonial" element={<TestimonialFormPage />} />
                 <Route path="/404" element={<NotFoundPage />} />
                 <Route path="*" element={<Navigate to="/404" />} />
               </Routes>

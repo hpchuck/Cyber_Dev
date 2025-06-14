@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { Home, Briefcase, Code, Award, User, MessageSquare, Mail } from 'lucide-react';
 
 const menuItems = [
@@ -8,6 +9,7 @@ const menuItems = [
   { name: 'Skills', icon: <Code className="w-5 h-5" />, href: '#skills' },
   { name: 'Experience', icon: <Award className="w-5 h-5" />, href: '#experience' },
   { name: 'Testimonials', icon: <User className="w-5 h-5" />, href: '#testimonials' },
+  { name: 'Share Review', icon: <MessageSquare className="w-5 h-5" />, href: '/testimonial' },
   { name: 'Pricing', icon: <MessageSquare className="w-5 h-5" />, href: '#pricing' },
   { name: 'Contact', icon: <Mail className="w-5 h-5" />, href: '#contact' },
 ];
@@ -46,9 +48,25 @@ const HamburgerIcon = ({ isOpen }: { isOpen: boolean }) => {
 export const MobileNav = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleNavigation = (href: string) => {
+    setIsOpen(false);
+    
+    if (href.startsWith('/')) {
+      // Route navigation
+      navigate(href);
+    } else {
+      // Hash navigation (scroll to section)
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
   };
 
   useEffect(() => {
@@ -186,12 +204,11 @@ export const MobileNav = () => {
                 variants={menuVariants}
               >
                 {menuItems.map((item) => (
-                  <motion.a
+                  <motion.button
                     key={item.name}
-                    href={item.href}
-                    onClick={() => setIsOpen(false)}
+                    onClick={() => handleNavigation(item.href)}
                     variants={itemVariants}
-                    className="group relative flex items-center space-x-3 px-3 py-3 rounded-lg transition-all duration-200 overflow-hidden"
+                    className="group relative flex items-center space-x-3 px-3 py-3 rounded-lg transition-all duration-200 overflow-hidden w-full text-left"
                     style={{
                       background: 'rgba(255, 255, 255, 0.02)',
                     }}
@@ -221,7 +238,7 @@ export const MobileNav = () => {
                         {item.name}
                       </span>
                     </div>
-                  </motion.a>
+                  </motion.button>
                 ))}
               </motion.div>
             </nav>

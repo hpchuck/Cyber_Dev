@@ -108,7 +108,7 @@ export const HeroSection: React.FC = () => {
     <section 
       id="home" 
       ref={heroRef}
-      className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-[#030303]"
+      className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-[#030303] pt-16 sm:pt-8 md:pt-0"
     >
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/[0.05] via-transparent to-rose-500/[0.05] blur-3xl" />
