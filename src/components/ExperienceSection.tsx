@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Award, Calendar } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import useGSAPAnimations from '../hooks/useGSAPAnimations';
-import { GlowingEffect } from '@/components/ui/glowing-effect';
+import { GlowingEffect } from './ui/glowing-effect';
 
 export const ExperienceSection = () => {
   const { experiences } = useStore();

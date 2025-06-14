@@ -4,7 +4,7 @@ import { useStore } from '../store/useStore';
 import { Code, Database, Brain, Cloud, Terminal, Lock, Github as Git, 
          Server, Globe, Shield, Cpu, Zap, Wifi, 
          Layers, Box, Command, Webhook } from 'lucide-react';
-import { GlowingEffect } from '@/components/ui/glowing-effect';
+import { GlowingEffect } from './ui/glowing-effect';
 
 export const iconMap: Record<string, React.ReactNode> = {
   react: (
