@@ -318,7 +318,7 @@ export const TestimonialForm = () => {
               animate={{ opacity: 1, y: 0 }}
               className="text-green-400 text-center bg-green-500/10 border border-green-500/20 rounded-lg p-3"
             >
-              Thank you for your testimonial! It will be reviewed and published soon.
+              Thank you for your review! Happy to hear your feedback.
             </motion.p>
           )}
           {submitStatus === 'error' && (
