@@ -214,7 +214,7 @@ export const TestimonialForm = () => {
           </div>
 
           <div>
-            <label className="block text-white/80 mb-2 font-medium flex items-center gap-2">
+            <label className="flex items-center gap-2 text-white/80 mb-2 font-medium">
               <User className="w-4 h-4" /> Name
             </label>
             <input
@@ -228,7 +228,7 @@ export const TestimonialForm = () => {
           </div>
 
           <div>
-            <label className="block text-white/80 mb-2 font-medium flex items-center gap-2">
+            <label className="flex items-center gap-2 text-white/80 mb-2 font-medium">
               <Briefcase className="w-4 h-4" /> Role
             </label>
             <input
@@ -242,7 +242,7 @@ export const TestimonialForm = () => {
           </div>
 
           <div>
-            <label className="block text-white/80 mb-2 font-medium flex items-center gap-2">
+            <label className="flex items-center gap-2 text-white/80 mb-2 font-medium">
               <Building className="w-4 h-4" /> Company
             </label>
             <input

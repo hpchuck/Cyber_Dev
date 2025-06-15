@@ -18,10 +18,8 @@ const AdminLogin = ({ onLogin }: { onLogin: (email: string, password: string) =>
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const success = onLogin(email, password);
-    if (!success) {
-      setError('Invalid credentials. Try admin@example.com / admin');
-    }
+    onLogin(email, password);
+    setError('Invalid credentials. Try admin@example.com / admin');
   };
 
   return (
@@ -132,7 +130,10 @@ const AdminPage = () => {
   const { isAuthenticated, login, logout } = useStore();
 
   const handleLogin = (email: string, password: string) => {
-    return login(email, password);
+    const success = login(email, password);
+    if (!success) {
+      // Error will be handled in the login component
+    }
   };
 
   const handleLogout = () => {

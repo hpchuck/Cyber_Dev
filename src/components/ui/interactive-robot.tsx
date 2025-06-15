@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { SimpleRobot } from './simple-robot';
 import { LazySplineScene } from '../lazy/LazySplineScene';
@@ -10,7 +10,7 @@ interface InteractiveRobotProps {
 
 export function InteractiveRobot({ className = "" }: InteractiveRobotProps) {
   const [robotMode, setRobotMode] = useState<'simple' | 'spline'>('simple');
-  const [splineLoaded, setSplineLoaded] = useState(false);
+  const [, setSplineLoaded] = useState(false); // Variable kept for future use
   const [showControls, setShowControls] = useState(false);
 
   // Auto-try Spline after 2 seconds, fallback to simple if it fails

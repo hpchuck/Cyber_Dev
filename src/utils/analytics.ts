@@ -42,7 +42,8 @@ class Analytics {
       // Track Largest Contentful Paint (LCP)
       const lcpObserver = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
-          this.recordMetric('LCP', entry.startTime, entry.url || window.location.href);
+          const lcpEntry = entry as any; // LCP entry type
+          this.recordMetric('LCP', entry.startTime, lcpEntry.url || window.location.href);
         }
       });
       lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
@@ -50,7 +51,8 @@ class Analytics {
       // Track First Input Delay (FID)
       const fidObserver = new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
-          this.recordMetric('FID', entry.processingStart - entry.startTime, entry.url || window.location.href);
+          const fidEntry = entry as any; // FID entry type
+          this.recordMetric('FID', fidEntry.processingStart - entry.startTime, fidEntry.url || window.location.href);
         }
       });
       fidObserver.observe({ entryTypes: ['first-input'] });
@@ -59,8 +61,9 @@ class Analytics {
       const clsObserver = new PerformanceObserver((list) => {
         let clsValue = 0;
         for (const entry of list.getEntries()) {
-          if (!entry.hadRecentInput) {
-            clsValue += entry.value;
+          const clsEntry = entry as any; // CLS entry type
+          if (!clsEntry.hadRecentInput) {
+            clsValue += clsEntry.value;
           }
         }
         if (clsValue > 0) {
@@ -74,8 +77,8 @@ class Analytics {
         setTimeout(() => {
           const perfData = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
           if (perfData) {
-            this.recordMetric('DOM_LOAD', perfData.domContentLoadedEventEnd - perfData.navigationStart, window.location.href);
-            this.recordMetric('WINDOW_LOAD', perfData.loadEventEnd - perfData.navigationStart, window.location.href);
+            this.recordMetric('DOM_LOAD', perfData.domContentLoadedEventEnd - perfData.fetchStart, window.location.href);
+            this.recordMetric('WINDOW_LOAD', perfData.loadEventEnd - perfData.fetchStart, window.location.href);
             this.recordMetric('TTFB', perfData.responseStart - perfData.requestStart, window.location.href);
           }
         }, 0);

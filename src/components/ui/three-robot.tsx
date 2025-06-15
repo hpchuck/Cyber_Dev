@@ -1,6 +1,6 @@
-import React, { Suspense, useRef, useEffect } from 'react';
+import { Suspense, useRef, useEffect } from 'react';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls, Environment } from '@react-three/drei';
 import * as THREE from 'three';
 
@@ -21,7 +21,7 @@ function RobotModel({ modelPath }: RobotModelProps) {
 
   useEffect(() => {
     if (gltf.scene) {
-      gltf.scene.traverse((child) => {
+      gltf.scene.traverse((child: THREE.Object3D) => {
         if (child instanceof THREE.Mesh) {
           child.castShadow = true;
           child.receiveShadow = true;
