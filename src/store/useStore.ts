@@ -312,17 +312,19 @@ export const useStore = create<AppState>()(
     }),
     {
       name: 'portfolio-storage',
-      version: 3,
+      version: 4,
       storage: createJSONStorage(() => localStorage),
       migrate: (persistedState: unknown, version: number) => {
         const state = persistedState as Partial<AppState>;
-        if (version < 3) {
+        if (version < 4) {
           // Reset content data to latest initial-data when upgrading
           return {
             ...state,
             projects: initialData.projects as Project[],
             experiences: initialData.experiences as Experience[],
             skills: initialData.skills as Skill[],
+            pricingPlans: initialData.pricingPlans as PricingPlan[],
+            testimonials: initialData.testimonials as Testimonial[],
           };
         }
         return state;
