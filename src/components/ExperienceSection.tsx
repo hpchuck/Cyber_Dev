@@ -7,7 +7,7 @@ import { GlowingEffect } from './ui/glowing-effect';
 
 export const ExperienceSection = () => {
   const { experiences } = useStore();
-  const { addToReveal, addToGlassCards } = useGSAPAnimations();
+  const { addToGlassCards } = useGSAPAnimations();
   const sectionRef = useRef<HTMLElement>(null);
   const experienceRefs = useRef<(HTMLDivElement | null)[]>([]);
   const defaultLogo = 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=100&q=80';
@@ -18,13 +18,9 @@ export const ExperienceSection = () => {
     experienceRefs.current.forEach(ref => {
       if (ref) addToGlassCards(ref);
     });
-    
-    // Add section for reveal animation
-    if (sectionRef.current) {
-      const title = sectionRef.current.querySelector('h2');
-      if (title) addToReveal(title as HTMLElement);
-    }
-  }, [addToGlassCards, addToReveal]);
+    // NOTE: Don't add h2 to GSAP reveal - it conflicts with Framer Motion whileInView
+    // and bg-clip-text text-transparent, making headers invisible
+  }, [addToGlassCards]);
 
   return (
     <section 

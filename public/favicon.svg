@@ -1,6 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-  <rect width="32" height="32" fill="#000000"/>
-  <path d="M6 6h20v20h-20z" fill="#00FF41"/>
-  <path d="M10 10h12v12h-12z" fill="#000000"/>
-  <path d="M14 14h4v4h-4z" fill="#00FF41"/>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#312e81"/>
+      <stop offset="50%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#e879a0"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#818cf8"/>
+      <stop offset="100%" style="stop-color:#f9a8d4"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="8" fill="#0a0a0a"/>
+  <rect x="1" y="1" width="30" height="30" rx="7" fill="none" stroke="url(#bg)" stroke-width="1.5" opacity="0.8"/>
+  <text x="16" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="url(#glow)" text-anchor="middle" letter-spacing="-1">HP</text>
 </svg>

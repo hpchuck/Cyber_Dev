@@ -1,7 +1,6 @@
-import { useRef, useEffect } from 'react';
+import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Twitter, Mail, ExternalLink, Code, Heart } from 'lucide-react';
-import useGSAPAnimations from '../hooks/useGSAPAnimations';
 import { LazySplashCursor } from '@/components/lazy/LazySplashCursor';
 
 const socialLinks = [
@@ -20,17 +19,11 @@ const footerLinks = [
 ];
 
 export const FooterSection = () => {
-  const { addToReveal, addToGlassCards } = useGSAPAnimations();
   const footerRef = useRef<HTMLElement>(null);
   const currentYear = new Date().getFullYear();
 
-  // Initialize refs for GSAP animations when the component mounts
-  useEffect(() => {
-    if (footerRef.current) {
-      const title = footerRef.current.querySelector('h2');
-      if (title) addToReveal(title as HTMLElement);
-    }
-  }, [addToGlassCards, addToReveal]);
+  // NOTE: Don't add h2 to GSAP reveal - it conflicts with Framer Motion whileInView
+  // and bg-clip-text text-transparent, making headers invisible
 
   return (
     <footer 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useStore } from '../store/useStore';
 import { Code, Database, Brain, Cloud, Terminal, Lock, Github as Git, 
@@ -44,109 +44,85 @@ export const iconMap: Record<string, React.ReactNode> = {
 export const SkillsSection = () => {
   const { skills } = useStore();
   const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const [isAutoScrollPaused, setIsAutoScrollPaused] = useState(false);
-  const autoScrollRef = useRef<number>();
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
 
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  // Calculate animation duration based on number of skills
+  const duration = skills.length * 4;
 
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+  const SkillCard = ({ skill }: { skill: typeof skills[0] }) => {
+    const isHovered = hoveredSkill === skill.id;
+    return (
+      <motion.div
+        className="relative rounded-2xl w-44 h-52 md:w-48 md:h-56 flex-shrink-0 flex flex-col items-center justify-center gap-4 overflow-hidden bg-slate-900/50 backdrop-blur-sm border border-slate-800/50"
+        onHoverStart={() => {
+          setHoveredSkill(skill.id);
+          setIsPaused(true);
+        }}
+        onHoverEnd={() => {
+          setHoveredSkill(null);
+          setIsPaused(false);
+        }}
+        whileHover={{ 
+          y: -8,
+          scale: 1.05,
+          transition: { 
+            type: "spring",
+            stiffness: 400,
+            damping: 25,
+          }
+        }}
+        whileTap={{ scale: 0.98 }}
+      >
+        <GlowingEffect
+          variant="default"
+          disabled={!isHovered}
+          proximity={100}
+          spread={80}
+          blur={20}
+          glow={true}
+          movementDuration={0.8}
+          borderWidth={2}
+          className="opacity-75"
+        />
 
-    const autoScroll = () => {
-      if (isAutoScrollPaused || isDragging) {
-        autoScrollRef.current = requestAnimationFrame(autoScroll);
-        return;
-      }
-
-      const maxScroll = container.scrollWidth - container.clientWidth;
-      const currentScroll = container.scrollLeft;
-      const step = 0.5;
-
-      if (currentScroll >= maxScroll - 1) {
-        setTimeout(() => {
-          container.scrollLeft = 0;
-        }, 100);
-      } else {
-        container.scrollLeft += step;
-      }
-
-      autoScrollRef.current = requestAnimationFrame(autoScroll);
-    };
-
-    const timeoutId = setTimeout(() => {
-      autoScrollRef.current = requestAnimationFrame(autoScroll);
-    }, 1000);
-
-    return () => {
-      clearTimeout(timeoutId);
-      if (autoScrollRef.current) {
-        cancelAnimationFrame(autoScrollRef.current);
-      }
-    };
-  }, [isAutoScrollPaused, isDragging]);
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-    setIsAutoScrollPaused(true);
-    setStartX(e.pageX - (containerRef.current?.offsetLeft || 0));
-    setScrollLeft(containerRef.current?.scrollLeft || 0);
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-    setTimeout(() => setIsAutoScrollPaused(false), 1000);
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging) return;
-    e.preventDefault();
-    
-    const x = e.pageX - (containerRef.current?.offsetLeft || 0);
-    const walk = (x - startX) * 2;
-    if (containerRef.current) {
-      containerRef.current.scrollLeft = scrollLeft - walk;
-    }
-  };
-
-  const handleMouseLeave = () => {
-    setIsDragging(false);
-    setTimeout(() => setIsAutoScrollPaused(false), 1000);
-  };
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setIsDragging(true);
-    setIsAutoScrollPaused(true);
-    setStartX(e.touches[0].pageX - (containerRef.current?.offsetLeft || 0));
-    setScrollLeft(containerRef.current?.scrollLeft || 0);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging) return;
-    
-    const x = e.touches[0].pageX - (containerRef.current?.offsetLeft || 0);
-    const walk = (x - startX) * 2;
-    if (containerRef.current) {
-      containerRef.current.scrollLeft = scrollLeft - walk;
-    }
-  };
-
-  const handleTouchEnd = () => {
-    setIsDragging(false);
-    setTimeout(() => setIsAutoScrollPaused(false), 1000);
+        <div className="relative z-10 h-full flex flex-col items-center justify-center gap-4 p-6">
+          <motion.div
+            className="w-14 h-14 rounded-xl flex items-center justify-center mb-2 bg-slate-800/80 border border-slate-700/50"
+            animate={{
+              scale: isHovered ? 1.15 : 1,
+              borderColor: isHovered ? "rgba(139, 92, 246, 0.5)" : "rgba(51, 65, 85, 0.5)",
+            }}
+            transition={{ type: "spring", stiffness: 400, damping: 25 }}
+          >
+            <div className="text-white text-xl">
+              {iconMap[skill.icon.toLowerCase()] || <Code />}
+            </div>
+          </motion.div>
+          
+          <div className="text-center">
+            <motion.div 
+              className="text-base font-semibold text-white block mb-1"
+              animate={{
+                color: isHovered ? "#ffffff" : "#e5e7eb",
+              }}
+              transition={{ duration: 0.3 }}
+            >
+              {skill.name}
+            </motion.div>
+            <motion.span 
+              className="text-xs font-medium"
+              animate={{
+                color: isHovered ? "#a78bfa" : "#9ca3af"
+              }}
+              transition={{ duration: 0.3 }}
+            >
+              {skill.category}
+            </motion.span>
+          </div>
+        </div>
+      </motion.div>
+    );
   };
 
   return (
@@ -184,134 +160,45 @@ export const SkillsSection = () => {
         </p>
       </motion.div>
 
-      <div className="relative">
+      <div className="relative" ref={containerRef}>
         {/* Gradient fade on edges */}
         <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-primary to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-primary to-transparent z-10 pointer-events-none" />
 
-        <div 
-          ref={containerRef}
-          className="flex gap-6 py-4 overflow-x-auto hide-scrollbar"
-          style={{ 
-            cursor: isDragging ? 'grabbing' : 'grab',
-            userSelect: 'none',
-            WebkitUserSelect: 'none',
-            msUserSelect: 'none',
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none'
-          }}
-          onMouseDown={handleMouseDown}
-          onMouseUp={handleMouseUp}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-        >
-          {/* Duplicate skills for infinite scroll effect */}
-          {[...skills, ...skills].map((skill, index) => {
-            const isHovered = hoveredSkill === skill.id;
-            return (
-              <motion.div
-                key={`${skill.id}-${index}`}
-                className={`relative rounded-2xl ${
-                  isMobile ? 'w-40 h-48' : 'w-48 h-56'
-                } flex-shrink-0 flex flex-col items-center justify-center gap-4 overflow-hidden bg-slate-900/50 backdrop-blur-sm border border-slate-800/50`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ 
-                  opacity: 1, 
-                  y: 0,
-                }}
-                transition={{ 
-                  type: "spring",
-                  stiffness: 300,
-                  damping: 25,
-                  delay: index * 0.05 % 1 
-                }}
-                onHoverStart={() => {
-                  setHoveredSkill(skill.id);
-                  setIsAutoScrollPaused(true);
-                }}
-                onHoverEnd={() => {
-                  setHoveredSkill(null);
-                  setTimeout(() => setIsAutoScrollPaused(false), 100);
-                }}
-                whileHover={{ 
-                  y: -8,
-                  scale: 1.05,
-                  transition: { 
-                    type: "spring",
-                    stiffness: 400,
-                    damping: 25,
-                    duration: 0.2
-                  }
-                }}
-                whileTap={{ scale: 0.98 }}
-              >
-                {/* GlowingEffect Integration */}
-                <GlowingEffect
-                  variant="default"
-                  disabled={!isHovered}
-                  proximity={100}
-                  spread={80}
-                  blur={20}
-                  glow={true}
-                  movementDuration={0.8}
-                  borderWidth={2}
-                  className="opacity-75"
-                />
-
-                {/* Content container */}
-                <div className="relative z-10 h-full flex flex-col items-center justify-center gap-4 p-6">
-                  {/* Icon circle */}
-                  <motion.div
-                    className="w-12 h-12 rounded-full flex items-center justify-center mb-2 bg-slate-800/80 border border-slate-700/50"
-                    animate={{
-                      scale: isHovered ? 1.1 : 1,
-                      backgroundColor: isHovered ? "#1e293b" : "#1e293b80",
-                    }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <div className="text-white text-xl">
-                      {iconMap[skill.icon.toLowerCase()] || <Code />}
-                    </div>
-                  </motion.div>
-                  
-                  {/* Text content */}
-                  <div className="text-center">
-                    <motion.div 
-                      className="text-base font-semibold text-white block mb-1"
-                      animate={{
-                        color: isHovered ? "#ffffff" : "#e5e7eb",
-                      }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      {skill.name}
-                    </motion.div>
-                    <motion.span 
-                      className="text-xs font-medium text-slate-400"
-                      animate={{
-                        color: isHovered ? "#a78bfa" : "#9ca3af"
-                      }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      {skill.category}
-                    </motion.span>
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
+        {/* CSS-based infinite marquee - GPU accelerated */}
+        <div className="overflow-hidden py-4">
+          <div 
+            className="flex gap-6 skills-marquee"
+            style={{
+              animationPlayState: isPaused ? 'paused' : 'running',
+              animationDuration: `${duration}s`,
+            }}
+          >
+            {/* First set */}
+            {skills.map((skill) => (
+              <SkillCard key={`a-${skill.id}`} skill={skill} />
+            ))}
+            {/* Duplicate set for seamless loop */}
+            {skills.map((skill) => (
+              <SkillCard key={`b-${skill.id}`} skill={skill} />
+            ))}
+          </div>
         </div>
       </div>
 
       <style>{`
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none;
+        @keyframes marquee-scroll {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
         }
-        .hide-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
+        .skills-marquee {
+          animation: marquee-scroll linear infinite;
+          will-change: transform;
+          width: max-content;
         }
       `}</style>
     </section>

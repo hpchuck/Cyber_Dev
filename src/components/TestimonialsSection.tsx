@@ -6,7 +6,7 @@ import useGSAPAnimations from '../hooks/useGSAPAnimations';
 
 export const TestimonialsSection = () => {
   const { testimonials } = useStore();
-  const { addToGlassCards, addToReveal } = useGSAPAnimations();
+  const { addToGlassCards } = useGSAPAnimations();
   const sectionRef = useRef<HTMLElement>(null);
   const testimonialRefs = useRef<(HTMLDivElement | null)[]>([]);
   const approvedTestimonials = testimonials.filter(t => t.approved);
@@ -25,13 +25,9 @@ export const TestimonialsSection = () => {
     testimonialRefs.current.forEach(ref => {
       if (ref) addToGlassCards(ref);
     });
-    
-    // Add section for reveal animation
-    if (sectionRef.current) {
-      const title = sectionRef.current.querySelector('h2');
-      if (title) addToReveal(title as HTMLElement);
-    }
-  }, [addToGlassCards, addToReveal]);
+    // NOTE: Don't add h2 to GSAP reveal - it conflicts with Framer Motion whileInView
+    // and bg-clip-text text-transparent, making headers invisible
+  }, [addToGlassCards]);
 
   return (
     <section 

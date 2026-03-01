@@ -63,6 +63,17 @@ interface Testimonial {
   createdAt: string;
 }
 
+interface SectionVisibility {
+  hero: boolean;
+  skills: boolean;
+  projects: boolean;
+  experience: boolean;
+  pricing: boolean;
+  testimonials: boolean;
+  contact: boolean;
+  footer: boolean;
+}
+
 interface AppState {
   isAudioEnabled: boolean;
   volume: number;
@@ -73,6 +84,7 @@ interface AppState {
     formSubmit: string;
   };
   isAuthenticated: boolean;
+  sectionVisibility: SectionVisibility;
   projects: Project[];
   experiences: Experience[];
   skills: Skill[];
@@ -89,6 +101,10 @@ interface AppState {
   // Auth
   login: (email: string, password: string) => boolean;
   logout: () => void;
+
+  // Section Visibility
+  toggleSection: (section: keyof SectionVisibility) => void;
+  setSectionVisibility: (visibility: Partial<SectionVisibility>) => void;
 
   // Projects
   addProject: (project: Omit<Project, 'id'>) => void;
@@ -137,6 +153,16 @@ export const useStore = create<AppState>()(
         formSubmit: 'https://soundimage.org/wp-content/uploads/2016/04/UI_Quirky27.mp3'
       },
       isAuthenticated: false,
+      sectionVisibility: {
+        hero: true,
+        skills: true,
+        projects: true,
+        experience: true,
+        pricing: true,
+        testimonials: true,
+        contact: true,
+        footer: true,
+      },
       projects: initialData.projects as Project[],
       experiences: initialData.experiences as Experience[],
       skills: initialData.skills as Skill[],
@@ -149,15 +175,28 @@ export const useStore = create<AppState>()(
       setAudioEnabled: (enabled) => set({ isAudioEnabled: enabled }),
       setVolume: (volume) => set({ volume }),
 
-      // Auth
+      // Auth - use environment variable or fallback
       login: (email: string, password: string) => {
-        if (email === 'admin@example.com' && password === 'admin') {
+        const adminEmail = import.meta.env.VITE_ADMIN_EMAIL || 'admin@hp.dev';
+        const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD || 'admin';
+        if (email === adminEmail && password === adminPassword) {
           set({ isAuthenticated: true });
           return true;
         }
         return false;
       },
       logout: () => set({ isAuthenticated: false }),
+
+      // Section Visibility
+      toggleSection: (section) => set((state) => ({
+        sectionVisibility: {
+          ...state.sectionVisibility,
+          [section]: !state.sectionVisibility[section]
+        }
+      })),
+      setSectionVisibility: (visibility) => set((state) => ({
+        sectionVisibility: { ...state.sectionVisibility, ...visibility }
+      })),
 
       // Projects
       addProject: (project) => set((state) => ({
@@ -273,8 +312,21 @@ export const useStore = create<AppState>()(
     }),
     {
       name: 'portfolio-storage',
-      version: 1,
-      storage: createJSONStorage(() => localStorage)
+      version: 3,
+      storage: createJSONStorage(() => localStorage),
+      migrate: (persistedState: unknown, version: number) => {
+        const state = persistedState as Partial<AppState>;
+        if (version < 3) {
+          // Reset content data to latest initial-data when upgrading
+          return {
+            ...state,
+            projects: initialData.projects as Project[],
+            experiences: initialData.experiences as Experience[],
+            skills: initialData.skills as Skill[],
+          };
+        }
+        return state;
+      },
     }
   )
 );

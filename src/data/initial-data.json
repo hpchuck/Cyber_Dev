@@ -2,14 +2,69 @@
   "projects": [
     {
       "id": "1",
-      "title": "Cyber Dev Portfolio",
-      "description": "Modern, cyber-themed portfolio website built with React, Three.js, and Framer Motion. Features interactive 3D elements, smooth animations, and responsive design.",
-      "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80",
-      "tags": ["React", "TypeScript", "Three.js", "Framer Motion"],
-      "github": "https://github.com/hpchuck/Cyber_Dev",
-      "live": "https://hpchuck.github.io/Cyber_Dev/",
+      "title": "Clarity - AI Daily Planner",
+      "description": "AI-powered daily planner ecosystem with collaborative features. Monorepo with Next.js web app featuring glassmorphism UI, Node.js backend with AI scheduling, and React Native mobile app.",
+      "image": "https://images.unsplash.com/photo-1611224923853-80b023f02d71?auto=format&fit=crop&w=1200&q=80",
+      "tags": ["Next.js", "Node.js", "React Native", "AI"],
+      "github": "https://github.com/hpchuck/Clarity",
+      "live": "#",
       "category": "web",
-      "techStack": ["React", "TypeScript", "Three.js", "Framer Motion", "Tailwind CSS", "Vite"]
+      "techStack": ["Next.js", "TypeScript", "Node.js", "React Native", "Zustand", "Tailwind CSS"]
+    },
+    {
+      "id": "2",
+      "title": "MintMorph - Smart Expense Tracker",
+      "description": "Modern AI-powered expense tracking application with intelligent transaction parsing, smart analytics, budget management, goal tracking, and a beautiful neumorphic design system.",
+      "image": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=80",
+      "tags": ["React", "TypeScript", "Firebase", "Chart.js"],
+      "github": "https://github.com/hpchuck/MintMorph",
+      "live": "#",
+      "category": "web",
+      "techStack": ["React", "TypeScript", "Firebase", "Tailwind CSS", "Chart.js", "Vite"]
+    },
+    {
+      "id": "3",
+      "title": "ML App Categorization",
+      "description": "Machine learning model for application categorization using app resources. Built a hybrid CNN + fastText approach combining image and text features for accurate classification at Samsung PRISM.",
+      "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=80",
+      "tags": ["Python", "CNN", "fastText", "Pandas"],
+      "github": "#",
+      "live": "#",
+      "category": "ai",
+      "techStack": ["Python", "CNN", "fastText", "Pandas", "TensorFlow"]
+    },
+    {
+      "id": "4",
+      "title": "Collision Avoidance System",
+      "description": "Computer vision model to detect and avoid collisions, simulated in Unity. Designed for automated vehicles that travel safely while efficiently managing resources.",
+      "image": "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?auto=format&fit=crop&w=1200&q=80",
+      "tags": ["Python", "Computer Vision", "Unity", "ML"],
+      "github": "#",
+      "live": "#",
+      "category": "ai",
+      "techStack": ["Python", "OpenCV", "Unity", "Machine Learning"]
+    },
+    {
+      "id": "5",
+      "title": "Library Management System",
+      "description": "Full-featured library management application with book tracking, user management, borrowing system, and search functionality built with Java and MySQL.",
+      "image": "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1200&q=80",
+      "tags": ["Java", "MySQL", "CRUD", "Desktop"],
+      "github": "#",
+      "live": "#",
+      "category": "other",
+      "techStack": ["Java", "MySQL", "JDBC", "Swing"]
+    },
+    {
+      "id": "6",
+      "title": "AWS VPC & EC2 Infrastructure",
+      "description": "Cloud infrastructure setup with Virtual Private Cloud, EC2 instances, security groups, and networking configurations for scalable application deployment.",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80",
+      "tags": ["AWS", "VPC", "EC2", "Cloud"],
+      "github": "#",
+      "live": "#",
+      "category": "other",
+      "techStack": ["AWS", "VPC", "EC2", "IAM", "CloudFormation"]
     }
   ],
   "skills": [
@@ -35,7 +90,7 @@
       "id": "4",
       "category": "Frontend",
       "name": "HTML/CSS",
-      "icon": "layers"
+      "icon": "globe"
     },
     {
       "id": "5",
@@ -46,29 +101,161 @@
     {
       "id": "6",
       "category": "Frontend",
-      "name": "Three.js",
-      "icon": "layers"
+      "name": "Next.js",
+      "icon": "server"
     },
     {
       "id": "7",
       "category": "Frontend",
       "name": "Framer Motion",
-      "icon": "layers"
+      "icon": "zap"
     },
     {
       "id": "8",
+      "category": "Languages",
+      "name": "Java",
+      "icon": "cpu"
+    },
+    {
+      "id": "9",
+      "category": "Languages",
+      "name": "Python",
+      "icon": "terminal"
+    },
+    {
+      "id": "10",
+      "category": "Languages",
+      "name": "C",
+      "icon": "command"
+    },
+    {
+      "id": "11",
+      "category": "Backend",
+      "name": "Node.js",
+      "icon": "server"
+    },
+    {
+      "id": "12",
+      "category": "Backend",
+      "name": "Firebase",
+      "icon": "database"
+    },
+    {
+      "id": "13",
+      "category": "Backend",
+      "name": "MySQL",
+      "icon": "database"
+    },
+    {
+      "id": "14",
+      "category": "AI/ML",
+      "name": "Machine Learning",
+      "icon": "brain"
+    },
+    {
+      "id": "15",
+      "category": "AI/ML",
+      "name": "Computer Vision",
+      "icon": "shield"
+    },
+    {
+      "id": "16",
+      "category": "Cloud",
+      "name": "AWS",
+      "icon": "cloud"
+    },
+    {
+      "id": "17",
       "category": "DevOps",
       "name": "Git",
       "icon": "git"
     },
     {
-      "id": "9",
+      "id": "18",
       "category": "Tools",
       "name": "Vite",
       "icon": "zap"
+    },
+    {
+      "id": "19",
+      "category": "Tools",
+      "name": "VS Code",
+      "icon": "code"
+    },
+    {
+      "id": "20",
+      "category": "Tools",
+      "name": "React Native",
+      "icon": "react"
     }
   ],
-  "experiences": [],
+  "experiences": [
+    {
+      "id": "1",
+      "company": "Caterpillar Inc.",
+      "role": "Software Engineer",
+      "period": "Aug 2025 - Present",
+      "description": "Promoted to Software Engineer after 2+ years as Associate Software Engineer. Working on enterprise software solutions at one of the world's leading heavy machinery manufacturers.",
+      "achievements": [
+        "Promoted from Associate Software Engineer to Software Engineer",
+        "3+ years of progressive growth within the organization",
+        "Contributing to enterprise-scale software solutions"
+      ],
+      "logo": "/cat logo.jpg"
+    },
+    {
+      "id": "2",
+      "company": "Caterpillar Inc.",
+      "role": "Associate Software Engineer",
+      "period": "Jul 2023 - Jul 2025",
+      "description": "Worked as an Associate Software Engineer building and maintaining software systems. Started as a College Intern in Jan 2023 and transitioned to a full-time role upon graduation.",
+      "achievements": [
+        "Transitioned from College Intern to full-time Associate Software Engineer",
+        "Developed and maintained enterprise software applications",
+        "Collaborated with cross-functional engineering teams"
+      ],
+      "logo": "/cat logo.jpg"
+    },
+    {
+      "id": "3",
+      "company": "Samsung R&D Institute India",
+      "role": "Project Intern",
+      "period": "Aug 2021 - Apr 2022",
+      "description": "Developed an ML model for application categorization using application resources with pandas framework. Used CNN and fastText to train and test the model with a hybrid approach combining images and text.",
+      "achievements": [
+        "Built hybrid CNN + fastText model for app categorization",
+        "Processed and analyzed application resources using Pandas",
+        "Combined image and text features for improved accuracy"
+      ],
+      "logo": "/prism_logo.png"
+    },
+    {
+      "id": "4",
+      "company": "Make A Difference (MAD)",
+      "role": "Transition Readiness Mentor",
+      "period": "Sep 2019 - Aug 2021",
+      "description": "Empowered young children in need of care and protection as a Transition Readiness Mentor. Helped volunteers work efficiently and resolved their concerns.",
+      "achievements": [
+        "Mentored underprivileged children for transition readiness",
+        "Supported and guided fellow volunteers",
+        "2 years of dedicated community service"
+      ],
+      "logo": "/make a difference.png"
+    },
+    {
+      "id": "5",
+      "company": "IT Association, PSG College of Technology",
+      "role": "Secretary",
+      "period": "Aug 2022 - Jun 2023",
+      "description": "Hosted many successful events for IT students and notable inter-disciplinary events. Successfully organised 'Techino' in KRIYA (National Symposium) and coordinated government school visits.",
+      "achievements": [
+        "Organised 'Techino' event in KRIYA National Symposium",
+        "Led inter-college and inter-department events",
+        "Coordinated government school outreach programs"
+      ],
+      "logo": "/ITA association.jpeg"
+    }
+  ],
   "pricingPlans": [],
   "testimonials": []
 }

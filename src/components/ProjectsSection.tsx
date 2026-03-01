@@ -79,20 +79,28 @@ export const ProjectsSection = () => {
                 height: "450px",
                 transformStyle: "preserve-3d",
                 backgroundColor: "#0e131f",
-                boxShadow: "0 -10px 80px 8px rgba(78, 99, 255, 0.2), 0 0 10px 0 rgba(0, 0, 0, 0.5)",
               }}
               initial={{ opacity: 0, y: 50, scale: 0.95 }}
-              animate={{ 
-                opacity: 1, 
-                y: isHovered ? -5 : 0, 
-                scale: isHovered ? 1.02 : 1 
-              }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, amount: 0.2 }}
               transition={{ 
                 type: "spring",
                 stiffness: 300,
                 damping: 25,
-                duration: 0.6, 
                 delay: index * 0.1 
+              }}
+              whileHover={{ 
+                y: -12,
+                scale: 1.04,
+                boxShadow: "0 -10px 80px 12px rgba(139, 92, 246, 0.35), 0 20px 40px -10px rgba(0, 0, 0, 0.6)",
+                transition: { 
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 25,
+                }
+              }}
+              animate={{
+                boxShadow: "0 -10px 80px 8px rgba(78, 99, 255, 0.2), 0 0 10px 0 rgba(0, 0, 0, 0.5)",
               }}
               onHoverStart={() => setHoveredProject(project.id)}
               onHoverEnd={() => setHoveredProject(null)}
@@ -149,7 +157,7 @@ export const ProjectsSection = () => {
                   filter: "blur(40px)",
                 }}
                 animate={{
-                  opacity: isHovered ? 0.8 : 0.6,
+                  opacity: isHovered ? 1 : 0.6,
                 }}
                 transition={{
                   duration: 0.4,
@@ -167,7 +175,7 @@ export const ProjectsSection = () => {
                   filter: "blur(45px)",
                 }}
                 animate={{
-                  opacity: isHovered ? 0.7 : 0.5,
+                  opacity: isHovered ? 1 : 0.5,
                 }}
                 transition={{
                   duration: 0.4,
@@ -216,7 +224,8 @@ export const ProjectsSection = () => {
                     boxShadow: isHovered
                       ? "0 8px 16px -2px rgba(0, 0, 0, 0.3), 0 4px 8px -1px rgba(0, 0, 0, 0.2), inset 2px 2px 5px rgba(255, 255, 255, 0.15), inset -2px -2px 5px rgba(0, 0, 0, 0.7)"
                       : "0 6px 12px -2px rgba(0, 0, 0, 0.25), 0 3px 6px -1px rgba(0, 0, 0, 0.15), inset 1px 1px 3px rgba(255, 255, 255, 0.12), inset -2px -2px 4px rgba(0, 0, 0, 0.5)",
-                    scale: isHovered ? 1.05 : 1,
+                    scale: isHovered ? 1.15 : 1,
+                    rotate: isHovered ? 12 : 0,
                   }}
                   transition={{
                     duration: 0.4,
@@ -335,6 +344,26 @@ export const ProjectsSection = () => {
                         strokeLinejoin="round"
                       />
                     </motion.svg>
+                  </motion.div>
+
+                  {/* Tech tags - slide up on hover */}
+                  <motion.div
+                    className="flex flex-wrap gap-2 mt-4"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{
+                      opacity: isHovered ? 1 : 0,
+                      y: isHovered ? 0 : 10,
+                    }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                  >
+                    {project.tags.slice(0, 4).map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-2 py-1 text-xs rounded-full bg-white/10 text-white/80 border border-white/10 backdrop-blur-sm"
+                      >
+                        {tag}
+                      </span>
+                    ))}
                   </motion.div>
                 </motion.div>
               </motion.div>

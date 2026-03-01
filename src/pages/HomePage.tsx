@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { SkillsSection } from '../components/SkillsSection';
+import { useStore } from '../store/useStore';
 
 // Lazy load ALL heavy components for better performance  
 const HeroSection = React.lazy(() => import('../components/HeroSection').then(module => ({ default: module.HeroSection })));
@@ -41,6 +42,8 @@ const pageVariants = {
 };
 
 const HomePage = () => {
+  const { sectionVisibility } = useStore();
+
   return (
     <motion.div
       initial="initial"
@@ -49,34 +52,48 @@ const HomePage = () => {
       variants={pageVariants}
       className="bg-black text-white overflow-hidden"
     >
-      <Suspense fallback={<SectionLoader />}>
-        <HeroSection />
-      </Suspense>
-      <SkillsSection />
+      {sectionVisibility.hero && (
+        <Suspense fallback={<SectionLoader />}>
+          <HeroSection />
+        </Suspense>
+      )}
+      {sectionVisibility.skills && <SkillsSection />}
       
-      <Suspense fallback={<SectionLoader />}>
-        <ProjectsSection />
-      </Suspense>
+      {sectionVisibility.projects && (
+        <Suspense fallback={<SectionLoader />}>
+          <ProjectsSection />
+        </Suspense>
+      )}
       
-      <Suspense fallback={<SectionLoader />}>
-        <ExperienceSection />
-      </Suspense>
+      {sectionVisibility.experience && (
+        <Suspense fallback={<SectionLoader />}>
+          <ExperienceSection />
+        </Suspense>
+      )}
       
-      <Suspense fallback={<SectionLoader />}>
-        <PricingSection />
-      </Suspense>
+      {sectionVisibility.pricing && (
+        <Suspense fallback={<SectionLoader />}>
+          <PricingSection />
+        </Suspense>
+      )}
       
-      <Suspense fallback={<SectionLoader />}>
-        <TestimonialsSection />
-      </Suspense>
+      {sectionVisibility.testimonials && (
+        <Suspense fallback={<SectionLoader />}>
+          <TestimonialsSection />
+        </Suspense>
+      )}
       
-      <Suspense fallback={<SectionLoader />}>
-        <ContactSection />
-      </Suspense>
+      {sectionVisibility.contact && (
+        <Suspense fallback={<SectionLoader />}>
+          <ContactSection />
+        </Suspense>
+      )}
       
-      <Suspense fallback={<SectionLoader />}>
-        <FooterSection />
-      </Suspense>
+      {sectionVisibility.footer && (
+        <Suspense fallback={<SectionLoader />}>
+          <FooterSection />
+        </Suspense>
+      )}
     </motion.div>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Shield, Lock } from 'lucide-react';
+import { LogOut, Shield, Lock, Eye } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { ExperienceManager } from '../components/admin/ExperienceManager';
 import { PricingManager } from '../components/admin/PricingManager';
@@ -19,7 +19,7 @@ const AdminLogin = ({ onLogin }: { onLogin: (email: string, password: string) =>
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onLogin(email, password);
-    setError('Invalid credentials. Try admin@example.com / admin');
+    setError('Invalid credentials.');
   };
 
   return (
@@ -126,8 +126,8 @@ const pageVariants = {
 
 const AdminPage = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<string>('experiences');
-  const { isAuthenticated, login, logout } = useStore();
+  const [activeTab, setActiveTab] = useState<string>('sections');
+  const { isAuthenticated, login, logout, sectionVisibility, toggleSection } = useStore();
 
   const handleLogin = (email: string, password: string) => {
     const success = login(email, password);
@@ -142,6 +142,7 @@ const AdminPage = () => {
   };
 
   const tabs = [
+    { id: 'sections', label: 'Sections', icon: <Eye size={18} /> },
     { id: 'experiences', label: 'Experience', icon: <Briefcase size={18} /> },
     { id: 'pricing', label: 'Pricing', icon: <DollarSign size={18} /> },
     { id: 'projects', label: 'Projects', icon: <Code size={18} /> },
@@ -206,6 +207,34 @@ const AdminPage = () => {
           animate={{ opacity: 1, y: 0 }}
           className="backdrop-blur-md bg-black/30 border border-[#00FF41]/20 rounded-lg p-8"
         >
+          {activeTab === 'sections' && (
+            <div>
+              <h2 className="text-2xl font-bold text-[#00FF41] mb-6">Section Visibility</h2>
+              <p className="text-gray-400 mb-6">Toggle sections on/off on the homepage.</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {(Object.keys(sectionVisibility) as Array<keyof typeof sectionVisibility>).map((section) => (
+                  <button
+                    key={section}
+                    onClick={() => toggleSection(section)}
+                    className={`flex items-center justify-between p-4 rounded-lg border transition-all ${
+                      sectionVisibility[section]
+                        ? 'bg-[#00FF41]/10 border-[#00FF41]/30 text-[#00FF41]'
+                        : 'bg-red-500/10 border-red-500/30 text-red-400'
+                    }`}
+                  >
+                    <span className="capitalize font-medium">{section}</span>
+                    <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                      sectionVisibility[section]
+                        ? 'bg-[#00FF41]/20 text-[#00FF41]'
+                        : 'bg-red-500/20 text-red-400'
+                    }`}>
+                      {sectionVisibility[section] ? 'VISIBLE' : 'HIDDEN'}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
           {activeTab === 'experiences' && <ExperienceManager />}
           {activeTab === 'pricing' && <PricingManager />}
           {activeTab === 'projects' && <ProjectsManager />}

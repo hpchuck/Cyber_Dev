@@ -220,17 +220,31 @@ export const HeroSection: React.FC = () => {
               animate="visible"
             >
               <div className="flex flex-wrap gap-6">
-                <a href="#projects">
+                <button
+                  onClick={() => {
+                    const el = document.getElementById('projects');
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                  }}
+                >
                   <ShimmerButton primary>
                     View Projects
                   </ShimmerButton>
-                </a>
+                </button>
                 
-                <a href="#contact">
+                <button
+                  onClick={() => {
+                    const el = document.getElementById('contact');
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                  }}
+                >
                   <ShimmerButton>
                     Contact Me
                   </ShimmerButton>
-                </a>
+                </button>
               </div>
             </motion.div>
           </div>

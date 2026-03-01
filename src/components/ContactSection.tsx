@@ -75,7 +75,7 @@ const buttonVariants = {
 };
 
 export const ContactSection = () => {
-  const { addToGlassCards, addToReveal } = useGSAPAnimations();
+  const { addToGlassCards } = useGSAPAnimations();
   const formRef = useRef<HTMLFormElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const contactInfoRef = useRef<HTMLDivElement>(null);
@@ -96,12 +96,9 @@ export const ContactSection = () => {
     // Don't add contact info card to glass cards to prevent interference with button
     // if (contactInfoRef.current) addToGlassCards(contactInfoRef.current);
     
-    // Add section title for reveal animation
-    if (sectionRef.current) {
-      const title = sectionRef.current.querySelector('h2');
-      if (title) addToReveal(title as HTMLElement);
-    }
-  }, [addToGlassCards, addToReveal]);
+    // NOTE: Don't add h2 to GSAP reveal - it conflicts with Framer Motion whileInView
+    // and bg-clip-text text-transparent, making headers invisible
+  }, [addToGlassCards]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
