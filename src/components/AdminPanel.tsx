@@ -18,7 +18,7 @@ const LoginForm = ({ onLogin }: { onLogin: (email: string, password: string) => 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onLogin(email, password);
-    setError('Invalid credentials. Try admin@example.com / admin');
+    setError('Invalid credentials. Please use your configured admin credentials');
   };
 
   return (

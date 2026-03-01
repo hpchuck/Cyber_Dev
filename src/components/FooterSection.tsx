@@ -5,10 +5,10 @@ import useGSAPAnimations from '../hooks/useGSAPAnimations';
 import { LazySplashCursor } from '@/components/lazy/LazySplashCursor';
 
 const socialLinks = [
-  { name: 'Github', icon: <Github className="w-5 h-5" />, url: 'https://github.com' },
-  { name: 'LinkedIn', icon: <Linkedin className="w-5 h-5" />, url: 'https://linkedin.com' },
-  { name: 'Twitter', icon: <Twitter className="w-5 h-5" />, url: 'https://twitter.com' },
-  { name: 'Email', icon: <Mail className="w-5 h-5" />, url: 'mailto:contact@example.com' },
+  { name: 'Github', icon: <Github className="w-5 h-5" />, url: 'https://github.com/hpchuck' },
+  { name: 'LinkedIn', icon: <Linkedin className="w-5 h-5" />, url: 'https://www.linkedin.com/in/hariprasath-tamilarasan-604774191/' },
+  { name: 'Twitter', icon: <Twitter className="w-5 h-5" />, url: 'https://x.com/hpchucky' },
+  { name: 'Email', icon: <Mail className="w-5 h-5" />, url: 'mailto:prasath123t@gmail.com' },
 ];
 
 const footerLinks = [

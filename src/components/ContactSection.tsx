@@ -215,7 +215,7 @@ export const ContactSection = () => {
                 </div>
                 <div>
                   <h4 className="text-gray-200 text-sm mb-1">Email</h4>
-                  <a href="mailto:contact@example.com" className="text-white hover:text-indigo-400 transition-colors duration-300">contact@example.com</a>
+                  <a href="mailto:prasath123t@gmail.com" className="text-white hover:text-indigo-400 transition-colors duration-300">prasath123t@gmail.com</a>
                 </div>
               </div>
               
@@ -234,16 +234,16 @@ export const ContactSection = () => {
                   <Phone className="w-5 h-5 text-gray-200 group-hover:text-pink-400 transition-colors duration-300" />
                 </div>
                 <div>
-                  <h4 className="text-gray-200 text-sm mb-1">Phone (Optional)</h4>
-                  <a href="tel:+1234567890" className="text-white hover:text-pink-400 transition-colors duration-300">+1 (234) 567-890</a>
+                  <h4 className="text-gray-200 text-sm mb-1">Phone</h4>
+                  <span className="text-white">Available on request</span>
                 </div>
               </div>
             </div>
 
             <div className="flex justify-center space-x-6 mb-6">
-              <SocialIcon href="https://github.com" icon={Github} label="GitHub" />
-              <SocialIcon href="https://linkedin.com" icon={Linkedin} label="LinkedIn" />
-              <SocialIcon href="https://twitter.com" icon={Twitter} label="Twitter" />
+              <SocialIcon href="https://github.com/hpchuck" icon={Github} label="GitHub" />
+              <SocialIcon href="https://www.linkedin.com/in/hariprasath-tamilarasan-604774191/" icon={Linkedin} label="LinkedIn" />
+              <SocialIcon href="https://x.com/hpchucky" icon={Twitter} label="Twitter" />
             </div>
 
             {/* Testimonial CTA */}
@@ -313,7 +313,7 @@ export const ContactSection = () => {
                 value={formState.email}
                 onChange={(e) => setFormState({ ...formState, email: e.target.value })}
                 className="form-input block w-full rounded-md bg-black/50 border border-gray-600 shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 sm:text-sm text-white placeholder-gray-400 transition-all duration-200 cursor-text"
-                placeholder="you@example.com"
+                placeholder="your.email@domain.com"
               />
             </div>
             <div>
