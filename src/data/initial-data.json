@@ -2,69 +2,69 @@
   "projects": [
     {
       "id": "1",
-      "title": "AI-Powered Analytics Dashboard",
-      "description": "Real-time analytics platform using machine learning for predictive insights and data visualization. Features include anomaly detection and automated reporting.",
-      "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80",
-      "tags": ["React", "TensorFlow.js", "Node.js", "GraphQL"],
-      "github": "https://github.com",
-      "live": "https://demo.com",
-      "category": "ai",
-      "techStack": ["React", "TypeScript", "TensorFlow.js", "Node.js", "GraphQL", "PostgreSQL"]
+      "title": "Clarity - AI Daily Planner",
+      "description": "AI-powered daily planner ecosystem with collaborative features. Monorepo with Next.js web app featuring glassmorphism UI, Node.js backend with AI scheduling, and React Native mobile app.",
+      "image": "https://images.unsplash.com/photo-1611224923853-80b023f02d71?auto=format&fit=crop&w=1200&q=80",
+      "tags": ["Next.js", "Node.js", "React Native", "AI"],
+      "github": "https://github.com/hpchuck/Clarity",
+      "live": "#",
+      "category": "web",
+      "techStack": ["Next.js", "TypeScript", "Node.js", "React Native", "Zustand", "Tailwind CSS"]
     },
     {
       "id": "2",
-      "title": "E-Commerce Platform",
-      "description": "Modern e-commerce solution with real-time inventory management, AI-powered product recommendations, and seamless payment integration.",
-      "image": "https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&w=1200&q=80",
-      "tags": ["Next.js", "Stripe", "Prisma", "PostgreSQL"],
-      "github": "https://github.com",
-      "live": "https://demo.com",
+      "title": "MintMorph - Smart Expense Tracker",
+      "description": "Modern AI-powered expense tracking application with intelligent transaction parsing, smart analytics, budget management, goal tracking, and a beautiful neumorphic design system.",
+      "image": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=80",
+      "tags": ["React", "TypeScript", "Firebase", "Chart.js"],
+      "github": "https://github.com/hpchuck/MintMorph",
+      "live": "#",
       "category": "web",
-      "techStack": ["Next.js", "TypeScript", "Stripe", "Prisma", "PostgreSQL", "Redis"]
+      "techStack": ["React", "TypeScript", "Firebase", "Tailwind CSS", "Chart.js", "Vite"]
     },
     {
       "id": "3",
-      "title": "Mobile Fitness App",
-      "description": "Cross-platform fitness tracking application with ML-powered workout recommendations and real-time performance analytics.",
-      "image": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1200&q=80",
-      "tags": ["React Native", "TensorFlow", "Firebase"],
-      "github": "https://github.com",
-      "live": "https://demo.com",
-      "category": "mobile",
-      "techStack": ["React Native", "TypeScript", "TensorFlow", "Firebase", "Redux"]
+      "title": "ML App Categorization",
+      "description": "Machine learning model for application categorization using app resources. Built a hybrid CNN + fastText approach combining image and text features for accurate classification at Samsung PRISM.",
+      "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=80",
+      "tags": ["Python", "CNN", "fastText", "Pandas"],
+      "github": "#",
+      "live": "#",
+      "category": "ai",
+      "techStack": ["Python", "CNN", "fastText", "Pandas", "TensorFlow"]
     },
     {
       "id": "4",
-      "title": "Blockchain Trading Platform",
-      "description": "Decentralized cryptocurrency trading platform with real-time market data, automated trading strategies, and secure wallet integration.",
-      "image": "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=1200&q=80",
-      "tags": ["Web3.js", "React", "Node.js"],
-      "github": "https://github.com",
-      "live": "https://demo.com",
-      "category": "web",
-      "techStack": ["React", "Web3.js", "Node.js", "Express", "MongoDB", "Redis"]
+      "title": "Collision Avoidance System",
+      "description": "Computer vision model to detect and avoid collisions, simulated in Unity. Designed for automated vehicles that travel safely while efficiently managing resources.",
+      "image": "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?auto=format&fit=crop&w=1200&q=80",
+      "tags": ["Python", "Computer Vision", "Unity", "ML"],
+      "github": "#",
+      "live": "#",
+      "category": "ai",
+      "techStack": ["Python", "OpenCV", "Unity", "Machine Learning"]
     },
     {
       "id": "5",
-      "title": "AR Navigation App",
-      "description": "Augmented reality navigation system for indoor and outdoor use, featuring real-time object detection and path optimization.",
-      "image": "https://images.unsplash.com/photo-1527168027773-0cc890c4f42e?auto=format&fit=crop&w=1200&q=80",
-      "tags": ["Unity", "ARKit", "CoreML"],
-      "github": "https://github.com",
-      "live": "https://demo.com",
-      "category": "mobile",
-      "techStack": ["Unity", "ARKit", "CoreML", "Swift", "Python", "TensorFlow"]
+      "title": "Library Management System",
+      "description": "Full-featured library management application with book tracking, user management, borrowing system, and search functionality built with Java and MySQL.",
+      "image": "https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1200&q=80",
+      "tags": ["Java", "MySQL", "CRUD", "Desktop"],
+      "github": "#",
+      "live": "#",
+      "category": "other",
+      "techStack": ["Java", "MySQL", "JDBC", "Swing"]
     },
     {
       "id": "6",
-      "title": "AI Content Generator",
-      "description": "Advanced content generation platform using GPT-3 for creating marketing copy, blog posts, and social media content with SEO optimization.",
-      "image": "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=80",
-      "tags": ["OpenAI", "React", "Python"],
-      "github": "https://github.com",
-      "live": "https://demo.com",
-      "category": "ai",
-      "techStack": ["React", "Python", "OpenAI", "FastAPI", "PostgreSQL", "Redis"]
+      "title": "AWS VPC & EC2 Infrastructure",
+      "description": "Cloud infrastructure setup with Virtual Private Cloud, EC2 instances, security groups, and networking configurations for scalable application deployment.",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80",
+      "tags": ["AWS", "VPC", "EC2", "Cloud"],
+      "github": "#",
+      "live": "#",
+      "category": "other",
+      "techStack": ["AWS", "VPC", "EC2", "IAM", "CloudFormation"]
     }
   ],
   "skills": [
@@ -77,257 +77,185 @@
     {
       "id": "2",
       "category": "Frontend",
-      "name": "Next.js",
+      "name": "TypeScript",
       "icon": "code"
     },
     {
       "id": "3",
       "category": "Frontend",
-      "name": "TypeScript",
+      "name": "JavaScript",
       "icon": "code"
     },
     {
       "id": "4",
+      "category": "Frontend",
+      "name": "HTML/CSS",
+      "icon": "globe"
+    },
+    {
+      "id": "5",
       "category": "Frontend",
       "name": "Tailwind CSS",
       "icon": "layers"
     },
     {
-      "id": "5",
-      "category": "Backend",
-      "name": "Node.js",
-      "icon": "nodejs"
-    },
-    {
       "id": "6",
-      "category": "Backend",
-      "name": "Python",
-      "icon": "code"
+      "category": "Frontend",
+      "name": "Next.js",
+      "icon": "server"
     },
     {
       "id": "7",
-      "category": "Backend",
-      "name": "FastAPI",
+      "category": "Frontend",
+      "name": "Framer Motion",
       "icon": "zap"
     },
     {
       "id": "8",
-      "category": "Backend",
-      "name": "GraphQL",
-      "icon": "webhook"
+      "category": "Languages",
+      "name": "Java",
+      "icon": "cpu"
     },
     {
       "id": "9",
-      "category": "AI/ML",
-      "name": "TensorFlow",
-      "icon": "brain"
+      "category": "Languages",
+      "name": "Python",
+      "icon": "terminal"
     },
     {
       "id": "10",
-      "category": "AI/ML",
-      "name": "PyTorch",
-      "icon": "brain"
+      "category": "Languages",
+      "name": "C",
+      "icon": "command"
     },
     {
       "id": "11",
-      "category": "AI/ML",
-      "name": "Computer Vision",
-      "icon": "brain"
+      "category": "Backend",
+      "name": "Node.js",
+      "icon": "server"
     },
     {
       "id": "12",
-      "category": "AI/ML",
-      "name": "NLP",
-      "icon": "brain"
+      "category": "Backend",
+      "name": "Firebase",
+      "icon": "database"
     },
     {
       "id": "13",
-      "category": "DevOps",
-      "name": "Docker",
-      "icon": "container"
+      "category": "Backend",
+      "name": "MySQL",
+      "icon": "database"
     },
     {
       "id": "14",
-      "category": "DevOps",
-      "name": "Kubernetes",
-      "icon": "container"
+      "category": "AI/ML",
+      "name": "Machine Learning",
+      "icon": "brain"
     },
     {
       "id": "15",
-      "category": "DevOps",
-      "name": "CI/CD",
-      "icon": "git"
+      "category": "AI/ML",
+      "name": "Computer Vision",
+      "icon": "shield"
     },
     {
       "id": "16",
-      "category": "DevOps",
+      "category": "Cloud",
       "name": "AWS",
       "icon": "cloud"
     },
     {
       "id": "17",
-      "category": "Database",
-      "name": "PostgreSQL",
-      "icon": "database"
+      "category": "DevOps",
+      "name": "Git",
+      "icon": "git"
     },
     {
       "id": "18",
-      "category": "Database",
-      "name": "MongoDB",
-      "icon": "database"
+      "category": "Tools",
+      "name": "Vite",
+      "icon": "zap"
     },
     {
       "id": "19",
-      "category": "Database",
-      "name": "Redis",
-      "icon": "database"
+      "category": "Tools",
+      "name": "VS Code",
+      "icon": "code"
     },
     {
       "id": "20",
-      "category": "Database",
-      "name": "Elasticsearch",
-      "icon": "database"
+      "category": "Tools",
+      "name": "React Native",
+      "icon": "react"
     }
   ],
   "experiences": [
     {
       "id": "1",
-      "company": "TechCorp Inc.",
-      "role": "Senior Full Stack Developer",
-      "period": "2022 - Present",
-      "description": "Leading development of enterprise-scale applications",
+      "company": "Caterpillar Inc.",
+      "role": "Software Engineer",
+      "period": "Aug 2025 - Present",
+      "description": "Promoted to Software Engineer after 2+ years as Associate Software Engineer. Working on enterprise software solutions at one of the world's leading heavy machinery manufacturers.",
       "achievements": [
-        "Reduced system latency by 40%",
-        "Implemented ML-powered recommendation engine",
-        "Led team of 5 developers"
+        "Promoted from Associate Software Engineer to Software Engineer",
+        "3+ years of progressive growth within the organization",
+        "Contributing to enterprise-scale software solutions"
       ],
-      "logo": "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=100&q=80"
+      "logo": "/cat logo.jpg"
     },
     {
       "id": "2",
-      "company": "AI Solutions Ltd",
-      "role": "Machine Learning Engineer",
-      "period": "2020 - 2022",
-      "description": "Developed and deployed ML models for various business solutions",
+      "company": "Caterpillar Inc.",
+      "role": "Associate Software Engineer",
+      "period": "Jul 2023 - Jul 2025",
+      "description": "Worked as an Associate Software Engineer building and maintaining software systems. Started as a College Intern in Jan 2023 and transitioned to a full-time role upon graduation.",
       "achievements": [
-        "Built computer vision system for quality control",
-        "Optimized ML pipeline reducing inference time by 60%",
-        "Published 2 research papers"
+        "Transitioned from College Intern to full-time Associate Software Engineer",
+        "Developed and maintained enterprise software applications",
+        "Collaborated with cross-functional engineering teams"
       ],
-      "logo": "https://images.unsplash.com/photo-1535378917042-10a22c95931a?auto=format&fit=crop&w=100&q=80"
+      "logo": "/cat logo.jpg"
     },
     {
       "id": "3",
-      "company": "WebTech Startup",
-      "role": "Frontend Developer",
-      "period": "2018 - 2020",
-      "description": "Built modern web applications using React and related technologies",
+      "company": "Samsung R&D Institute India",
+      "role": "Project Intern",
+      "period": "Aug 2021 - Apr 2022",
+      "description": "Developed an ML model for application categorization using application resources with pandas framework. Used CNN and fastText to train and test the model with a hybrid approach combining images and text.",
       "achievements": [
-        "Improved application performance by 70%",
-        "Implemented CI/CD pipeline",
-        "Mentored junior developers"
+        "Built hybrid CNN + fastText model for app categorization",
+        "Processed and analyzed application resources using Pandas",
+        "Combined image and text features for improved accuracy"
       ],
-      "logo": "https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=100&q=80"
-    }
-  ],
-  "pricingPlans": [
-    {
-      "id": "1",
-      "name": "Basic",
-      "price": "₹1,49,999",
-      "category": "Web Development",
-      "features": [
-        "Single Page Website",
-        "Responsive Design",
-        "Basic SEO",
-        "Contact Form",
-        "5 Content Sections"
-      ],
-      "recommended": false
-    },
-    {
-      "id": "2",
-      "name": "Professional",
-      "price": "₹3,99,999",
-      "category": "Web Development",
-      "features": [
-        "Multi-page Website",
-        "Advanced SEO",
-        "CMS Integration",
-        "E-commerce Features",
-        "Custom Animations",
-        "Performance Optimization"
-      ],
-      "recommended": true
-    },
-    {
-      "id": "3",
-      "name": "Enterprise",
-      "price": "₹7,99,999",
-      "category": "Web Development",
-      "features": [
-        "Custom Web Application",
-        "AI Integration",
-        "Load Balancing",
-        "24/7 Support",
-        "Advanced Analytics",
-        "Custom API Development",
-        "Security Auditing"
-      ],
-      "recommended": false
+      "logo": "/prism_logo.png"
     },
     {
       "id": "4",
-      "name": "Starter",
-      "price": "₹2,99,999",
-      "category": "Mobile Development",
-      "features": [
-        "Native Mobile App",
-        "Basic Features",
-        "Push Notifications",
-        "User Authentication",
-        "Analytics Integration"
+      "company": "Make A Difference (MAD)",
+      "role": "Transition Readiness Mentor",
+      "period": "Sep 2019 - Aug 2021",
+      "description": "Empowered young children in need of care and protection as a Transition Readiness Mentor. Helped volunteers work efficiently and resolved their concerns.",
+      "achievements": [
+        "Mentored underprivileged children for transition readiness",
+        "Supported and guided fellow volunteers",
+        "2 years of dedicated community service"
       ],
-      "recommended": false
+      "logo": "/make a difference.png"
     },
     {
       "id": "5",
-      "name": "Advanced",
-      "price": "₹5,99,999",
-      "category": "Mobile Development",
-      "features": [
-        "Cross-platform App",
-        "Advanced Features",
-        "Offline Support",
-        "Custom API Integration",
-        "Advanced Analytics",
-        "Social Media Integration"
+      "company": "IT Association, PSG College of Technology",
+      "role": "Secretary",
+      "period": "Aug 2022 - Jun 2023",
+      "description": "Hosted many successful events for IT students and notable inter-disciplinary events. Successfully organised 'Techino' in KRIYA (National Symposium) and coordinated government school visits.",
+      "achievements": [
+        "Organised 'Techino' event in KRIYA National Symposium",
+        "Led inter-college and inter-department events",
+        "Coordinated government school outreach programs"
       ],
-      "recommended": true
+      "logo": "/ITA association.jpeg"
     }
   ],
-  "testimonials": [
-    {
-      "id": "1",
-      "name": "John Smith",
-      "role": "CTO",
-      "company": "Tech Innovators",
-      "content": "Working with this team was an absolute pleasure. Their technical expertise and attention to detail transformed our vision into reality. The AI integration exceeded our expectations!",
-      "rating": 5,
-      "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&q=80",
-      "approved": true,
-      "createdAt": "2024-01-15T10:30:00Z"
-    },
-    {
-      "id": "2",
-      "name": "Sarah Johnson",
-      "role": "Product Manager",
-      "company": "Digital Solutions Inc",
-      "content": "The team delivered our e-commerce platform ahead of schedule. The attention to user experience and performance optimization resulted in a 40% increase in conversions.",
-      "rating": 5,
-      "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80",
-      "approved": true,
-      "createdAt": "2024-01-20T14:15:00Z"
-    }
-  ]
+  "pricingPlans": [],
+  "testimonials": []
 }

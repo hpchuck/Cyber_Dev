@@ -1,343 +1,356 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Terminal, Brain, Code, Server, Shield, Zap } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ChevronDown, Circle } from 'lucide-react';
+import { ShimmerButton } from './MicroAnimations';
+import { LazySplineScene } from './lazy/LazySplineScene';
+import { cn } from '../lib/utils';
 
-interface HeroSectionProps {
-  isAudioEnabled: boolean;
+// ElegantShape component for floating geometric shapes
+function ElegantShape({
+    className,
+    delay = 0,
+    width = 400,
+    height = 100,
+    rotate = 0,
+    gradient = "from-white/[0.08]",
+}: {
+    className?: string;
+    delay?: number;
+    width?: number;
+    height?: number;
+    rotate?: number;
+    gradient?: string;
+}) {
+    return (
+        <motion.div
+            initial={{
+                opacity: 0,
+                y: -150,
+                rotate: rotate - 15,
+            }}
+            animate={{
+                opacity: 1,
+                y: 0,
+                rotate: rotate,
+            }}
+            transition={{
+                duration: 2.4,
+                delay,
+                ease: [0.23, 0.86, 0.39, 0.96],
+                opacity: { duration: 1.2 },
+            }}
+            className={cn("absolute", className)}
+        >
+            <motion.div
+                animate={{
+                    y: [0, 15, 0],
+                }}
+                transition={{
+                    duration: 12,
+                    repeat: Number.POSITIVE_INFINITY,
+                    ease: "easeInOut",
+                }}
+                style={{
+                    width,
+                    height,
+                }}
+                className="relative"
+            >
+                <div
+                    className={cn(
+                        "absolute inset-0 rounded-full",
+                        "bg-gradient-to-r to-transparent",
+                        gradient,
+                        "backdrop-blur-[2px] border-2 border-white/[0.15]",
+                        "shadow-[0_8px_32px_0_rgba(255,255,255,0.1)]",
+                        "after:absolute after:inset-0 after:rounded-full",
+                        "after:bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.2),transparent_70%)]"
+                    )}
+                />
+            </motion.div>
+        </motion.div>
+    );
 }
 
-const TypewriterText = ({ text, delay = 100, className = '' }: { text: string; delay?: number; className?: string }) => {
-  const [displayText, setDisplayText] = useState('');
-  const [isComplete, setIsComplete] = useState(false);
+export const HeroSection: React.FC = () => {
+  const heroRef = useRef<HTMLDivElement>(null);
+  const [hasScrolled, setHasScrolled] = useState(false);
 
+  // Handle scroll detection for the call-to-action fade-in
   useEffect(() => {
-    let currentIndex = 0;
-    setIsComplete(false);
-
-    const interval = setInterval(() => {
-      if (currentIndex <= text.length) {
-        setDisplayText(text.slice(0, currentIndex));
-        currentIndex++;
-      } else {
-        setIsComplete(true);
-        clearInterval(interval);
-      }
-    }, delay);
-
-    return () => clearInterval(interval);
-  }, [text, delay]);
-
-  return (
-    <span className={`typewriter ${className} ${isComplete ? 'completed' : ''}`}>
-      {displayText}
-    </span>
-  );
-};
-
-const GlitchText = ({ text, className = '' }: { text: string; className?: string }) => {
-  const [displayText, setDisplayText] = useState(text);
-  const originalText = useRef(text);
-  
-  useEffect(() => {
-    const glitchChars = '!@#$%^&*()_+-=[]{}|;:,.<>?/~`';
-    let intervalId: NodeJS.Timeout;
-    
-    const glitch = () => {
-      const shouldGlitch = Math.random() < 0.3;
-      
-      if (shouldGlitch) {
-        const textArray = originalText.current.split('');
-        const randomIndex = Math.floor(Math.random() * textArray.length);
-        const randomChar = glitchChars[Math.floor(Math.random() * glitchChars.length)];
-        textArray[randomIndex] = randomChar;
-        setDisplayText(textArray.join(''));
-        
-        // Reset back to original text after a short delay
-        setTimeout(() => {
-          setDisplayText(originalText.current);
-        }, 100);
+    const handleScroll = () => {
+      const scrollTop = window.pageYOffset;
+      if (scrollTop > 50 && !hasScrolled) {
+        setHasScrolled(true);
+      } else if (scrollTop <= 50 && hasScrolled) {
+        setHasScrolled(false);
       }
     };
     
-    intervalId = setInterval(glitch, 150);
-    return () => clearInterval(intervalId);
-  }, []);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [hasScrolled]);
 
-  return (
-    <span className={`glitch-text ${className}`} data-text={displayText}>
-      {displayText}
-    </span>
-  );
-};
-
-const MatrixRain = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()';
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const fontSize = 14;
-    const columns = Math.floor(canvas.width / fontSize);
-    const drops: number[] = new Array(columns).fill(1);
-    const glitchChance = 0.03;
-    const glitchDrops = new Set<number>();
-
-    const draw = () => {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.font = `${fontSize}px monospace`;
-
-      for (let i = 0; i < drops.length; i++) {
-        const isGlitch = Math.random() < glitchChance;
-        if (isGlitch) glitchDrops.add(i);
-        if (!isGlitch && glitchDrops.has(i)) glitchDrops.delete(i);
-
-        const text = chars[Math.floor(Math.random() * chars.length)];
-        
-        if (glitchDrops.has(i)) {
-          // Glitch effect
-          ctx.fillStyle = '#FF1493';
-          ctx.fillText(text, i * fontSize, (drops[i] * fontSize) + 2);
-          ctx.fillStyle = '#00FFFF';
-          ctx.fillText(text, i * fontSize - 2, (drops[i] * fontSize));
-        } else {
-          ctx.fillStyle = '#00FF41';
-          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        }
-
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
-      }
-    };
-
-    const interval = setInterval(draw, 33);
-    const resizeHandler = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    window.addEventListener('resize', resizeHandler);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener('resize', resizeHandler);
-    };
-  }, []);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      className="absolute inset-0 pointer-events-none opacity-30"
-      style={{ mixBlendMode: 'screen' }}
-    />
-  );
-};
-
-const CyberRain = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  
-  useEffect(() => {
-    if (!containerRef.current) return;
-    
-    const container = containerRef.current;
-    const drops: HTMLDivElement[] = [];
-    const numDrops = 50;
-    
-    for (let i = 0; i < numDrops; i++) {
-      const drop = document.createElement('div');
-      drop.className = 'rain-drop';
-      drop.style.left = `${Math.random() * 100}%`;
-      drop.style.animationDuration = `${Math.random() * 1 + 1}s`;
-      drop.style.animationDelay = `${Math.random() * 2}s`;
-      drops.push(drop);
-      container.appendChild(drop);
-    }
-    
-    return () => {
-      drops.forEach(drop => drop.remove());
-    };
-  }, []);
-  
-  return <div ref={containerRef} className="cyber-rain" />;
-};
-
-export const HeroSection: React.FC<HeroSectionProps> = ({ isAudioEnabled }) => {
-  const [activeRole, setActiveRole] = useState(0);
-  const roles = [
-    "Full Stack Developer",
-    "ML Engineer",
-    "Software Architect"
-  ];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveRole((prev) => (prev + 1) % roles.length);
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const buttonVariants: { [key: string]: any } = {
-    initial: { scale: 1 },
-    hover: { 
-      scale: 1.05,
-      transition: { 
-        duration: 0.2,
-        repeat: Infinity,
-        repeatType: "reverse" as const
-      }
-    },
-    tap: { scale: 0.95 }
-  };
-
-  const titleVariants = {
-    initial: { opacity: 1 },
-    animate: {
-      opacity: [1, 0.8, 1],
-      x: [0, 2, -2, 0],
+  const fadeUpVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
       transition: {
-        duration: 0.2,
-        repeat: Infinity,
-        repeatType: "reverse" as const,
-        ease: "linear"
-      }
-    }
+        duration: 1,
+        delay: 0.5 + i * 0.2,
+        ease: [0.25, 0.4, 0.25, 1],
+      },
+    }),
   };
 
   return (
-    <motion.section 
-      className="relative h-screen flex flex-col items-center justify-center overflow-hidden"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
+    <section 
+      id="home" 
+      ref={heroRef}
+      className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-[#030303] pt-16 sm:pt-8 md:pt-0"
     >
-      <MatrixRain />
-      <CyberRain />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,65,0.1)_0%,transparent_70%)]" />
-      <div className="absolute inset-0 bg-grid-pattern opacity-10" />
-      
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.2, ease: "easeOut" }}
-        className="text-center relative z-10 px-4"
-      >
-        <motion.h1 
-          className="text-4xl md:text-8xl font-bold font-mono mb-8 tracking-tighter"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <motion.div
-            variants={titleVariants}
-            initial="initial"
-            animate="animate"
-            className="inline-block"
-          >
-            <GlitchText 
-              text="CYBER_"
-              className="gradient-animate inline-block mr-2"
-            />
-            <GlitchText 
-              text="DEV"
-              className="gradient-animate inline-block"
-            />
-          </motion.div>
-        </motion.h1>
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/[0.05] via-transparent to-rose-500/[0.05] blur-3xl" />
 
-        <div className="h-12 mb-8">
-          <AnimatePresence mode="wait">
+      {/* Floating geometric shapes */}
+      <div className="absolute inset-0 overflow-hidden">
+        <ElegantShape
+          delay={0.3}
+          width={600}
+          height={140}
+          rotate={12}
+          gradient="from-indigo-500/[0.15]"
+          className="left-[-10%] md:left-[-5%] top-[15%] md:top-[20%]"
+        />
+
+        <ElegantShape
+          delay={0.5}
+          width={500}
+          height={120}
+          rotate={-15}
+          gradient="from-rose-500/[0.15]"
+          className="right-[-5%] md:right-[0%] top-[70%] md:top-[75%]"
+        />
+
+        <ElegantShape
+          delay={0.4}
+          width={300}
+          height={80}
+          rotate={-8}
+          gradient="from-violet-500/[0.15]"
+          className="left-[5%] md:left-[10%] bottom-[5%] md:bottom-[10%]"
+        />
+
+        <ElegantShape
+          delay={0.6}
+          width={200}
+          height={60}
+          rotate={20}
+          gradient="from-amber-500/[0.15]"
+          className="right-[15%] md:right-[20%] top-[10%] md:top-[15%]"
+        />
+
+        <ElegantShape
+          delay={0.7}
+          width={150}
+          height={40}
+          rotate={-25}
+          gradient="from-cyan-500/[0.15]"
+          className="left-[20%] md:left-[25%] top-[5%] md:top-[10%]"
+        />
+      </div>
+
+      {/* Main content container */}
+      <div className="relative z-10 container mx-auto px-4 md:px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-screen">
+          {/* Left side - Text content */}
+          <div className="flex flex-col justify-center">
             <motion.div
-              key={activeRole}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
-              className="text-xl md:text-2xl font-mono"
+              custom={0}
+              variants={fadeUpVariants}
+              initial="hidden"
+              animate="visible"
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08] mb-8 md:mb-12 w-fit"
             >
-              <TypewriterText 
-                text={roles[activeRole]}
-                className="gradient-animate"
-                delay={50}
+              <Circle className="h-2 w-2 fill-rose-500/80" />
+              <span className="text-sm text-white/60 tracking-wide">
+                Available for new projects
+              </span>
+            </motion.div>
+
+            <motion.div
+              custom={1}
+              variants={fadeUpVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-6 md:mb-8 tracking-tight">
+                <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80">
+                  Cyber
+                </span>
+                <br />
+                <span
+                  className={cn(
+                    "bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300"
+                  )}
+                >
+                  Dev
+                </span>
+              </h1>
+            </motion.div>
+
+            <motion.div
+              custom={2}
+              variants={fadeUpVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <p className="text-base sm:text-lg md:text-xl text-white/40 mb-8 leading-relaxed font-light tracking-wide max-w-xl">
+                Crafting exceptional digital experiences through
+                innovative design and cutting-edge technology.
+              </p>
+            </motion.div>
+
+            {/* Custom buttons */}
+            <motion.div
+              custom={3}
+              variants={fadeUpVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <div className="flex flex-wrap gap-6">
+                <button
+                  onClick={() => {
+                    const el = document.getElementById('projects');
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                  }}
+                >
+                  <ShimmerButton primary>
+                    View Projects
+                  </ShimmerButton>
+                </button>
+                
+                <button
+                  onClick={() => {
+                    const el = document.getElementById('contact');
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                  }}
+                >
+                  <ShimmerButton>
+                    Contact Me
+                  </ShimmerButton>
+                </button>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Right side - 3D Robot */}
+          <div className="flex-1 relative h-[600px] lg:h-[700px]">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, rotateY: -30 }}
+              animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+              transition={{ duration: 1.2, delay: 0.8, ease: "easeOut" }}
+              className="w-full h-full relative"
+            >
+              <LazySplineScene 
+                scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+                className="w-full h-full"
               />
             </motion.div>
-          </AnimatePresence>
+          </div>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-          className="text-lg md:text-xl font-mono mb-12"
-        >
-          <TypewriterText 
-            text="Building the future with code and AI"
-            className="gradient-animate"
-            delay={30}
+      </div>
+      
+      {/* Ambient floating elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Tech code fragments */}
+        {[...Array(3)].map((_, i) => (
+          <motion.div
+            key={`code-${i}`}
+            className="absolute text-indigo-500/20 text-xs md:text-sm font-mono"
+            style={{
+              left: `${15 + i * 25}%`,
+              top: `${20 + i * 15}%`,
+              maxWidth: '150px',
+              userSelect: 'none',
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ 
+              opacity: [0.2, 0.5, 0.2],
+              y: [0, -10, 0],
+            }}
+            transition={{
+              duration: 5 + i * 2,
+              repeat: Infinity,
+              delay: i * 0.5,
+            }}
+          >
+            {`const create${i === 0 ? 'Future' : i === 1 ? 'Innovation' : 'Vision'} = () => {
+  return transform(ideas)
+    .with(technology)
+    .into(reality);
+}`}
+          </motion.div>
+        ))}
+        
+        {/* Glowing orbs */}
+        {[...Array(5)].map((_, i) => (
+          <motion.div
+            key={`orb-${i}`}
+            className="absolute w-3 h-3 rounded-full"
+            style={{
+              background: `radial-gradient(circle, ${
+                i % 3 === 0 ? 'rgba(99,102,241,0.6)' : 
+                i % 3 === 1 ? 'rgba(139,92,246,0.6)' : 
+                'rgba(236,72,153,0.6)'
+              } 0%, transparent 70%)`,
+              boxShadow: `0 0 15px ${
+                i % 3 === 0 ? 'rgba(99,102,241,0.8)' : 
+                i % 3 === 1 ? 'rgba(139,92,246,0.8)' : 
+                'rgba(236,72,153,0.8)'
+              }`,
+              left: `${10 + i * 20}%`,
+              top: `${15 + (i % 3) * 20}%`,
+            }}
+            animate={{
+              x: [0, i % 2 === 0 ? 50 : -50, 0],
+              y: [0, i % 2 === 0 ? 30 : -30, 0],
+              scale: [1, 1.2, 1],
+              opacity: [0.6, 0.8, 0.6],
+            }}
+            transition={{
+              duration: 10 + i * 2,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
           />
-        </motion.div>
-
-        <motion.div 
-          className="flex flex-wrap justify-center gap-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2 }}
-        >
-          <motion.button
-            onClick={() => scrollToSection('projects')}
-            className="btn-glitch px-8 py-3 bg-gradient-to-r from-[#00FF41]/10 via-[#00FFFF]/10 to-[#FF1493]/10 backdrop-blur-sm border border-[#00FF41]/30 rounded-lg font-mono text-[#00FF41] relative overflow-hidden group"
-            variants={buttonVariants}
-            initial="initial"
-            whileHover="hover"
-          >
-            <span className="relative z-10">View Projects</span>
-          </motion.button>
-
-          <motion.button
-            onClick={() => scrollToSection('contact')}
-            className="btn-glitch px-8 py-3 bg-gradient-to-r from-[#00FF41] via-[#00FFFF] to-[#FF1493] rounded-lg font-mono text-black relative overflow-hidden group"
-            variants={buttonVariants}
-            initial="initial"
-            whileHover="hover"
-          >
-            <span className="relative z-10">Connect</span>
-          </motion.button>
-        </motion.div>
-      </motion.div>
-
+        ))}
+      </div>
+      
+      {/* Scroll indicator */}
       <motion.div
-        animate={{
-          y: [0, 10, 0],
-        }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-[#00FF41]/60"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: hasScrolled ? 0 : 1 }}
+        transition={{ duration: 0.5 }}
+        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center z-20"
       >
-        <div className="w-6 h-6 border-2 border-[#00FF41]/60 rounded-full flex items-center justify-center">
-          ▼
-        </div>
+        <p className="text-gray-400 text-sm mb-2">Scroll to explore</p>
+        <motion.div
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          className="bg-black/30 backdrop-blur-md p-2 rounded-full border border-indigo-500/20"
+        >
+          <ChevronDown className="w-5 h-5 text-indigo-400" />
+        </motion.div>
       </motion.div>
-    </motion.section>
+
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#030303] via-transparent to-[#030303]/80 pointer-events-none" />
+    </section>
   );
 };

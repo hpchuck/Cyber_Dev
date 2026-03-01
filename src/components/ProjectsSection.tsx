@@ -1,285 +1,392 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Github, ExternalLink, Star, Code, Brain, Globe, Info } from 'lucide-react';
+import { useRef, useState } from 'react';
 import { useStore } from '../store/useStore';
+import { motion } from 'framer-motion';
+
+// 3D Star icon components based on project category
+const ProjectIcon = ({ category }: { category: string }) => {
+  const iconStyle = "w-6 h-6 text-white drop-shadow-lg";
+  
+  switch (category) {
+    case 'ai':
+      return (
+        <svg className={iconStyle} viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2L13.5 8.5L20 10L13.5 11.5L12 18L10.5 11.5L4 10L10.5 8.5L12 2Z" />
+          <circle cx="12" cy="10" r="2" fill="rgba(255,255,255,0.3)" />
+        </svg>
+      );
+    case 'web':
+      return (
+        <svg className={iconStyle} viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2L14.5 7H20L16 10.5L17.5 16L12 13L6.5 16L8 10.5L4 7H9.5L12 2Z" />
+          <path d="M12 6L13.5 9H16.5L14.5 11L15.5 14L12 12L8.5 14L9.5 11L7.5 9H10.5L12 6Z" fill="rgba(255,255,255,0.2)" />
+        </svg>
+      );
+    case 'mobile':
+      return (
+        <svg className={iconStyle} viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2L15 8L21 9L16 13L18 20L12 17L6 20L8 13L3 9L9 8L12 2Z" />
+          <polygon points="12,5 13.5,8.5 17,9 14.5,11.5 15.5,15 12,13 8.5,15 9.5,11.5 7,9 10.5,8.5" fill="rgba(255,255,255,0.3)" />
+        </svg>
+      );
+    default:
+      return (
+        <svg className={iconStyle} viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2L13.4 8.6L20 10L13.4 11.4L12 18L10.6 11.4L4 10L10.6 8.6L12 2Z" />
+        </svg>
+      );
+  }
+};
 
 export const ProjectsSection = () => {
   const { projects } = useStore();
-  const [selectedCategory, setSelectedCategory] = useState<'all' | 'web' | 'mobile' | 'ai'>('all');
-  const [hoveredId, setHoveredId] = useState<string | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
-  const [flippedCards, setFlippedCards] = useState<Set<string>>(new Set());
+  const sectionRef = useRef<HTMLElement>(null);
+  const [hoveredProject, setHoveredProject] = useState<string | null>(null);
 
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  const categories = [
-    { id: 'all', label: 'All Projects', icon: Globe },
-    { id: 'web', label: 'Web Apps', icon: Code },
-    { id: 'mobile', label: 'Mobile Apps', icon: Star },
-    { id: 'ai', label: 'AI/ML Projects', icon: Brain }
-  ];
-
-  const filteredProjects = selectedCategory === 'all'
-    ? projects
-    : projects.filter(p => p.category === selectedCategory);
-
-  const defaultImage = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80';
-
-  const toggleCard = (projectId: string) => {
-    setFlippedCards(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(projectId)) {
-        newSet.delete(projectId);
-      } else {
-        newSet.add(projectId);
-      }
-      return newSet;
-    });
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.05,
-        duration: 0.5
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { 
-      opacity: 0,
-      y: 20,
-      scale: 0.95
-    },
-    visible: { 
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 15
-      }
-    }
-  };
+  const filteredProjects = projects;
 
   return (
-    <section id="projects" className="py-20 px-4 md:px-8 relative overflow-hidden">
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        className="max-w-7xl mx-auto relative z-10"
-      >
-        <h2 className="section-heading text-[#00FF41] mb-12">
-          PROJECTS_SHOWCASE
-        </h2>
-
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          <div className="w-full max-w-4xl flex flex-wrap justify-center gap-4 px-4 py-6 bg-black/80 backdrop-blur-lg rounded-2xl border border-[#00FF41]/20 shadow-lg shadow-[#00FF41]/10">
-            {categories.map(({ id, label, icon: Icon }) => (
-              <motion.button
-                key={id}
-                onClick={() => setSelectedCategory(id as any)}
-                className={`group relative overflow-hidden rounded-xl transition-all flex items-center gap-3 px-6 py-3 ${
-                  selectedCategory === id 
-                    ? 'bg-gradient-to-r from-[#00FF41] to-[#00FFFF] text-black' 
-                    : 'bg-black/30 border border-[#00FF41]/20 text-[#00FF41] hover:border-[#00FF41]/60'
-                }`}
-                whileHover={!isMobile ? { 
-                  scale: 1.05,
-                  transition: { duration: 0.2 }
-                } : {}}
-                whileTap={!isMobile ? { scale: 0.95 } : {}}
-              >
-                <motion.div
-                  className="absolute inset-0 bg-[#00FF41]/10"
-                  initial={false}
-                  animate={selectedCategory === id ? {
-                    scale: [1, 1.2, 1],
-                    opacity: [0.2, 0.3, 0.2]
-                  } : { opacity: 0 }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                />
-                
-                <div className="relative z-10 flex items-center gap-2">
-                  <Icon className={`w-5 h-5 ${
-                    selectedCategory === id ? 'animate-pulse' : ''
-                  }`} />
-                  <span className="relative whitespace-nowrap">
-                    {label}
-                    {selectedCategory === id && (
-                      <motion.div
-                        className="absolute bottom-0 left-0 h-0.5 bg-black w-full"
-                        layoutId="underline"
-                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                      />
-                    )}
-                  </span>
-                </div>
-
-                <motion.div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  style={{
-                    background: 'radial-gradient(circle at center, rgba(0,255,65,0.2) 0%, transparent 70%)'
-                  }}
-                />
-              </motion.button>
-            ))}
-          </div>
-        </div>
-
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative"
+    <section 
+      id="projects" 
+      ref={sectionRef}
+      className="py-20 px-4 md:px-8 relative overflow-hidden bg-black min-h-screen flex flex-col items-center justify-center"
+    >        <motion.h2 
+          className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-center mb-4 tracking-tight"
+          initial={{ y: 30, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true, amount: 0.3 }}
         >
-          {filteredProjects.map((project) => (
+          <span className="bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80">
+            Featured
+          </span>
+          <br />
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-white/90 to-rose-300">
+            Projects
+          </span>
+        </motion.h2>
+      <p className="text-center text-gray-300 max-w-3xl mx-auto mb-16 text-lg md:text-xl font-medium" style={{ fontFamily: 'var(--font-primary)' }}>
+        Explore a curated selection of my work, showcasing innovative and effective solutions.
+      </p>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        {filteredProjects.map((project, index) => {
+          const isHovered = hoveredProject === project.id;
+          return (
             <motion.div
               key={project.id}
-              variants={itemVariants}
-              className="relative h-[400px] perspective-1000 group"
-              onMouseEnter={() => !isMobile && toggleCard(project.id)}
-              onMouseLeave={() => !isMobile && toggleCard(project.id)}
-              onClick={() => isMobile && toggleCard(project.id)}
+              className="relative rounded-[32px] overflow-hidden mx-auto cursor-pointer"
+              style={{
+                width: "360px",
+                height: "450px",
+                transformStyle: "preserve-3d",
+                backgroundColor: "#0e131f",
+              }}
+              initial={{ opacity: 0, y: 50, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ 
+                type: "spring",
+                stiffness: 300,
+                damping: 25,
+                delay: index * 0.1 
+              }}
+              whileHover={{ 
+                y: -12,
+                scale: 1.04,
+                boxShadow: "0 -10px 80px 12px rgba(139, 92, 246, 0.35), 0 20px 40px -10px rgba(0, 0, 0, 0.6)",
+                transition: { 
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 25,
+                }
+              }}
+              animate={{
+                boxShadow: "0 -10px 80px 8px rgba(78, 99, 255, 0.2), 0 0 10px 0 rgba(0, 0, 0, 0.5)",
+              }}
+              onHoverStart={() => setHoveredProject(project.id)}
+              onHoverEnd={() => setHoveredProject(null)}
+              onClick={() => {
+                const url = project.live || project.github;
+                if (url && url !== '#') {
+                  window.open(url, '_blank', 'noopener,noreferrer');
+                }
+              }}
             >
+              {/* Subtle glass reflection overlay */}
               <motion.div
-                className="w-full h-full transition-all duration-500 [transform-style:preserve-3d] relative group-hover:shadow-[0_0_20px_rgba(0,255,65,0.3)]"
-                animate={{ 
-                  rotateY: flippedCards.has(project.id) ? 180 : 0,
-                  transition: { duration: 0.6, ease: "easeInOut" }
+                className="absolute inset-0 z-35 pointer-events-none rounded-[32px]"
+                style={{
+                  background: "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 80%, rgba(255,255,255,0.05) 100%)",
+                  backdropFilter: "blur(2px)",
+                }}
+                animate={{
+                  opacity: isHovered ? 0.7 : 0.5,
+                }}
+                transition={{
+                  duration: 0.4,
+                  ease: "easeOut"
+                }}
+              />
+
+              {/* Dark background with black gradient */}
+              <div
+                className="absolute inset-0 z-0 rounded-[32px]"
+                style={{
+                  background: "linear-gradient(180deg, #000000 0%, #000000 70%)",
+                }}
+              />
+
+              {/* Noise texture overlay */}
+              <motion.div
+                className="absolute inset-0 opacity-30 mix-blend-overlay z-10 rounded-[32px]"
+                style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+                }}
+                animate={{
+                  opacity: isHovered ? 0.4 : 0.3,
+                }}
+              />
+
+              {/* Purple/blue glow effect */}
+              <motion.div
+                className="absolute bottom-0 left-0 right-0 h-2/3 z-20 rounded-[32px]"
+                style={{
+                  background: `
+                    radial-gradient(ellipse at bottom right, rgba(172, 92, 255, 0.5) -10%, rgba(79, 70, 229, 0) 70%),
+                    radial-gradient(ellipse at bottom left, rgba(56, 189, 248, 0.5) -10%, rgba(79, 70, 229, 0) 70%)
+                  `,
+                  filter: "blur(40px)",
+                }}
+                animate={{
+                  opacity: isHovered ? 1 : 0.6,
+                }}
+                transition={{
+                  duration: 0.4,
+                  ease: "easeOut"
+                }}
+              />
+
+              {/* Central purple glow */}
+              <motion.div
+                className="absolute bottom-0 left-0 right-0 h-2/3 z-21 rounded-[32px]"
+                style={{
+                  background: `
+                    radial-gradient(circle at bottom center, rgba(161, 58, 229, 0.6) -20%, rgba(79, 70, 229, 0) 60%)
+                  `,
+                  filter: "blur(45px)",
+                }}
+                animate={{
+                  opacity: isHovered ? 1 : 0.5,
+                }}
+                transition={{
+                  duration: 0.4,
+                  ease: "easeOut"
+                }}
+              />
+
+              {/* Enhanced bottom border glow */}
+              <motion.div
+                className="absolute bottom-0 left-0 right-0 h-[2px] z-25 rounded-[32px]"
+                style={{
+                  background: "linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.7) 50%, rgba(255, 255, 255, 0.05) 100%)",
+                }}
+                animate={{
+                  boxShadow: isHovered
+                    ? "0 0 20px 4px rgba(172, 92, 255, 0.9), 0 0 30px 6px rgba(138, 58, 185, 0.7), 0 0 40px 8px rgba(56, 189, 248, 0.5)"
+                    : "0 0 15px 3px rgba(172, 92, 255, 0.8), 0 0 25px 5px rgba(138, 58, 185, 0.6), 0 0 35px 7px rgba(56, 189, 248, 0.4)",
+                  opacity: isHovered ? 1 : 0.9,
+                }}
+                transition={{
+                  duration: 0.4,
+                  ease: "easeOut"
+                }}
+              />
+
+              {/* Card content */}
+              <motion.div
+                className="relative flex flex-col h-full p-8 z-40"
+                animate={{
+                  z: isHovered ? 5 : 2,
+                }}
+                transition={{
+                  duration: 0.4,
+                  ease: "easeOut"
                 }}
               >
-                {/* Front of card */}
-                <div className="absolute inset-0 w-full h-full [backface-visibility:hidden]">
-                  <motion.div 
-                    className="h-full rounded-lg border border-[#00FF41]/20 group-hover:border-[#00FF41]/40 transition-all duration-300 overflow-hidden bg-black/40 backdrop-blur-sm relative"
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <div 
-                      className="absolute inset-0 bg-cover bg-center"
-                      style={{ 
-                        backgroundImage: `url(${project.image || defaultImage})`,
-                        filter: 'brightness(0.7) contrast(1.2)'
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80 backdrop-blur-[2px]" />
-                    
-                    <div className="absolute inset-0 flex flex-col justify-end p-6">
-                      <motion.h3 
-                        className="text-2xl font-bold text-white mb-3 relative"
-                        initial={false}
-                        animate={{ 
-                          textShadow: flippedCards.has(project.id) ? 'none' : '0 0 10px rgba(0,255,65,0.5)'
-                        }}
-                      >
-                        {project.title}
-                      </motion.h3>
-                      
-                      <p className="text-gray-200 text-sm mb-3 line-clamp-3">
-                        {project.description}
-                      </p>
-                      
-                      <div className="flex flex-wrap gap-2">
-                        {project.techStack?.slice(0, 3).map(tech => (
-                          <span
-                            key={tech}
-                            className="px-2 py-1 text-xs rounded-full bg-[#00FF41]/20 text-[#00FF41] font-mono border border-[#00FF41]/30 backdrop-blur-sm"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                        {project.techStack?.length > 3 && (
-                          <span className="px-2 py-1 text-xs rounded-full bg-[#00FF41]/20 text-[#00FF41] font-mono border border-[#00FF41]/30 backdrop-blur-sm">
-                            +{project.techStack.length - 3}
-                          </span>
-                        )}
-                      </div>
-
-                      {isMobile && (
-                        <motion.div
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          className="absolute top-4 right-4 flex items-center gap-2 bg-black/60 backdrop-blur-sm px-3 py-1.5 rounded-full border border-[#00FF41]/30"
-                        >
-                          <Info className="w-4 h-4 text-[#00FF41]" />
-                          <span className="text-xs text-[#00FF41]">Tap to view details</span>
-                        </motion.div>
-                      )}
-                    </div>
-                  </motion.div>
-                </div>
-
-                {/* Back of card */}
-                <div 
-                  className="absolute inset-0 w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] bg-black/90 border border-[#00FF41]/20 rounded-lg p-6 backdrop-blur-md"
+                {/* Icon circle with shadow */}
+                <motion.div
+                  className="w-12 h-12 rounded-full flex items-center justify-center mb-6"
+                  style={{
+                    background: "linear-gradient(225deg, #171c2c 0%, #121624 100%)",
+                    position: "relative",
+                    overflow: "hidden"
+                  }}
+                  animate={{
+                    boxShadow: isHovered
+                      ? "0 8px 16px -2px rgba(0, 0, 0, 0.3), 0 4px 8px -1px rgba(0, 0, 0, 0.2), inset 2px 2px 5px rgba(255, 255, 255, 0.15), inset -2px -2px 5px rgba(0, 0, 0, 0.7)"
+                      : "0 6px 12px -2px rgba(0, 0, 0, 0.25), 0 3px 6px -1px rgba(0, 0, 0, 0.15), inset 1px 1px 3px rgba(255, 255, 255, 0.12), inset -2px -2px 4px rgba(0, 0, 0, 0.5)",
+                    scale: isHovered ? 1.15 : 1,
+                    rotate: isHovered ? 12 : 0,
+                  }}
+                  transition={{
+                    duration: 0.4,
+                    ease: "easeOut"
+                  }}
                 >
-                  <div className="h-full flex flex-col">
-                    <h3 className="text-xl font-bold gradient-text mb-3">{project.title}</h3>
-                    <p className="text-gray-300 text-sm mb-4 overflow-y-auto scrollable-content pr-2 flex-grow">
-                      {project.description}
-                    </p>
-                    
-                    <div className="space-y-4">
-                      <div className="flex flex-wrap gap-2">
-                        {project.techStack?.map(tech => (
-                          <span
-                            key={tech}
-                            className="px-2 py-1 text-xs rounded-full bg-[#00FF41]/10 text-[#00FF41] font-mono border border-[#00FF41]/30"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                      
-                      <div className="flex gap-3">
-                        <motion.a
-                          href={project.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 btn-glitch flex items-center justify-center gap-2 relative overflow-hidden group/btn"
-                          whileHover={!isMobile ? { scale: 1.02 } : {}}
-                          whileTap={!isMobile ? { scale: 0.98 } : {}}
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <Github className="w-4 h-4 relative z-10" />
-                          <span className="relative z-10 text-sm">Code</span>
-                        </motion.a>
-                        <motion.a
-                          href={project.live}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1 btn-glitch flex items-center justify-center gap-2 relative overflow-hidden group/btn"
-                          whileHover={!isMobile ? { scale: 1.02 } : {}}
-                          whileTap={!isMobile ? { scale: 0.98 } : {}}
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <ExternalLink className="w-4 h-4 relative z-10" />
-                          <span className="relative z-10 text-sm">Demo</span>
-                        </motion.a>
-                      </div>
+                  {/* Top-left highlight for realistic lighting */}
+                  <div
+                    className="absolute top-0 left-0 w-2/3 h-2/3 opacity-40"
+                    style={{
+                      background: "radial-gradient(circle at top left, rgba(255, 255, 255, 0.5), transparent 80%)",
+                      pointerEvents: "none",
+                      filter: "blur(10px)"
+                    }}
+                  />
+
+                  {/* Bottom shadow for depth */}
+                  <div
+                    className="absolute bottom-0 left-0 w-full h-1/2 opacity-50"
+                    style={{
+                      background: "linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent)",
+                      pointerEvents: "none",
+                      backdropFilter: "blur(3px)"
+                    }}
+                  />
+
+                  {/* Icon */}
+                  <div className="flex items-center justify-center w-full h-full relative z-10">
+                    <div className="transform hover:rotate-12 transition-transform duration-300">
+                      <ProjectIcon category={project.category} />
                     </div>
                   </div>
-                </div>
+                </motion.div>
+
+                {/* Content positioning */}
+                <motion.div
+                  className="mb-auto"
+                  animate={{
+                    z: isHovered ? 5 : 2,
+                  }}
+                  transition={{
+                    duration: 0.4,
+                    ease: "easeOut"
+                  }}
+                >
+                  <motion.h3
+                    className="text-2xl font-medium text-white mb-3"
+                    style={{
+                      letterSpacing: "-0.01em",
+                      lineHeight: 1.2,
+                      fontFamily: 'var(--font-primary)'
+                    }}
+                    animate={{
+                      textShadow: isHovered ? "0 2px 4px rgba(0,0,0,0.2)" : "none",
+                    }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {project.title}
+                  </motion.h3>
+
+                  <motion.p
+                    className="text-sm mb-6 text-gray-300"
+                    style={{
+                      lineHeight: 1.5,
+                      fontWeight: 350,
+                      fontFamily: 'var(--font-primary)'
+                    }}
+                    animate={{
+                      opacity: isHovered ? 0.9 : 0.8,
+                    }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {project.description}
+                  </motion.p>
+
+                  {/* Visit Project Button */}
+                  <motion.div
+                    className="inline-flex items-center text-white text-sm font-medium group cursor-pointer"
+                    style={{ fontFamily: 'var(--font-primary)' }}
+                    animate={{
+                      opacity: isHovered ? 1 : 0.9,
+                    }}
+                    whileHover={{
+                      filter: "drop-shadow(0 0 5px rgba(255, 255, 255, 0.5))"
+                    }}
+                    transition={{ duration: 0.3 }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const url = project.live || project.github;
+                      if (url && url !== '#') {
+                        window.open(url, '_blank', 'noopener,noreferrer');
+                      }
+                    }}
+                  >
+                    Visit Project
+                    <motion.svg
+                      className="ml-1 w-4 h-4"
+                      width="8"
+                      height="8"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      animate={{
+                        x: isHovered ? 4 : 0
+                      }}
+                      transition={{
+                        duration: 0.6,
+                        ease: "easeOut"
+                      }}
+                    >
+                      <path
+                        d="M1 8H15M15 8L8 1M15 8L8 15"
+                        stroke="white"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </motion.svg>
+                  </motion.div>
+
+                  {/* Tech tags - slide up on hover */}
+                  <motion.div
+                    className="flex flex-wrap gap-2 mt-4"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{
+                      opacity: isHovered ? 1 : 0,
+                      y: isHovered ? 0 : 10,
+                    }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                  >
+                    {project.tags.slice(0, 4).map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-2 py-1 text-xs rounded-full bg-white/10 text-white/80 border border-white/10 backdrop-blur-sm"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </motion.div>
+                </motion.div>
               </motion.div>
+
+              {/* Shimmer effect on hover */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent z-25 rounded-[32px]"
+                initial={{ x: '-100%', skewX: -15 }}
+                animate={isHovered ? { 
+                  x: '100%',
+                  transition: { 
+                    duration: 0.8, 
+                    ease: "easeInOut"
+                  }
+                } : { x: '-100%' }}
+              />
             </motion.div>
-          ))}
-        </motion.div>
-      </motion.div>
+          );
+        })}
+      </div>
+      {/* Optimized background gradients */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.08)_0%,transparent_70%)] z-0" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(79,70,229,0.05)_0%,transparent_60%)] z-0" />
     </section>
   );
 };

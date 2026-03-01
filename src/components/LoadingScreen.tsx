@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, Lock, Server, Database, Cpu, Cloud, Volume2, VolumeX, Terminal } from 'lucide-react';
+import { Lock, Cpu, Volume2, VolumeX, Terminal, DownloadCloud, Loader, CheckCircle2 } from 'lucide-react';
 import { useStore } from '../store/useStore';
 
 const steps = [
-  { text: 'Initializing system...', icon: <Cpu className="w-4 h-4 text-[#00FF41]" /> },
-  { text: 'Loading assets...', icon: <Server className="w-4 h-4 text-[#00FF41]" /> },
-  { text: 'Establishing secure connection...', icon: <Lock className="w-4 h-4 text-[#00FF41]" /> },
-  { text: 'System ready', icon: <Shield className="w-4 h-4 text-[#00FF41]" /> }
+  { text: 'Initializing system...', icon: <Cpu className="w-4 h-4" /> },
+  { text: 'Loading assets...', icon: <DownloadCloud className="w-4 h-4" /> },
+  { text: 'Establishing secure connection...', icon: <Lock className="w-4 h-4" /> },
+  { text: 'System ready', icon: <CheckCircle2 className="w-4 h-4" /> }
 ];
 
 interface LoadingScreenProps {
@@ -57,32 +57,41 @@ export const LoadingScreen = ({ progress = 0, onComplete }: LoadingScreenProps) 
       <motion.div
         initial={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-black z-50 flex items-center justify-center font-mono"
+        className="fixed inset-0 bg-primary z-50 flex items-center justify-center font-mono"
       >
         {/* Background Effects */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,65,0.1)_0%,transparent_70%)]" />
-        <div className="absolute inset-0 bg-grid-pattern opacity-10" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent,rgba(0,0,0,0.8)_50%,transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.1)_0%,transparent_70%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(236,72,153,0.05)_0%,transparent_70%)]" />
         
-        {/* Matrix-like rain effect */}
+        {/* Particle effect */}
         <div className="absolute inset-0 overflow-hidden opacity-20">
-          {Array.from({ length: 10 }).map((_, i) => (
+          {Array.from({ length: 15 }).map((_, i) => (
             <motion.div
               key={i}
-              className="absolute top-0 text-[#00FF41] text-xs"
-              initial={{ y: -100 }}
-              animate={{ y: '100vh' }}
+              className="absolute text-accent1 text-opacity-30 text-xs"
+              initial={{ 
+                y: -20,
+                x: Math.random() * window.innerWidth,
+                opacity: 0 
+              }}
+              animate={{ 
+                y: window.innerHeight + 20,
+                opacity: [0, 1, 0],
+              }}
               transition={{
-                duration: 2 + Math.random() * 3,
+                duration: 3 + Math.random() * 5,
                 repeat: Infinity,
                 ease: "linear",
-                delay: Math.random() * 2
+                delay: Math.random() * 2,
+                opacity: {
+                  duration: 3 + Math.random() * 5,
+                  times: [0, 0.1, 1]
+                }
               }}
-              style={{ left: `${i * 10}%` }}
             >
-              {Array.from({ length: 10 }).map((_, j) => (
-                <div key={j} className="my-2">
-                  {Math.random().toString(36).charAt(2)}
+              {Array.from({ length: 1 }).map((_, j) => (
+                <div key={j} className="text-base md:text-xl opacity-30">
+                  {["0", "1", "+", "-", "*", "/", "&", "|", "<", ">"][Math.floor(Math.random() * 10)]}
                 </div>
               ))}
             </motion.div>
@@ -96,15 +105,15 @@ export const LoadingScreen = ({ progress = 0, onComplete }: LoadingScreenProps) 
           transition={{ duration: 0.5 }}
           className="relative w-full max-w-lg mx-4"
         >
-          <div className="terminal-window backdrop-blur-md bg-black/80 border border-[#00FF41]/30 rounded-lg overflow-hidden shadow-[0_0_20px_rgba(0,255,65,0.2)]">
+          <div className="glass-card rounded-lg overflow-hidden shadow-[0_0_30px_rgba(99,102,241,0.2)]">
             {/* Terminal Header */}
-            <div className="bg-black/90 px-4 py-2 flex items-center justify-between border-b border-[#00FF41]/20">
+            <div className="bg-secondary/90 px-4 py-2 flex items-center justify-between border-b border-accent1/20">
               <div className="flex gap-2">
                 <div className="w-3 h-3 rounded-full bg-red-500" />
                 <div className="w-3 h-3 rounded-full bg-yellow-500" />
                 <div className="w-3 h-3 rounded-full bg-green-500" />
               </div>
-              <div className="flex items-center gap-2 text-[#00FF41]">
+              <div className="flex items-center gap-2 text-accent1">
                 <Terminal className="w-4 h-4" />
                 <span className="text-sm">SYSTEM_INITIALIZATION</span>
               </div>
@@ -115,19 +124,20 @@ export const LoadingScreen = ({ progress = 0, onComplete }: LoadingScreenProps) 
             <div className="p-6 space-y-6">
               {/* Progress Section */}
               <div className="space-y-3">
-                <div className="flex items-center justify-center gap-2 text-[#00FF41]">
+                <div className="flex items-center justify-center gap-3">
                   <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                    className="text-accent2"
                   >
-                    <Cloud className="w-5 h-5" />
+                    <Loader className="w-5 h-5" />
                   </motion.div>
-                  <span className="text-lg font-bold">{Math.round(progress)}%</span>
+                  <span className="text-lg font-bold gradient-text">{Math.round(progress)}%</span>
                 </div>
                 
-                <div className="h-2 bg-black/50 rounded-full border border-[#00FF41]/30 overflow-hidden">
+                <div className="h-2 bg-tertiary rounded-full overflow-hidden">
                   <motion.div
-                    className="h-full bg-gradient-to-r from-[#00FF41] via-[#00FFFF] to-[#00FF41]"
+                    className="h-full bg-gradient-to-r from-accent1 via-accent2 to-accent3 background-animate"
                     initial={{ width: 0 }}
                     animate={{ width: `${progress}%` }}
                     transition={{ duration: 0.3 }}
@@ -137,41 +147,45 @@ export const LoadingScreen = ({ progress = 0, onComplete }: LoadingScreenProps) 
 
               {/* Steps Section */}
               <div className="space-y-3">
-                {steps.map((step, index) => (
-                  <motion.div
-                    key={step.text}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ 
-                      opacity: progress > (index * 25) ? 1 : 0.3,
-                      x: progress > (index * 25) ? 0 : -20
-                    }}
-                    className="flex items-center gap-3 bg-black/30 rounded-lg p-3 border border-[#00FF41]/10"
-                  >
+                {steps.map((step, index) => {
+                  const isActive = progress > (index * 25);
+                  return (
                     <motion.div
-                      animate={progress > (index * 25) ? {
-                        scale: [1, 1.2, 1],
-                        opacity: [0.5, 1, 0.5]
-                      } : {}}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: "easeInOut"
+                      key={step.text}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ 
+                        opacity: isActive ? 1 : 0.3,
+                        x: isActive ? 0 : -20
                       }}
+                      className={`flex items-center gap-3 ${isActive ? 'glass-card' : 'bg-tertiary/30'} rounded-lg p-3`}
                     >
-                      {step.icon}
-                    </motion.div>
-                    <span className="text-[#00FF41] text-sm flex-1">
-                      {step.text}
-                    </span>
-                    {progress > (index * 25) && (
                       <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        className="w-2 h-2 bg-[#00FF41] rounded-full"
-                      />
-                    )}
-                  </motion.div>
-                ))}
+                        className={isActive ? 'text-accent2' : 'text-light/30'}
+                        animate={isActive ? {
+                          scale: [1, 1.2, 1],
+                          opacity: [0.5, 1, 0.5]
+                        } : {}}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }}
+                      >
+                        {step.icon}
+                      </motion.div>
+                      <span className={`${isActive ? 'text-light' : 'text-light/30'} text-sm flex-1`}>
+                        {step.text}
+                      </span>
+                      {isActive && (
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          className="w-2 h-2 bg-accent1 rounded-full"
+                        />
+                      )}
+                    </motion.div>
+                  );
+                })}
               </div>
 
               {/* Audio Prompt */}
@@ -181,14 +195,14 @@ export const LoadingScreen = ({ progress = 0, onComplete }: LoadingScreenProps) 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
-                    className="space-y-4 pt-4 border-t border-[#00FF41]/20"
+                    className="space-y-4 pt-4 border-t border-accent1/20"
                   >
                     <div className="text-center space-y-2">
-                      <h3 className="text-[#00FF41] text-lg font-bold">Audio Experience</h3>
-                      <p className="text-[#00FF41]/70 text-sm">
+                      <h3 className="text-accent1 text-lg font-bold">Audio Experience</h3>
+                      <p className="text-light/70 text-sm">
                         Enable immersive sound effects?
                       </p>
-                      <p className="text-[#00FF41]/50 text-xs">
+                      <p className="text-light/50 text-xs">
                         Auto-enabling in {skipTimer} seconds...
                       </p>
                     </div>
@@ -198,7 +212,7 @@ export const LoadingScreen = ({ progress = 0, onComplete }: LoadingScreenProps) 
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => handleAudioChoice(true)}
-                        className="flex items-center gap-2 px-6 py-2 bg-[#00FF41] text-black rounded-lg font-medium transition-colors hover:bg-[#00FF41]/90"
+                        className="glass-button flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-accent1 to-accent2 text-light rounded-lg font-medium"
                       >
                         <Volume2 className="w-4 h-4" />
                         Enable
@@ -207,7 +221,7 @@ export const LoadingScreen = ({ progress = 0, onComplete }: LoadingScreenProps) 
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => handleAudioChoice(false)}
-                        className="flex items-center gap-2 px-6 py-2 bg-black/50 text-[#00FF41] border border-[#00FF41]/30 rounded-lg font-medium transition-colors hover:bg-black/70"
+                        className="flex items-center gap-2 px-6 py-2 bg-tertiary text-light border border-accent1/30 rounded-lg font-medium transition-colors hover:bg-tertiary/70"
                       >
                         <VolumeX className="w-4 h-4" />
                         Skip
