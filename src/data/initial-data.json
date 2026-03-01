@@ -256,6 +256,110 @@
       "logo": "/ITA association.jpeg"
     }
   ],
-  "pricingPlans": [],
-  "testimonials": []
+  "pricingPlans": [
+    {
+      "id": "1",
+      "name": "Basic",
+      "price": "499",
+      "category": "Web Development",
+      "features": [
+        "Single-page responsive website",
+        "Basic SEO setup",
+        "Contact form integration",
+        "Up to 5 content sections",
+        "1 month support"
+      ],
+      "recommended": false
+    },
+    {
+      "id": "2",
+      "name": "Professional",
+      "price": "1299",
+      "category": "Web Development",
+      "features": [
+        "Multi-page responsive website",
+        "Advanced SEO optimization",
+        "CMS integration",
+        "Custom animations and transitions",
+        "Performance optimization",
+        "2 months support"
+      ],
+      "recommended": true
+    },
+    {
+      "id": "3",
+      "name": "Enterprise",
+      "price": "2999",
+      "category": "Web Development",
+      "features": [
+        "Custom web application development",
+        "Scalable architecture planning",
+        "API integrations",
+        "Security hardening",
+        "Monitoring and analytics setup",
+        "3 months priority support"
+      ],
+      "recommended": false
+    },
+    {
+      "id": "4",
+      "name": "Starter",
+      "price": "899",
+      "category": "Mobile Development",
+      "features": [
+        "MVP mobile app setup",
+        "Core feature implementation",
+        "Authentication and onboarding",
+        "Push notifications",
+        "Store-ready build"
+      ],
+      "recommended": false
+    },
+    {
+      "id": "5",
+      "name": "Advanced",
+      "price": "1899",
+      "category": "Mobile Development",
+      "features": [
+        "Cross-platform app development",
+        "Advanced state and API handling",
+        "Offline support",
+        "Analytics and crash reporting",
+        "Play Store and App Store launch support"
+      ],
+      "recommended": true
+    }
+  ],
+  "testimonials": [
+    {
+      "id": "1",
+      "name": "Arun K",
+      "role": "Founder",
+      "company": "TechNest Labs",
+      "content": "Hariprasath delivered our product website with strong performance and clean UX. Communication was clear, timelines were met, and the final quality exceeded expectations.",
+      "rating": 5,
+      "approved": true,
+      "createdAt": "2026-01-15T10:00:00.000Z"
+    },
+    {
+      "id": "2",
+      "name": "Nivetha S",
+      "role": "Product Manager",
+      "company": "MintMorph",
+      "content": "Great ownership from planning to deployment. The implementation quality, responsiveness, and attention to edge cases made the release smooth.",
+      "rating": 5,
+      "approved": true,
+      "createdAt": "2026-01-20T10:00:00.000Z"
+    },
+    {
+      "id": "3",
+      "name": "Pradeep R",
+      "role": "Engineering Lead",
+      "company": "Clarity",
+      "content": "Reliable full-stack execution with a strong product sense. Features were delivered with thoughtful architecture and solid UI polish.",
+      "rating": 5,
+      "approved": true,
+      "createdAt": "2026-01-28T10:00:00.000Z"
+    }
+  ]
 }
