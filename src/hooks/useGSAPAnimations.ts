@@ -62,9 +62,11 @@ export const useGSAPAnimations = () => {
   };
 
   // Setup 3D hover effect on cards
-  const setup3DHoverEffect = (cards: HTMLElement[]) => {
+  const setup3DHoverEffect = (cards: HTMLElement[]): (() => void) => {
+    const handlers: Array<{ card: HTMLElement; mousemove: (e: MouseEvent) => void; mouseleave: () => void }> = [];
+
     cards.forEach(card => {
-      card.addEventListener('mousemove', (e) => {
+      const handleMouseMove = (e: MouseEvent) => {
         const bounds = card.getBoundingClientRect();
         const mouseX = e.clientX;
         const mouseY = e.clientY;
@@ -88,9 +90,9 @@ export const useGSAPAnimations = () => {
           ease: 'power1.out',
           duration: 0.2
         });
-      });
+      };
 
-      card.addEventListener('mouseleave', () => {
+      const handleMouseLeave = () => {
         gsap.to(card, {
           rotationX: 0,
           rotationY: 0,
@@ -99,8 +101,19 @@ export const useGSAPAnimations = () => {
           ease: 'power1.out',
           duration: 0.5
         });
-      });
+      };
+
+      card.addEventListener('mousemove', handleMouseMove);
+      card.addEventListener('mouseleave', handleMouseLeave);
+      handlers.push({ card, mousemove: handleMouseMove, mouseleave: handleMouseLeave });
     });
+
+    return () => {
+      handlers.forEach(({ card, mousemove, mouseleave }) => {
+        card.removeEventListener('mousemove', mousemove);
+        card.removeEventListener('mouseleave', mouseleave);
+      });
+    };
   };
 
   // Hero section animations
@@ -276,13 +289,15 @@ export const useGSAPAnimations = () => {
       animate3DText(animationRefs.text3DElements.current);
     }
     
+    let cleanupHoverEffects: (() => void) | undefined;
     if (animationRefs.glassCards.current.length > 0) {
-      setup3DHoverEffect(animationRefs.glassCards.current);
+      cleanupHoverEffects = setup3DHoverEffect(animationRefs.glassCards.current);
     }
     
     // Cleanup
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      cleanupHoverEffects?.();
     };
   }, []);
 

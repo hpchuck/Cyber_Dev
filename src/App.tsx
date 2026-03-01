@@ -50,7 +50,7 @@ function App() {
     };
 
     // Only enable in development mode
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
       window.addEventListener('keydown', handleKeyDown);
       return () => window.removeEventListener('keydown', handleKeyDown);
     }
@@ -76,7 +76,7 @@ function App() {
       {!isMobile && <CustomCursor />}
       
       {/* Performance Monitor (Development only) */}
-      {process.env.NODE_ENV === 'development' && (
+      {import.meta.env.DEV && (
         <PerformanceMonitor 
           isVisible={showPerformanceMonitor} 
           onClose={() => setShowPerformanceMonitor(false)} 

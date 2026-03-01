@@ -144,7 +144,7 @@ class Analytics {
     }
 
     // Log important metrics to console in development
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
       console.log(`📊 Performance Metric: ${name} = ${value.toFixed(2)}ms`);
     }
   }
@@ -167,7 +167,7 @@ class Analytics {
     }
 
     // Log interactions in development
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
       console.log(`🖱️ User Interaction: ${type} on ${element}`);
     }
   }

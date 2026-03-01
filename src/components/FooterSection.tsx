@@ -4,7 +4,7 @@ import { Github, Linkedin, Twitter, Mail, ExternalLink, Code, Heart } from 'luci
 import { LazySplashCursor } from '@/components/lazy/LazySplashCursor';
 
 const socialLinks = [
-  { name: 'Github', icon: <Github className="w-5 h-5" />, url: 'https://github.com/hpchuck' },
+  { name: 'GitHub', icon: <Github className="w-5 h-5" />, url: 'https://github.com/hpchuck' },
   { name: 'LinkedIn', icon: <Linkedin className="w-5 h-5" />, url: 'https://www.linkedin.com/in/hariprasath-tamilarasan-604774191/' },
   { name: 'Twitter', icon: <Twitter className="w-5 h-5" />, url: 'https://x.com/hpchucky' },
   { name: 'Email', icon: <Mail className="w-5 h-5" />, url: 'mailto:prasath123t@gmail.com' },

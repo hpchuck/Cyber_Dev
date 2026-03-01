@@ -7,7 +7,7 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { Check, Star } from "lucide-react";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { useState, useRef } from "react";
 import confetti from "canvas-confetti";
 import NumberFlow from "@number-flow/react";
@@ -95,7 +95,7 @@ export function Pricing({
         </span>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 sm:2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-4">
         {plans.map((plan, index) => (
           <motion.div
             key={index}
@@ -187,7 +187,7 @@ export function Pricing({
               <hr className="w-full my-4" />
 
               <Link
-                href={plan.href}
+                to={plan.href}
                 className={cn(
                   buttonVariants({
                     variant: "outline",
